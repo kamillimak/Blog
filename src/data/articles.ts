@@ -39,7 +39,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "paragraph",
-        text: "Tradycyjne czaty AI (np. w przeglądarce) działają w izolacji. Musisz ręcznie kopiować fragmenty kodu, tłumaczyć kontekst i liczyć na to, że model domyśli się reszty architektury. Agenci pracujący bezpośrednio w repozytorium, tacy jak Codex w środowisku AI Studio, mają dostęp do pełnego kontekstu projektu. Widzą zależności, konfigurację środowiska, pliki package.json oraz strukturę folderów."
+        text: "Tradycyjne czaty AI (np. w przeglądarce) działają w izolacji. Musisz ręcznie kopiować fragmenty kodu, tłumaczyć kontekst i liczyć na to, że model domyśli się reszty architektury. Agenci pracujący bezpośrednio w repozytorium, tacy jak Codex, mają dostęp do pełnego kontekstu projektu. Widzą zależności, konfigurację środowiska, pliki package.json oraz strukturę folderów."
       },
       {
         type: "paragraph",
@@ -58,7 +58,7 @@ export const ARTICLES: Article[] = [
       {
         type: "bulletList",
         items: [
-          "Etap 1: Analiza stanu obecnego – Zanim poprosisz o napranie błędu lub dodanie funkcji, poproś agenta o znalezienie powiązanych plików i wyjaśnienie, jak obecnie działa dana logika.",
+          "Etap 1: Analiza stanu obecnego – Zanim poprosisz o naprawienie błędu lub dodanie funkcji, poproś agenta o znalezienie powiązanych plików i wyjaśnienie, jak obecnie działa dana logika.",
           "Etap 2: Zaproponowanie planu – Poproś o wypunktowanie planowanych zmian, zanim zostaną one fizycznie zapisane na dysku. To moment na skorygowanie założeń architektonicznych.",
           "Etap 3: Implementacja i walidacja – Agent wykonuje precyzyjne edycje, a następnie uruchamiane są skrypty weryfikujące poprawność kodu."
         ]
@@ -206,7 +206,7 @@ Dodaj walidację po stronie klienta do komponentu ContactForm.tsx.
         type: "code",
         language: "typescript",
         code: `// ❌ Słaby prompt: "Popraw ten przycisk"
-//  Dobry prompt: "Dodaj ikonę Loader z lucide-react i animację spin, gdy isLoading jest true. Zablokuj klikanie w tym stanie."
+// ✅ Dobry prompt: "Dodaj ikonę Loader z lucide-react i animację spin, gdy isLoading jest true. Zablokuj klikanie w tym stanie."
 
 interface ButtonProps {
   isLoading: boolean;
@@ -329,7 +329,7 @@ interface LegacyFilter {
   isFeaturedOnly?: boolean;
 }
 
-//  Potem (zaprojektowane przez Claude): Jawna definicja stanów i akcji
+// ✅ Potem (zaprojektowane przez Claude): Jawna definicja stanów i akcji
 export type FilterAction =
   | { type: "SET_SEARCH"; payload: string }
   | { type: "SET_CATEGORY"; payload: string | null }
