@@ -1,4 +1,5 @@
 import type { Article, ArticleSection } from "../types/article";
+import { DRAFT_MEDIA } from "./draftMedia";
 
 const draftModules = import.meta.glob<string>("../../content/draft/**/*.md", {
   eager: true,
@@ -99,33 +100,54 @@ const createImagePlaceholder = (
   };
 };
 
-const createDraftArticle = (sourcePath: string, markdown: string, index: number): Article => {
+const createDraftArticle = (
+  sourcePath: string,
+  markdown: string,
+  index: number,
+  canonicalSlug: string,
+): Article => {
   const pathParts = sourcePath.replace(/\\/g, "/").split("/");
   const fileName = pathParts.at(-1) ?? `draft-${index}.md`;
   const runFolder = pathParts.at(-2) ?? "draft";
   const baseName = fileName.replace(/\.md$/, "").replace(/^\d+-/, "");
   const title = stripMarkdown(markdown.match(/^#\s+(.+)$/m)?.[1] ?? baseName);
-  const slug = `${runFolder}-${slugify(baseName)}`;
+  const legacySlug = `${runFolder}-${slugify(baseName)}`;
   const category = inferCategory(fileName);
+  const media = DRAFT_MEDIA[legacySlug] ?? [];
+  const hasCompleteMedia = media.length >= 2;
   const parsedSections = parseSections(markdown);
   const firstParagraph = parsedSections.find((section) => section.type === "paragraph");
   const lead = firstParagraph?.type === "paragraph" ? firstParagraph.text : "Materiał redakcyjny oczekujący na zatwierdzenie.";
-  const firstPlaceholder = createImagePlaceholder(slug, title, category, 1);
-  const secondPlaceholder = createImagePlaceholder(slug, title, category, 2);
+  const createMediaSection = (mediaIndex: 0 | 1, placeholderIndex: 1 | 2): ArticleSection => {
+    const item = media[mediaIndex];
+
+    if (!item) return createImagePlaceholder(legacySlug, title, category, placeholderIndex);
+
+    return {
+      type: "image",
+      src: `news/drafts/${legacySlug}/${item.fileName}`,
+      alt: item.alt,
+      caption: item.caption,
+    };
+  };
+  const firstMedia = createMediaSection(0, 1);
+  const secondMedia = createMediaSection(1, 2);
   const insertionPoint = Math.min(2, parsedSections.length);
   const sections = [
     ...parsedSections.slice(0, insertionPoint),
-    firstPlaceholder,
+    firstMedia,
     ...parsedSections.slice(insertionPoint),
-    secondPlaceholder,
+    secondMedia,
   ];
   const wordCount = stripMarkdown(markdown).split(/\s+/).filter(Boolean).length;
 
   return {
     id: `draft-${runFolder}-${index + 1}`,
-    slug,
+    slug: canonicalSlug,
     title,
-    subtitle: "Materiał roboczy — wymaga zatwierdzenia merytorycznego i uzupełnienia grafik",
+    subtitle: hasCompleteMedia
+      ? "Materiał roboczy — komplet grafik gotowy, wymaga zatwierdzenia merytorycznego"
+      : "Materiał roboczy — wymaga zatwierdzenia merytorycznego i uzupełnienia grafik",
     description: lead.slice(0, 240),
     category,
     tool: inferTool(markdown),
@@ -135,12 +157,21 @@ const createDraftArticle = (sourcePath: string, markdown: string, index: number)
     wordCount,
     heroImage: inferHero(category),
     imageAlt: `Placeholder grafiki dla artykułu: ${title}`,
-    imageCaption: "DRAFT — grafika docelowa nie została jeszcze dostarczona.",
+    imageCaption: hasCompleteMedia
+      ? "DRAFT — dwie grafiki śródtekstowe są gotowe; materiał nadal oczekuje na akceptację treści."
+      : "DRAFT — grafika docelowa nie została jeszcze dostarczona.",
     accentColor: category === "Bezpieczeństwo" ? "amber" : category === "Biznes AI" ? "emerald" : "indigo",
     featured: false,
     tags: [category, "DRAFT", "AI"],
-    pullQuote: "Materiał oczekuje na formalne zatwierdzenie poprawności treści i komplet dwóch grafik.",
-    keyTakeaways: [
+    pullQuote: hasCompleteMedia
+      ? "Komplet dwóch grafik jest gotowy; materiał nadal oczekuje na formalne zatwierdzenie poprawności treści."
+      : "Materiał oczekuje na formalne zatwierdzenie poprawności treści i komplet dwóch grafik.",
+    keyTakeaways: hasCompleteMedia ? [
+      "Status DRAFT: brak formalnego zatwierdzenia przez agenta odpowiedzialnego za poprawność treści.",
+      "Dwie wymagane grafiki są dostępne w docelowych ścieżkach projektu.",
+      "Grafiki zastąpiły placeholdery, zachowując podpisy i teksty alternatywne.",
+      "Publikację należy zatwierdzić dopiero po końcowej weryfikacji źródeł i treści.",
+    ] : [
       "Status DRAFT: brak formalnego zatwierdzenia przez agenta odpowiedzialnego za poprawność treści.",
       "Artykuł nie ma jeszcze dwóch wymaganych grafik.",
       "Prompty, nazwy plików i ścieżki docelowe znajdują się w treści artykułu.",
@@ -149,10 +180,36 @@ const createDraftArticle = (sourcePath: string, markdown: string, index: number)
     sections,
     status: "DRAFT",
     sourcePath: sourcePath.replace("../../", ""),
+    legacySlug,
   };
 };
 
-export const DRAFT_ARTICLES: Article[] = Object.entries(draftModules)
+const sortedDraftModules = Object.entries(draftModules)
   .filter(([path]) => !path.endsWith("/README.md"))
-  .sort(([left], [right]) => left.localeCompare(right))
-  .map(([path, markdown], index) => createDraftArticle(path, markdown, index));
+  .sort(([left], [right]) => {
+    const leftFolder = left.replace(/\\/g, "/").split("/").at(-2) ?? "";
+    const rightFolder = right.replace(/\\/g, "/").split("/").at(-2) ?? "";
+    const dateOrder = leftFolder.slice(0, 10).localeCompare(rightFolder.slice(0, 10));
+
+    if (dateOrder !== 0) return dateOrder;
+
+    const leftPriority = leftFolder.includes("daily-news") ? 0 : 1;
+    const rightPriority = rightFolder.includes("daily-news") ? 0 : 1;
+
+    return leftPriority - rightPriority || left.localeCompare(right);
+  });
+
+const publicationCountByDate = new Map<string, number>();
+
+export const DRAFT_ARTICLES: Article[] = sortedDraftModules.map(([path, markdown], index) => {
+  const runFolder = path.replace(/\\/g, "/").split("/").at(-2) ?? "draft";
+  const publicationDate = runFolder.slice(0, 10);
+  const [year = "0000", month = "00", day = "00"] = publicationDate.split("-");
+  const publicationIndex = publicationCountByDate.get(publicationDate) ?? 0;
+  publicationCountByDate.set(publicationDate, publicationIndex + 1);
+
+  const period = `${month}${year.slice(-2)}`;
+  const publication = publicationIndex === 0 ? day : `${day}.${publicationIndex}`;
+
+  return createDraftArticle(path, markdown, index, `${period}/${publication}`);
+});

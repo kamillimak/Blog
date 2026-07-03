@@ -31,6 +31,12 @@ export type ArticleSection =
       fileName: string;
       targetPath: string;
       prompt: string;
+    }
+  | {
+      type: "image";
+      src: string;
+      alt: string;
+      caption: string;
     };
 
 export interface Author {
@@ -62,4 +68,5 @@ export interface Article {
   keyTakeaways: string[];
   status?: "DRAFT" | "APPROVED";
   sourcePath?: string;
+  legacySlug?: string;
 }

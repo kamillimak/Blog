@@ -23,6 +23,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/articles" element={<ArticlesPage />} />
+            <Route path="/articles/:period/:publication" element={<ArticlePage />} />
             <Route path="/articles/:slug" element={<ArticlePage />} />
             <Route
               path="/workspace"

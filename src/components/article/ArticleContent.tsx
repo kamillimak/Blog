@@ -154,6 +154,22 @@ export function ArticleContent({ sections, textSizeClass = "text-lg" }: ArticleC
               </aside>
             );
 
+          case "image":
+            return (
+              <figure key={idx} id={`article-image-${idx}`} className="my-8 sm:my-10">
+                <img
+                  src={`${import.meta.env.BASE_URL}${section.src}`}
+                  alt={section.alt}
+                  className="w-full aspect-video object-cover border border-brand-border bg-brand-surface"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <figcaption className="mt-3 border-l-2 border-amber-500 pl-3 text-xs leading-relaxed text-brand-muted">
+                  {section.caption}
+                </figcaption>
+              </figure>
+            );
+
           default:
             return null;
         }

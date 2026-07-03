@@ -96,6 +96,15 @@ Projekt ewoluował przez szereg ustrukturyzowanych iteracji, z których każda w
 - **Porządkowanie archiwum**: Wyniki automatyzacji rozdzielono na `content/daily-news`, `content/top-3` i `content/draft`, zastępując wcześniejszy wspólny katalog `content/briefings`.
 - **Kontrola wydania**: Przed publikacją wykonywane są `npm run lint` i produkcyjny build klienta; deployment GitHub Pages uruchamia się automatycznie po pushu do `main`.
 
+### 🔹 Iteracja 11: Krótkie adresy publikacji i pierwsza kompletna bramka mediów
+- **Krótkie adresy szkiców**: Trasy redakcyjne używają schematu `#/articles/MMRR/DD`, np. `#/articles/0726/03` dla pierwszej publikacji z 3 lipca 2026 r.
+- **Wiele publikacji dziennie**: Kolejne wpisy z tej samej daty otrzymują deterministyczne końcówki `DD.1`, `DD.2` itd., zgodnie z kolejnością plików źródłowych.
+- **Zgodność starych linków**: Dotychczasowe długie slug-i pozostają rozpoznawane i są automatycznie przekierowywane na nowy adres kanoniczny.
+- **Manifest mediów szkiców**: Dodano `src/data/draftMedia.ts`, który jawnie łączy zweryfikowane pliki graficzne z artykułem, tekstem alternatywnym i podpisem.
+- **Pierwsza bramka dwóch grafik**: Briefing z 3 lipca 2026 r. otrzymał dwa pliki WebP w `public/news/drafts/2026-07-03-daily-news-07-03/`; gotowe obrazy zastępują oba placeholdery.
+- **Bez przedwczesnej akceptacji**: Komplet mediów aktualizuje komunikaty artykułu, ale nie zmienia statusu `DRAFT`; publikacja nadal wymaga jawnej akceptacji merytorycznej.
+- **Obsługa GitHub Pages**: Renderer buduje ścieżki obrazów z `import.meta.env.BASE_URL`, dzięki czemu zasoby działają lokalnie i pod prefiksem `/Blog/` na produkcji.
+
 ---
 
 ## Stan projektu: teraz, uzgodnione działania i cel

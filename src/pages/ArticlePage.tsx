@@ -10,13 +10,20 @@ import { formatPolishDate, getRelatedArticles, copyToClipboard } from "../utils/
 import { ReadingProgress } from "../components/article/ReadingProgress";
 
 export function ArticlePage() {
-  const { slug } = useParams<{ slug: string }>();
+  const { slug, period, publication } = useParams<{
+    slug?: string;
+    period?: string;
+    publication?: string;
+  }>();
   const navigate = useNavigate();
+  const routeSlug = period && publication ? `${period}/${publication}` : slug;
 
   // Find article
   const article = useMemo(() => {
-    return ARTICLES.find((a) => a.slug === slug);
-  }, [slug]);
+    return ARTICLES.find((candidate) =>
+      candidate.slug === routeSlug || candidate.legacySlug === routeSlug
+    );
+  }, [routeSlug]);
 
   // Handle scroll progress
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -30,7 +37,13 @@ export function ArticlePage() {
   useEffect(() => {
     // Scroll to top on route change
     window.scrollTo(0, 0);
-  }, [slug]);
+  }, [routeSlug]);
+
+  useEffect(() => {
+    if (article?.legacySlug === routeSlug) {
+      navigate(`/articles/${article.slug}`, { replace: true });
+    }
+  }, [article, navigate, routeSlug]);
 
   useEffect(() => {
     if (article) {
