@@ -26,6 +26,10 @@ export function HomePage() {
     return ARTICLES.find((a) => a.featured) || ARTICLES[0];
   }, []);
 
+  const latestDrafts = useMemo(() => {
+    return ARTICLES.filter((article) => article.status === "DRAFT").slice(-6).reverse();
+  }, []);
+
   // Filtered Library Articles
   const filteredArticles = useMemo(() => {
     return filterArticles(ARTICLES, searchQuery, selectedTool, selectedCategory);
@@ -160,6 +164,32 @@ export function HomePage() {
 
       {/* Daily AI & IT Briefing Section */}
       <DailyBriefing />
+
+      {latestDrafts.length > 0 && (
+        <section id="latest-drafts-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-amber-500/40 pb-5 mb-8">
+            <div>
+              <span className="text-[10px] font-black tracking-[0.2em] text-amber-600 uppercase">Redakcja / DRAFT</span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-brand-text uppercase mt-2">
+                Najnowsze szkice artykułów
+              </h2>
+              <p className="text-xs text-brand-muted mt-2 max-w-2xl">
+                Materiały oczekujące na zatwierdzenie merytoryczne i komplet co najmniej dwóch grafik.
+              </p>
+            </div>
+            <Link to="/articles" className="text-[10px] font-extrabold uppercase tracking-widest text-brand-text border-b border-brand-text">
+              Zobacz wszystkie
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {latestDrafts.map((article) => (
+              <div key={article.id}>
+                <ArticleCard article={article} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* 3. SYNERGISTIC WORKFLOW SECTION */}
       <section id="workflow-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">

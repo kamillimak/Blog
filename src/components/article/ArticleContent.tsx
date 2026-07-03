@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Copy, Check, Terminal } from "lucide-react";
+import { Copy, Check, Terminal, Image as ImageIcon } from "lucide-react";
 import { ArticleSection } from "../../types/article";
 
 interface ArticleContentProps {
@@ -134,6 +134,24 @@ export function ArticleContent({ sections, textSizeClass = "text-lg" }: ArticleC
                   <code>{section.code}</code>
                 </pre>
               </div>
+            );
+
+          case "imagePlaceholder":
+            return (
+              <aside
+                key={idx}
+                id={`image-placeholder-${section.fileName}`}
+                className="my-8 border-2 border-dashed border-amber-500/60 bg-amber-500/5 p-5 sm:p-6"
+                aria-label={`Placeholder grafiki ${section.fileName}`}
+              >
+                <div className="flex items-center gap-2 text-amber-600 mb-3">
+                  <ImageIcon size={18} />
+                  <strong className="text-xs uppercase tracking-widest">DRAFT — brakująca grafika</strong>
+                </div>
+                <p className="text-xs font-mono text-brand-text mb-2"><strong>Plik:</strong> {section.fileName}</p>
+                <p className="text-xs font-mono text-brand-text mb-4 break-all"><strong>Ścieżka:</strong> {section.targetPath}</p>
+                <p className="text-sm leading-relaxed text-brand-muted"><strong>Prompt:</strong> {section.prompt}</p>
+              </aside>
             );
 
           default:

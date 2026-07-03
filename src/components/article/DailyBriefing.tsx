@@ -20,47 +20,42 @@ export function DailyBriefing() {
     {
       id: "1",
       category: "Polska",
-      title: "AI może zwiększyć PKB Polski nawet o 12% do 2035 r.",
-      content: "Nowy raport World Bank wskazuje, że sztuczna inteligencja może zwiększyć realny PKB Polski od 1,3% do nawet 12,1% do 2035 roku. Kluczowe będą inwestycje przedsiębiorstw, rozwój kompetencji pracowników oraz odpowiednie otoczenie regulacyjne.",
-      source: "World Bank",
-      sourceUrl: "https://www.worldbank.org/en/news/press-release/2026/06/22/ai-could-boost-poland-s-economy-by-up-to-12-by-2035-new-world-bank-group-report-finds?utm_source=chatgpt.com",
-      image: "https://images.openai.com/static-rsc-4/aufEy3BddiT22vvaeOd6fHC_i4yNOFhit4HEC9cKLM313FhezTfx_qiZ9dn5axKl2WY5HpRmUkx_APA67D35GkJyXfrvoAnh6Gh4JaI5ZD1aihD6RfaWD_qxgJ-BGOs9KLgW3RJQiYD0J4iwe3MpJIilrlahwAkETr4eK9OdNKCoZIrKNbI8xHVlH_bGzrgt?purpose=fullsize"
+      title: "AI może zwiększyć PKB Polski nawet o 12,1% do 2035 r.",
+      content: "Bank Światowy szacuje, że sztuczna inteligencja może podnieść realny PKB Polski o 1,3–12,1% do 2035 roku. Skala efektu zależy od inwestycji firm, kompetencji pracowników i otoczenia regulacyjnego; dziś AI wykorzystuje tylko 8% polskich przedsiębiorstw.",
+      source: "Bank Światowy",
+      sourceUrl: "https://www.worldbank.org/en/news/press-release/2026/06/22/ai-could-boost-poland-s-economy-by-up-to-12-by-2035-new-world-bank-group-report-finds"
     },
     {
       id: "2",
       category: "Polska",
-      title: "Polska przyspiesza budowę własnego ekosystemu AI",
-      content: "Rząd kontynuuje działania na rzecz większej niezależności technologicznej. Inwestycje obejmują infrastrukturę AI, centra danych oraz rozwiązania ograniczające zależność od globalnych dostawców technologii.",
-      source: "TVP World",
-      sourceUrl: "https://tvpworld.com/93605642/poland-bets-500m-on-ai-to-cut-dependence-on-big-tech?utm_source=chatgpt.com",
-      image: "https://images.openai.com/static-rsc-4/gGab8cAAtcTAXNOEIjo5KczsMVP4bPrTrGdpEjgsfLLX6yE_vIC6fXXkNsq0kRLcsqJpiebc8UcEzUPE2i6zd7NmA2DjMYc-46dKxJOgpR-cFKbJYscpi1Aprgob6wd4OrDrMnKf0lBbOGPrRNnOLeulnCHaBZgZXECBQA4M0SUq3y_dkq4Y_ZOymAyPcbmd?purpose=fullsize"
+      title: "BGK inwestuje w ElevenLabs; powstanie AI Lab Poland",
+      content: "Vinci, spółka z Grupy BGK, zainwestowała w ElevenLabs. W ramach współpracy firma ma utworzyć AI Lab Poland — krajowy ośrodek badań i rozwoju technologii głosowych oraz systemów sztucznej inteligencji.",
+      source: "Bank Gospodarstwa Krajowego",
+      sourceUrl: "https://media.bgk.pl/en/press-release/vinci-part-of-the-bgk-group-invests-in-elevenlabs-ai-lab-poland-will-be-established-1/"
     },
     {
       id: "3",
-      category: "Świat",
-      title: "OpenAI proponuje udział państwa USA w zyskach z AI",
-      content: "Według doniesień OpenAI rozważa przekazanie 5% udziałów rządowi USA jako elementu modelu, który miałby zapewnić społeczeństwu udział w korzyściach płynących z rozwoju sztucznej inteligencji. Pomysł jest inspirowany funduszem Alaska Permanent Fund i pokazuje, jak mocno polityka zaczyna wpływać na rozwój AI.",
-      source: "Reuters",
-      sourceUrl: "https://www.reuters.com/business/openai-proposes-handing-trump-administration-5-stake-ft-reports-2026-07-02/?utm_source=chatgpt.com",
-      image: "https://images.openai.com/static-rsc-4/uKxNj_FlM5KQKSsZ3KuHB0vpRLwyUQ3RyRSc4bjV0IQ71ymIERlCrEU3_7fz5kfhuQbS0MUUSZJnUYTQ9nUmoDP948ab0v_UnvS6GFDfCqqLEf4eGBPswlPqVgkAJMkv5iLhJk1XPM5S7rwmDqhC0Xm4a7mQePwGcOLS6zFO00AyX_0SlqtzPs5atfI0yOLj?purpose=fullsize"
+      category: "Polska",
+      title: "12 tysięcy pracowni AI trafi do polskich szkół",
+      content: "Ministerstwo Cyfryzacji przeznacza blisko 1,9 mld zł z KPO na 8 tys. pracowni AI w szkołach podstawowych i 4 tys. w ponadpodstawowych. Oferty wykonawców otwarto 12 maja, a sprzęt ma dotrzeć przed rokiem szkolnym 2026/2027.",
+      source: "Ministerstwo Cyfryzacji",
+      sourceUrl: "https://www.gov.pl/web/cyfryzacja/otwarcie-ofert-wykonawcow-na-dostawe-12-tysiecy-pracowni-sztucznej-inteligencji-dla-szkol"
     },
     {
       id: "4",
       category: "Świat",
-      title: "Anthropic odzyskuje możliwość globalnego udostępniania modeli Fable 5 i Mythos 5",
-      content: "Anthropic poinformował o zniesieniu amerykańskich ograniczeń eksportowych dotyczących swoich najbardziej zaawansowanych modeli po wdrożeniu dodatkowych zabezpieczeń. To ważna wiadomość dla programistów i firm wykorzystujących modele Claude w projektach produkcyjnych.",
-      source: "The Guardian",
-      sourceUrl: "https://www.theguardian.com/technology/2026/jul/01/anthropic-fable-mythos-ai-models-us-export-controls-lifted?utm_source=chatgpt.com",
-      image: "https://images.openai.com/static-rsc-4/5bixbdz3xih52AA-22xTyGGmSzmsA6hvTKbT-66Hmzss3gH3XIIjoVIhZkgp8AYGvXK3BRM5rympwLfyoEjZu5-W0c9rAhwAFA0bzMUCZWyi-ifj1IzEX-BalopcI_U2QsSX7GEFRKrCHMDAeinEE3K2kP5fUTXffGjM-YWrTizRwbMYkgfdnoJIHEVh1KZk?purpose=fullsize"
+      title: "Anthropic udostępnia Claude Sonnet 5",
+      content: "Claude Sonnet 5 jest dostępny we wszystkich planach, w Claude Code i przez API. Anthropic pozycjonuje model jako wydajniejszą warstwę wykonawczą do agentów, programowania i długich zadań narzędziowych, z ceną promocyjną do końca sierpnia.",
+      source: "Anthropic",
+      sourceUrl: "https://www.anthropic.com/news/claude-sonnet-5"
     },
     {
       id: "5",
       category: "Świat",
-      title: "Google opóźnia premierę Gemini 3.5 Pro",
-      content: "Google przesunął premierę modelu Gemini 3.5 Pro na lipiec, aby dopracować możliwości agentów AI oraz poprawić wydajność po uwagach testerów. Pokazuje to, że konkurencja pomiędzy Google, OpenAI i Anthropic coraz bardziej koncentruje się na zastosowaniach programistycznych i automatyzacji pracy.",
-      source: "Business Insider",
-      sourceUrl: "https://www.businessinsider.com/google-3-5-pro-july-release-tokens-ai-agents-model-2026-6?utm_source=chatgpt.com",
-      image: "https://images.openai.com/static-rsc-4/ErOgDFTdYcQE0yV2dbxXiJBaUhRHMDG9EaK0zy-XEpDmzvl7lc7HBSBbZnHBVkF7BmNVusHq07nUNooVmKqBNL-XtZzZALEYUuqSxrdLQSvWr4aPg3dTJOZp51YH2RoFcrYT3pBtCBOD1g3IlJvKhzrYOt1kVgAxn-ymoP54kanrRrrrAAygi1gFZN6aVYvg?purpose=fullsize"
+      title: "OpenAI proponuje 5% udziałów dla rządu USA",
+      content: "Według Reutersa OpenAI zaproponowało przekazanie administracji USA 5% udziałów w ramach modelu publicznego udziału w korzyściach z AI. Koncepcja, inspirowana Alaska Permanent Fund, pokazuje rosnące powiązanie rozwoju modeli z polityką przemysłową państwa.",
+      source: "Reuters",
+      sourceUrl: "https://www.reuters.com/business/openai-proposes-handing-trump-administration-5-stake-ft-reports-2026-07-02/"
     }
   ];
 
@@ -276,21 +271,21 @@ export function DailyBriefing() {
               </div>
 
               <h3 className="font-extrabold text-brand-text text-lg tracking-tight uppercase leading-tight mb-4">
-                Suwerenność Technologiczna i Rządy w grze o AI
+                AI przechodzi od narzędzi do infrastruktury państwa
               </h3>
 
               <div className="border-l-2 border-orange-500 pl-4 my-4">
                 <p className="text-xs text-brand-muted leading-relaxed italic font-serif">
-                  "Największym tematem jest rosnący wpływ państw na rozwój zaawansowanej AI. Zarówno propozycje OpenAI dotyczące udziału społeczeństwa w zyskach, jak i decyzje administracji USA wobec modeli Anthropic pokazują, że regulacje stają się równie istotne jak same postępy technologiczne."
+                  "Dzisiejsze wiadomości łączą trzy warstwy rozwoju AI: nowe modele agentowe, inwestycje w krajowy ekosystem oraz budowę kompetencji od szkół po przedsiębiorstwa."
                 </p>
               </div>
 
               <p className="text-xs text-brand-muted leading-relaxed font-sans mt-4">
-                Dla osób pracujących w IT oznacza to, że w najbliższych miesiącach warto śledzić nie tylko premiery kolejnych modeli, ale także zmiany prawne i ich bezpośredni wpływ na dostępność zaawansowanych narzędzi programistycznych.
+                Dla branży IT oznacza to, że przewagę będą budować nie tylko dostawcy najlepszych modeli, lecz także organizacje zdolne wdrożyć je w edukacji, procesach firmowych i bezpiecznej infrastrukturze.
               </p>
 
               <div className="mt-6 pt-4 border-t border-brand-border/60 text-[9px] font-mono text-brand-muted uppercase tracking-wider">
-                Analiza z: <span className="text-brand-text font-bold">2 lipca 2026</span>
+                Analiza z: <span className="text-brand-text font-bold">3 lipca 2026</span>
               </div>
             </div>
 

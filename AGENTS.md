@@ -168,4 +168,27 @@ Połączenie z Google Workspace bazuje na bezpiecznym, bezserwerowym połączeni
 2. **In-Memory Token**: Token sesyjny z Google Auth jest przechowywany wyłącznie w pamięci operacyjnej zmiennej `cachedAccessToken` wewnątrz modułu `firebaseAuth.ts` i jest czyszczony w momencie wywołania `logout()`. Zapobiega to przejęciu uprawnień przez zewnętrzne skrypty (XSS).
 3. **Docs API v1 Parser**: Moduł podglądu dokumentów samodzielnie przetwarza strukturę JSON dokumentu Google Docs (`body.content`), rekonstruując akapity bezpośrednio w bezpiecznym kontenerze tekstowym, zapobiegając błędom XSS.
 
+## 13. AUTOMATYCZNY PIPELINE TREŚCI I GOOGLE DRIVE
+
+Repozytorium obsługują dwie niezależne automatyzacje redakcyjne:
+
+1. **Codzienny briefing AI i IT** zapisuje raport w `content/daily-news/YYYY-MM-DD/YYYY-MM-DD.md` i synchronizuje go jako surowy plik Markdown do datowanego folderu pod Google Drive ID `1k_6odvzXd9xAs3lngICP-FMl43xuBccE`.
+2. **AI: newsy, przestępczość i zarabianie** zapisuje 9 materiałów oraz README w `content/top-3/YYYY-MM-DD_HH-mm/` i synchronizuje komplet do datowanego folderu pod katalogiem `TOP 3` o ID `1hrZeNgh0D5k9joChMGnk_lnqejJr9A8K`.
+
+Każdy zapis Drive musi być idempotentny: najpierw wyszukaj folder i plik, utwórz tylko brakujące zasoby, istniejący plik aktualizuj po jego ID, a następnie wykonaj readback listy folderu. Link zwrócony przez API zapisz w podsumowaniu i pamięci automatyzacji. Nie konwertuj plików `.md` do Google Docs.
+
+## 14. STATUS DRAFT I BRAKUJĄCE GRAFIKI
+
+- `src/data/draftArticles.ts` importuje Markdown wyłącznie z `content/draft` przy użyciu `import.meta.glob` i buduje typowane wpisy `Article`. Katalogi `content/top-3` oraz `content/daily-news` są archiwum wyników automatyzacji, nie bezpośrednim źródłem kart bloga.
+- Wszystkie materiały oznaczone `DRAFT` muszą mieć lokalną kopię w `content/draft/<przebieg>/` oraz kopię Markdown w folderze Google Drive `DRAFT` o ID `1DjLIWVsGMpTpOhTrstc-1sSAVq9gRUF9`.
+- Materiał bez formalnej akceptacji agenta poprawności treści ma `status: "DRAFT"`.
+- Materiał bez co najmniej dwóch gotowych, legalnych grafik pozostaje `DRAFT`.
+- Brakujące media reprezentuje sekcja `imagePlaceholder`, która musi zawierać `fileName`, `targetPath` i konkretny `prompt`.
+- Docelowe grafiki szkiców zapisuj w `public/news/drafts/<slug>/` i dopiero po ich sprawdzeniu zastępuj placeholdery.
+- Nie ustawiaj `APPROVED` na podstawie samego istnienia artykułu, poprawnego buildu ani obecności linków. Wymagana jest jawna akceptacja merytoryczna i komplet mediów.
+
+## 15. AKTUALNY KIERUNEK ROZWOJU
+
+Pełny changelog, stan bieżący, instrukcje podłączenia backendu i Drive oraz docelowa architektura automatyzacji są utrzymywane w `README.md`. Najbliższy etap to manifest workflow per artykuł, automatyczna bramka dwóch grafik, jawny podpis agenta zatwierdzającego oraz oddzielenie publicznych wpisów `APPROVED` od redakcyjnego podglądu `DRAFT`.
+
 

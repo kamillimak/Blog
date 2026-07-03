@@ -37,6 +37,11 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
         {/* Text Details */}
         <div className="lg:col-span-5 flex flex-col justify-between py-2">
           <div>
+            {article.status === "DRAFT" && (
+              <span className="inline-flex mb-4 border border-amber-500 bg-amber-500/10 px-2 py-1 text-[10px] font-black tracking-widest text-amber-600 uppercase">
+                DRAFT
+              </span>
+            )}
             {/* Meta tags and categories */}
             <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
               <span className={`text-[10px] font-extrabold uppercase tracking-widest ${accentColor}`}>
@@ -112,6 +117,11 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
       {/* Card Body */}
       <div className="p-6 flex flex-col justify-between flex-grow bg-brand-card">
         <div>
+          {article.status === "DRAFT" && (
+            <span className="inline-flex mb-3 border border-amber-500 bg-amber-500/10 px-2 py-1 text-[10px] font-black tracking-widest text-amber-600 uppercase">
+              DRAFT
+            </span>
+          )}
           {/* Badges */}
           <div className="flex items-center justify-between gap-2 mb-4">
             <span className={`text-[10px] font-extrabold uppercase tracking-widest ${accentColor}`}>

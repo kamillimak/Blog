@@ -50,11 +50,208 @@ Projekt ewoluował przez szereg ustrukturyzowanych iteracji, z których każda w
 - **Endpoint Subskrypcji (`/api/subscribe`)**: Zbudowano bezpieczną bramkę przyjmującą e-maile użytkowników z podwójnym systemem zapisu: do lokalnej bazy danych JSON (`subscriptions.json`) oraz poprzez wysyłkę e-maili powitalnych przez serwer pocztowy Gmail SMTP (`nodemailer`) z wykorzystaniem zmiennych środowiskowych.
 - **Premium Newsletter Form**: Dodano responsywny formularz w stopce (`NewsletterForm.tsx`) informujący użytkownika o dokładnym statusie zapisu.
 
-### 🔹 Iteracja 4: Identyfikacja Wizualna Premium & AI Content Dashboard (Obecna)
+### 🔹 Iteracja 4: Identyfikacja Wizualna Premium & AI Content Dashboard
 - **Sygnet Autorski (`KMSygnet.tsx`)**: Opracowano i zaimplementowano wektorowy, złoty monogram „KM” w eleganckiej okrągłej oprawie, pełniący rolę logo w nagłówku, stopce oraz jako favicon SVG bezpośrednio w `<head>` pliku `index.html`.
 - **AI Content Dashboard (`AIContentDashboard.tsx`)**: Stworzono nowoczesny, trójkolumnowy panel na stronie głównej w miejsce uproszczonej siatki nowinek, grupujący kluczowe, skondensowane informacje (Top Newsy, Kryminalne użycia, Pomysły na zarabianie).
 - **Premium Hover-Lift Effect**: Wprowadzono do wszystkich interaktywnych kart (zarówno w Daily Briefing, jak i w AI Content Dashboard) subtelne uniesienie (`hover:-translate-y-1` / `hover:-translate-y-1.5`) i płynne przejścia cieni, potęgujące wrażenie ekskluzywnego magazynu.
 - **Optymalizacja Persony Autora**: Przeredagowano treści na stronie głównej i w sekcji workflow, by jasno ukazać autora jako eksperta orkiestracji procesów i zaawansowanych narzędzi AI (AI-Native Creator / AI Orchestration Expert), a nie tradycyjnego programistę.
+
+### 🔹 Iteracja 5: Google Workspace i Strefa Twórcy
+- **Firebase Authentication**: Dodano logowanie Google w popupie oraz zakresy OAuth dla Google Drive i Google Docs.
+- **Token tylko w pamięci**: Token Google nie jest zapisywany w `localStorage`, `sessionStorage` ani bazie aplikacji. Istnieje wyłącznie w zmiennej modułu `firebaseAuth.ts` i jest czyszczony przy wylogowaniu.
+- **Strefa Twórcy (`/workspace`)**: Dodano eksplorator Drive, wyszukiwanie dokumentów, bezpieczny podgląd treści Docs API v1 oraz eksport nowych szkiców do Google Docs.
+- **Kontrola mutacji**: Operacje tworzące pliki wymagają jawnego potwierdzenia użytkownika.
+
+### 🔹 Iteracja 6: Produkcyjny backend i trwały newsletter
+- **Cloud Run**: Backend Express może działać jako kontener, korzysta z `PORT`, udostępnia `/api/health` i ogranicza CORS do GitHub Pages oraz środowiska lokalnego.
+- **Firestore w produkcji**: Subskrypcje są przechowywane w kolekcji `newsletterSubscriptions`; identyfikatorem dokumentu jest hash SHA-256 adresu e-mail, co zapobiega duplikatom bez używania adresu jako jawnego ID.
+- **Fallback lokalny**: Poza produkcją dane trafiają do `subscriptions.json`, chyba że jawnie ustawiono `USE_FIRESTORE`.
+- **Gmail SMTP jako funkcja opcjonalna**: Brak sekretów pocztowych nie blokuje zapisu subskrypcji. Wysyłka powitalna jest dodatkiem, nie pojedynczym punktem awarii.
+- **Rozdzielony deployment**: Frontend jest publikowany przez GitHub Actions na GitHub Pages, a API działa niezależnie w Cloud Run; łączy je `VITE_API_BASE_URL`.
+
+### 🔹 Iteracja 7: Automatyczne briefingi redakcyjne
+- **Briefing dzienny**: Automatyzacja o 08:00 przygotowuje pięć wiadomości AI/IT z podziałem Polska–świat, aktualizuje `DailyBriefing` i zapisuje raport w `content/daily-news/YYYY-MM-DD/YYYY-MM-DD.md`.
+- **Pakiet TOP 3**: Automatyzacja o 09:15 i 18:15 przygotowuje po trzy materiały w kategoriach newsy, przestępczość AI i legalne sposoby zarabiania, zapisując wynik w `content/top-3/YYYY-MM-DD_HH-mm/`.
+- **Pamięć przebiegów**: Każda automatyzacja zapisuje tematy, datę, wynik walidacji i reguły unikania powtórzeń w swoim `memory.md` poza repozytorium.
+- **Kontrola jakości technicznej**: Każdy przebieg kończy się `npm run lint`; błędy niezwiązane z aktualizacją nie powinny być modyfikowane automatycznie.
+
+### 🔹 Iteracja 8: Synchronizacja redakcji z Google Drive
+- **Surowe pliki Markdown**: Wyniki automatyzacji są przesyłane jako `text/markdown`, bez konwersji do natywnego Google Docs.
+- **Idempotentny zapis**: Automatyzacja najpierw znajduje lub tworzy folder przebiegu, a przy ponownym uruchomieniu aktualizuje istniejący plik zamiast generować duplikat.
+- **Dwa kanały treści**: Briefing dzienny trafia do datowanego folderu w katalogu głównym Drive, a pakiety redakcyjne do katalogu `TOP 3`.
+- **Readback po zapisie**: Operacja nie jest uznawana za zakończoną, dopóki lista folderu lub metadane nie potwierdzą obecności plików. Rzeczywisty link jest zapisywany w podsumowaniu i pamięci automatyzacji.
+- **Migracja bez utraty danych**: Wcześniejsze pliki skonwertowane do Google Docs zachowano w `_archive-google-docs`; bieżącym formatem źródłowym jest Markdown.
+
+### 🔹 Iteracja 9: Pipeline publikacyjny DRAFT i wymagania graficzne (stan bieżący)
+- **Import treści Markdown**: Vite ładuje materiały przeznaczone do redakcji wyłącznie z `content/draft` przez `import.meta.glob`, a `draftArticles.ts` zamienia je w typowane obiekty `Article`. `content/top-3` i `content/daily-news` pozostają archiwum wyników automatyzacji.
+- **Status redakcyjny**: Materiał bez formalnego zatwierdzenia agenta odpowiedzialnego za poprawność treści pozostaje oznaczony jako `DRAFT` na karcie i stronie artykułu.
+- **Minimum dwóch grafik**: Każdy importowany materiał bez kompletu ilustracji otrzymuje dwa placeholdery. Każdy placeholder zawiera konkretny prompt, prostą nazwę pliku oraz docelową ścieżkę w `public/news/drafts/<slug>/`.
+- **Bez automatycznej publikacji**: Import do interfejsu nie oznacza zatwierdzenia. Status `APPROVED` może zostać nadany dopiero po weryfikacji treści, źródeł i dwóch grafik.
+
+### 🔹 Iteracja 10: Pakiet redakcyjny 2026-07-03 i publikacja produkcyjna
+- **Dziewięć nowych szkiców**: Dodano po trzy materiały w kategoriach newsy AI, kryminalne użycia AI i legalne sposoby zarabiania z AI; pełne wersje znajdują się w `content/top-3/2026-07-03_11-17/` oraz `content/draft/2026-07-03_11-17/`.
+- **Aktualizacja dashboardu**: `src/data/aiTrendBriefing.ts` prezentuje najnowsze pozycje z jednym głównym źródłem na kartę, a pełne zestawy źródeł pozostają w plikach Markdown.
+- **Jawny status DRAFT**: Nowe materiały są widoczne w redakcyjnym podglądzie jako szkice i automatycznie otrzymują dwa placeholdery grafik; nie są oznaczane jako zatwierdzone publikacje.
+- **Synchronizacja Google Drive**: Pakiet `TOP 3` i dziewięć kopii `DRAFT` zostały zapisane w osobnych datowanych folderach jako surowe pliki Markdown i potwierdzone odczytem list folderów.
+- **Porządkowanie archiwum**: Wyniki automatyzacji rozdzielono na `content/daily-news`, `content/top-3` i `content/draft`, zastępując wcześniejszy wspólny katalog `content/briefings`.
+- **Kontrola wydania**: Przed publikacją wykonywane są `npm run lint` i produkcyjny build klienta; deployment GitHub Pages uruchamia się automatycznie po pushu do `main`.
+
+---
+
+## Stan projektu: teraz, uzgodnione działania i cel
+
+| Obszar | Stan bieżący | Uzgodniony następny krok | Stan docelowy |
+|---|---|---|---|
+| Frontend | React SPA, artykuły typowane, dashboardy i czytnik | Uzupełniać grafiki i zatwierdzać szkice | Stabilny magazyn z kontrolowanym cyklem publikacji |
+| Backend | Express, Firestore/local JSON, Gmail SMTP, health check | Wdrożyć i monitorować Cloud Run oraz sekrety | Oddzielne, obserwowalne API z trwałym storage i kontrolą nadużyć |
+| Google Workspace w aplikacji | OAuth w przeglądarce, Drive/Docs w Strefie Twórcy | Ograniczyć zakresy OAuth do minimum wymaganego przez realne operacje | Bezpieczny panel redakcyjny z granularnymi uprawnieniami i audytem |
+| Automatyzacje | Dwa harmonogramy, internet research, Markdown, lint | Utrzymać pamięć, idempotencję i readback Drive | Wieloetapowy pipeline research → fact-check → grafiki → approval → publikacja |
+| Google Drive | Datowane foldery i surowe `.md`, osobny `TOP 3` | Aktualizować pliki bez duplikatów | Wspólne archiwum redakcyjne ze stanami i manifestem przebiegu |
+| Kontrola treści | Wszystkie niezatwierdzone lub niekompletne materiały mają `DRAFT` | Agent poprawności zatwierdza fakty; generator dostarcza dwie grafiki | Tylko kompletne materiały `APPROVED` są widoczne jako opublikowane |
+
+### Kryterium gotowości artykułu
+
+Artykuł może przejść z `DRAFT` do `APPROVED`, gdy jednocześnie:
+
+1. źródła są dostępne, bezpośrednie i potwierdzają kluczowe twierdzenia;
+2. daty publikacji i zdarzenia zostały zweryfikowane;
+3. agent odpowiedzialny za poprawność treści zostawił jednoznaczny wynik akceptacji;
+4. istnieją co najmniej dwie legalne grafiki w zadeklarowanych ścieżkach lokalnych;
+5. placeholdery zostały zastąpione właściwymi mediami i tekstami alternatywnymi;
+6. `npm run lint` oraz `npm run build` kończą się powodzeniem.
+
+---
+
+## Know-how: podłączenie backendu
+
+### Jak backend działa obecnie
+
+`server.ts` łączy dwie role:
+
+- w development uruchamia Express i Vite jako middleware pod jednym portem;
+- w production obsługuje API oraz statyczne pliki z `dist`.
+
+Przepływ newslettera wygląda następująco:
+
+```text
+NewsletterForm → POST /api/subscribe → walidacja e-mail
+                                      → Firestore (production)
+                                      → subscriptions.json (development)
+                                      → Gmail SMTP (opcjonalnie)
+```
+
+### Konfiguracja lokalna
+
+1. Skopiuj `.env.example` do `.env` i nie commituj sekretów.
+2. Pozostaw `USE_FIRESTORE` puste, jeśli chcesz korzystać z `subscriptions.json`.
+3. Ustaw `GMAIL_USER` i `GMAIL_APP_PASSWORD` tylko wtedy, gdy potrzebna jest wiadomość powitalna.
+4. Uruchom `npm install`, następnie `npm run dev`.
+5. Sprawdź `http://localhost:3000/api/health`.
+6. Wyślij testowy zapis i potwierdź odpowiedź API oraz wpis w storage.
+
+### Konfiguracja produkcyjna
+
+1. Utwórz projekt Google Cloud i Firestore w trybie Native.
+2. Nadaj kontu usługi Cloud Run rolę `Cloud Datastore User`.
+3. Umieść dane Gmail wyłącznie w Secret Manager.
+4. Wdróż backend do Cloud Run z `GOOGLE_CLOUD_PROJECT` i sekretami.
+5. Ustaw publiczny URL usługi jako `VITE_API_BASE_URL` w GitHub Actions.
+6. Przebuduj frontend i sprawdź `/api/health`, CORS oraz pełny zapis newslettera.
+
+### Ograniczenia obecnego backendu
+
+- Endpoint nie ma jeszcze rate limitingu, CAPTCHA ani kolejki wysyłkowej.
+- Gmail SMTP nadaje się do małej skali, ale nie zastępuje dostawcy transakcyjnego z obsługą reputacji i bounce'ów.
+- Lokalny JSON jest mechanizmem deweloperskim, nie storage produkcyjnym.
+- Brakuje centralnego monitoringu błędów, metryk i alarmów.
+
+### Docelowy backend
+
+Docelowo API powinno mieć walidację schematu, rate limiting, ochronę antybotową, kolejkę wiadomości, dedykowanego dostawcę e-mail, logi strukturalne, alerty i testy integracyjne. Operacje redakcyjne powinny być oddzielone od publicznego endpointu newslettera oraz chronione uwierzytelnieniem i rolami.
+
+---
+
+## Know-how: Google Drive — dwa niezależne połączenia
+
+Projekt korzysta z Google Drive na dwa różne sposoby. Nie należy ich mylić.
+
+### 1. Strefa Twórcy w aplikacji
+
+Frontend używa Firebase Auth i Google OAuth. `firebaseAuth.ts` inicjalizuje provider, dodaje zakresy Drive i Docs, a token dostępu przechowuje wyłącznie w pamięci procesu przeglądarki. `WorkspacePage.tsx` wywołuje oficjalne API Google bez pośredniczącego backendu.
+
+Procedura konfiguracji:
+
+1. Utwórz lub wybierz projekt Firebase/Google Cloud.
+2. Włącz Firebase Authentication i provider Google.
+3. Włącz Google Drive API oraz Google Docs API.
+4. Skonfiguruj ekran zgody OAuth i dozwolone domeny.
+5. Umieść publiczną konfigurację Firebase w `firebase-applet-config.json`; nie umieszczaj tam sekretu konta usługi.
+6. Zaloguj się w `/workspace`, potwierdź zakresy i wykonaj test listowania plików.
+7. Przed każdą mutacją zachowaj potwierdzenie użytkownika.
+
+### 2. Google Drive używany przez automatyzacje Codex
+
+Automatyzacje korzystają z podłączonego connectora Google Drive w środowisku Codex, a nie z tokenu zapisowanego w aplikacji. Foldery docelowe są wskazane przez stabilne identyfikatory:
+
+- folder główny: `1k_6odvzXd9xAs3lngICP-FMl43xuBccE`;
+- folder pakietów: `1hrZeNgh0D5k9joChMGnk_lnqejJr9A8K` (`TOP 3`).
+
+Bezpieczny algorytm synchronizacji:
+
+1. odczytaj pamięć automatyzacji i ustal nazwę przebiegu;
+2. znajdź folder o oczekiwanej nazwie lub utwórz go pod właściwym parent ID;
+3. przed uploadem sprawdź, czy plik o tej nazwie już istnieje;
+4. nowy plik prześlij jako `text/markdown`, a istniejący aktualizuj po ID;
+5. po zapisie ponownie odczytaj folder;
+6. porównaj liczbę i nazwy plików z katalogiem lokalnym;
+7. zapisz rzeczywisty URL i wynik w `memory.md`.
+
+### Zasada bezpieczeństwa Drive
+
+Nie należy usuwać ani przenosić plików na podstawie samej nazwy. Najpierw trzeba potwierdzić ID pliku, aktualny parent ID i folder docelowy. Historyczne formaty powinny trafić do archiwum zamiast być bezpowrotnie kasowane.
+
+---
+
+## Know-how: automatyzacja procesu redakcyjnego
+
+### Poziom obecny
+
+```text
+Harmonogram
+  → wyszukanie i weryfikacja źródeł
+  → zapis Markdown w repozytorium i kopia w content/draft
+  → aktualizacja danych dashboardu
+  → synchronizacja surowych .md do Drive i folderu DRAFT
+  → import do bloga jako DRAFT
+  → dwa placeholdery grafik
+  → lint i raport przebiegu
+```
+
+Mechanizm działa deterministycznie na poziomie struktury plików, ale zatwierdzenie merytoryczne i dostarczenie grafik pozostają etapami ręcznymi lub realizowanymi przez osobnych agentów.
+
+### Poziom docelowy
+
+```text
+Research Agent
+  → Fact-check Agent (raport APPROVED/REJECTED)
+  → Editorial Agent (ujednolicenie tekstu i metadanych)
+  → Image Agent (minimum 2 grafiki + licencja + alt)
+  → Quality Gate (źródła, pliki, lint, build, linki)
+  → Publishing Agent (zmiana DRAFT → APPROVED)
+  → Git/Drive/Deploy
+  → monitoring i możliwość wycofania publikacji
+```
+
+Docelowy proces powinien używać manifestu dla każdego artykułu, np. `article.manifest.json`, zawierającego statusy etapów, identyfikatory źródeł, ścieżki grafik, wynik fact-checku, datę akceptacji i wersję opublikowaną. Dzięki temu status nie zależy od interpretacji tekstu ani nazwy pliku.
+
+### Najbliższe działania
+
+1. Dodać trwały manifest workflow i jednoznaczny podpis agenta zatwierdzającego.
+2. Wprowadzić automatyczną kontrolę obecności dwóch plików graficznych przed `APPROVED`.
+3. Zastępować placeholdery po dostarczeniu obrazów, zachowując prompt jako historię produkcyjną.
+4. Ukryć `DRAFT` przed publicznym buildem lub przenieść je do chronionego podglądu redakcyjnego.
+5. Dodać test martwych linków, walidację dat i raport rozbieżności źródeł.
+6. Połączyć zatwierdzony manifest z automatycznym commitem, wdrożeniem i archiwizacją wersji na Drive.
 
 ---
 

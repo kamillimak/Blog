@@ -117,6 +117,11 @@ export function ArticlePage() {
         {/* Article Meta Header */}
         <div className="max-w-4xl mb-10">
           <div className="flex flex-wrap items-center gap-3 mb-5">
+            {article.status === "DRAFT" && (
+              <span className="border border-amber-500 bg-amber-500/10 px-2 py-1 text-[10px] font-black tracking-widest text-amber-600 uppercase">
+                DRAFT — niezatwierdzony
+              </span>
+            )}
             <span className={`text-[10px] font-extrabold uppercase tracking-widest ${accentColor}`}>
               {article.tool}
             </span>

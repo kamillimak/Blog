@@ -25,6 +25,12 @@ export type ArticleSection =
       type: "code";
       language: string;
       code: string;
+    }
+  | {
+      type: "imagePlaceholder";
+      fileName: string;
+      targetPath: string;
+      prompt: string;
     };
 
 export interface Author {
@@ -54,4 +60,6 @@ export interface Article {
   pullQuote: string;
   sections: ArticleSection[];
   keyTakeaways: string[];
+  status?: "DRAFT" | "APPROVED";
+  sourcePath?: string;
 }

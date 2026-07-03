@@ -22,7 +22,7 @@ import {
   Edit3,
   Link2
 } from "lucide-react";
-import { initAuth, googleSignIn, logout, getAccessToken } from "../utils/firebaseAuth";
+import { initAuth, googleSignIn, logout } from "../utils/firebaseAuth";
 import { User } from "firebase/auth";
 
 interface GoogleFile {
@@ -45,6 +45,25 @@ interface ConnectedDoc {
 interface DocContent {
   title: string;
   body: string;
+}
+
+interface GoogleApiErrorPayload {
+  error?: {
+    code?: number;
+    message?: string;
+    status?: string;
+  };
+}
+
+async function readGoogleApiError(response: Response, fallback: string): Promise<string> {
+  try {
+    const payload = (await response.json()) as GoogleApiErrorPayload;
+    const details = payload.error?.message;
+    const status = payload.error?.status;
+    return [fallback, status, details].filter(Boolean).join(" — ");
+  } catch {
+    return `${fallback} — HTTP ${response.status}`;
+  }
 }
 
 // Curated templates for AI creators
@@ -128,6 +147,7 @@ export function WorkspacePage() {
   const [creatingDoc, setCreatingDoc] = useState(false);
   const [createdDocLink, setCreatedDocLink] = useState<string | null>(null);
   const [createdDocTitle, setCreatedDocTitle] = useState<string | null>(null);
+  const [workspaceError, setWorkspaceError] = useState<string | null>(null);
 
   // Connected Documents State (Saved to localStorage)
   const [connectedDocs, setConnectedDocs] = useState<ConnectedDoc[]>(() => {
@@ -181,7 +201,7 @@ export function WorkspacePage() {
         setUser(currentUser);
         setToken(accessToken);
         setLoading(false);
-        fetchFiles(accessToken);
+        if (accessToken) void fetchFiles(accessToken);
       },
       () => {
         setUser(null);
@@ -219,6 +239,7 @@ export function WorkspacePage() {
 
   const handleLogin = async () => {
     setLoading(true);
+    setWorkspaceError(null);
     try {
       const result = await googleSignIn();
       if (result) {
@@ -301,7 +322,10 @@ export function WorkspacePage() {
 
   // Create Google Doc from Template
   const handleCreateDoc = async () => {
-    if (!token) return;
+    if (!token) {
+      setWorkspaceError("Sesja konta Google jest aktywna, ale dostęp do Drive wygasł. Kliknij „Połącz Drive ponownie” i spróbuj jeszcze raz.");
+      return;
+    }
     
     // Explicit Confirmation Dialog for mutating user data
     const confirmCreate = window.confirm(
@@ -311,26 +335,29 @@ export function WorkspacePage() {
 
     setCreatingDoc(true);
     setCreatedDocLink(null);
+    setWorkspaceError(null);
 
     try {
-      // 1. Create a blank Google Doc via Docs API
-      const createResponse = await fetch("https://www.googleapis.com/docs/v1/documents", {
+      // Create a native Google Doc in the user's Drive first. This makes the
+      // destination explicit and avoids relying on Docs API creation semantics.
+      const createResponse = await fetch("https://www.googleapis.com/drive/v3/files?fields=id,name,webViewLink", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          title: customDocTitle
+          name: customDocTitle.trim(),
+          mimeType: "application/vnd.google-apps.document"
         })
       });
 
       if (!createResponse.ok) {
-        throw new Error("Failed to create Google Doc");
+        throw new Error(await readGoogleApiError(createResponse, "Nie udało się utworzyć dokumentu na Dysku Google"));
       }
 
       const newDoc = await createResponse.json();
-      const documentId = newDoc.documentId;
+      const documentId = newDoc.id;
       
       // Get template content
       const template = DRAFT_TEMPLATES.find(t => t.id === selectedTemplateId);
@@ -356,17 +383,17 @@ export function WorkspacePage() {
       });
 
       if (!updateResponse.ok) {
-        throw new Error("Failed to insert template content");
+        throw new Error(await readGoogleApiError(updateResponse, "Dokument utworzono, ale nie udało się dodać treści szablonu"));
       }
 
       setCreatedDocTitle(customDocTitle);
       setCreatedDocLink(`https://docs.google.com/document/d/${documentId}/edit`);
       
       // Refresh file list to include the newly created doc
-      fetchFiles(token);
+      void fetchFiles(token);
     } catch (error) {
       console.error("Error creating Google Doc:", error);
-      alert("Wystąpił błąd podczas tworzenia dokumentu.");
+      setWorkspaceError(error instanceof Error ? error.message : "Wystąpił nieznany błąd podczas tworzenia dokumentu.");
     } finally {
       setCreatingDoc(false);
     }
@@ -461,14 +488,24 @@ export function WorkspacePage() {
             </div>
             
             <div className="flex gap-3">
-              <button 
-                onClick={() => fetchFiles(token!)}
+              {token ? (
+                <button 
+                onClick={() => void fetchFiles(token)}
                 className="flex items-center gap-2 border border-brand-border px-4 py-2 text-xs font-bold uppercase tracking-widest text-brand-text hover:bg-brand-border/20 transition-all"
                 title="Odśwież pliki"
               >
                 <RefreshCw size={14} />
                 <span>Odśwież</span>
               </button>
+              ) : (
+                <button
+                  onClick={handleLogin}
+                  className="flex items-center gap-2 border border-amber-500 bg-amber-500/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-amber-700 hover:bg-amber-500/20 transition-all"
+                >
+                  <Cloud size={14} />
+                  <span>Połącz Drive ponownie</span>
+                </button>
+              )}
               <button 
                 onClick={handleLogout}
                 className="flex items-center gap-2 border border-brand-border hover:border-red-500 hover:text-red-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-brand-muted transition-all"
@@ -478,6 +515,19 @@ export function WorkspacePage() {
               </button>
             </div>
           </div>
+
+          {!token && (
+            <div className="border border-amber-500/60 bg-amber-500/10 p-4 text-sm text-amber-800">
+              Konto Google pozostaje zalogowane. Ze względów bezpieczeństwa token Drive nie jest zapisywany w przeglądarce; po pełnym odświeżeniu strony trzeba jednorazowo odnowić dostęp przyciskiem powyżej.
+            </div>
+          )}
+
+          {workspaceError && (
+            <div role="alert" className="border border-red-500/60 bg-red-500/10 p-4 text-sm text-red-700 whitespace-pre-line">
+              <strong className="block uppercase tracking-wider text-xs mb-1">Google Workspace — błąd</strong>
+              {workspaceError}
+            </div>
+          )}
 
           {/* TWO COLUMN WORKSPACE GRID */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
