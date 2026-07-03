@@ -1,167 +1,160 @@
-import express from "express";
-import path from "path";
-import fs from "fs";
-import { createServer as createViteServer } from "vite";
-import nodemailer from "nodemailer";
+import cors from "cors";
+import crypto from "crypto";
 import dotenv from "dotenv";
+import express from "express";
+import fs from "fs";
+import { cert, getApps, initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+import nodemailer from "nodemailer";
+import path from "path";
+import { createServer as createViteServer } from "vite";
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
+const isProduction = process.env.NODE_ENV === "production";
+const pagesOrigin = "https://kamillimak.github.io";
+const allowedOrigins = new Set([
+  pagesOrigin,
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+]);
 
-// Middleware for parsing JSON body
-app.use(express.json());
+app.use(express.json({ limit: "16kb" }));
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.has(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error("Origin is not allowed by CORS"));
+  },
+  methods: ["GET", "POST"],
+}));
 
-// Path to store local subscriptions
 const SUBSCRIPTIONS_FILE = path.join(process.cwd(), "subscriptions.json");
 
-// Helper to load current subscriptions
-function getSubscriptions(): string[] {
+function normalizeEmail(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const email = value.trim().toLowerCase();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : null;
+}
+
+function getLocalSubscriptions(): string[] {
   try {
-    if (fs.existsSync(SUBSCRIPTIONS_FILE)) {
-      const data = fs.readFileSync(SUBSCRIPTIONS_FILE, "utf-8");
-      return JSON.parse(data);
-    }
+    if (!fs.existsSync(SUBSCRIPTIONS_FILE)) return [];
+    const parsed: unknown = JSON.parse(fs.readFileSync(SUBSCRIPTIONS_FILE, "utf-8"));
+    return Array.isArray(parsed) ? parsed.filter((entry): entry is string => typeof entry === "string") : [];
   } catch (error) {
     console.error("Error reading subscriptions file:", error);
+    return [];
   }
-  return [];
 }
 
-// Helper to save a subscription
-function saveSubscription(email: string): boolean {
-  try {
-    const list = getSubscriptions();
-    if (!list.includes(email)) {
-      list.push(email);
-      fs.writeFileSync(SUBSCRIPTIONS_FILE, JSON.stringify(list, null, 2), "utf-8");
-      return true;
-    }
-  } catch (error) {
-    console.error("Error saving subscription:", error);
-  }
-  return false;
+function saveLocalSubscription(email: string): boolean {
+  const subscriptions = getLocalSubscriptions();
+  if (subscriptions.includes(email)) return false;
+  subscriptions.push(email);
+  fs.writeFileSync(SUBSCRIPTIONS_FILE, JSON.stringify(subscriptions, null, 2), "utf-8");
+  return true;
 }
 
-// API Routes
+function initializeAdmin() {
+  if (getApps().length > 0) return;
+  const credentialsJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+  if (credentialsJson) {
+    initializeApp({ credential: cert(JSON.parse(credentialsJson)) });
+    return;
+  }
+  initializeApp({ projectId: process.env.GOOGLE_CLOUD_PROJECT || "gen-lang-client-0172881890" });
+}
+
+async function saveSubscription(email: string): Promise<boolean> {
+  if (!isProduction && !process.env.USE_FIRESTORE) return saveLocalSubscription(email);
+
+  initializeAdmin();
+  const id = crypto.createHash("sha256").update(email).digest("hex");
+  const reference = getFirestore().collection("newsletterSubscriptions").doc(id);
+  const existing = await reference.get();
+  if (existing.exists) return false;
+
+  await reference.set({ email, subscribedAt: new Date().toISOString(), source: "blog" });
+  return true;
+}
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : "Nieznany błąd serwera pocztowego";
+}
+
 app.post("/api/subscribe", async (req, res) => {
-  const { email } = req.body;
-
-  if (!email || typeof email !== "string" || !email.includes("@")) {
-    return res.status(400).json({
-      success: false,
-      message: "Proszę podać poprawny adres e-mail.",
-    });
+  const email = normalizeEmail(req.body?.email);
+  if (!email) {
+    return res.status(400).json({ success: false, message: "Proszę podać poprawny adres e-mail." });
   }
 
-  const isNew = saveSubscription(email);
+  try {
+    const isNew = await saveSubscription(email);
+    const gmailUser = process.env.GMAIL_USER;
+    const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
+    let emailSent = false;
+    let emailError: string | null = null;
 
-  const gmailUser = process.env.GMAIL_USER;
-  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
-
-  let emailSent = false;
-  let emailError = null;
-
-  if (gmailUser && gmailAppPassword) {
-    try {
-      // Configure Nodemailer transporter for Gmail
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: gmailUser,
-          pass: gmailAppPassword,
-        },
-      });
-
-      // HTML body with modern dark/light premium style
-      const htmlBody = `
-        <div style="background-color: #121212; color: #FFFFFF; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 40px; text-align: center; max-width: 600px; margin: 0 auto; border: 1px solid #2D2D2D;">
-          <div style="font-weight: 900; letter-spacing: -1px; font-size: 24px; text-transform: uppercase; margin-bottom: 5px;">
-            Warsztat AI Coding
-          </div>
-          <div style="font-family: monospace; font-size: 10px; letter-spacing: 2px; color: #8F9092; text-transform: uppercase; margin-bottom: 30px; border-bottom: 1px solid #2D2D2D; padding-bottom: 20px;">
-            Premium Tech Magazine
-          </div>
-          
-          <h1 style="font-size: 22px; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; letter-spacing: -0.5px;">
-            Witaj w społeczności inżynierów AI!
-          </h1>
-          
-          <p style="font-size: 14px; line-height: 1.6; color: #A1A1AA; text-align: left; margin-bottom: 30px;">
-            Dziękujemy za zapisanie się do newslettera <strong>Warsztat AI Coding</strong>. Od teraz będziesz otrzymywać najbardziej szczegółowe techniczne opracowania, studia przypadków, zaawansowane prompty oraz gotowe wzorce współpracy z autonomicznymi agentami AI takimi jak Codex, Trae i Claude.
-          </p>
-
-          <div style="background-color: #1A1A1A; border: 1px solid #2D2D2D; padding: 20px; text-align: left; margin-bottom: 30px;">
-            <div style="font-family: monospace; font-size: 11px; color: #8F9092; text-transform: uppercase; margin-bottom: 8px;">Twój status subskrypcji</div>
-            <div style="font-size: 14px; font-weight: bold; color: #10B981;">● AKTYWNY (Adres: ${email})</div>
-          </div>
-
-          <p style="font-size: 12px; color: #71717A; margin-bottom: 30px;">
-            Zastrzegamy sobie prawo do wysyłania wyłącznie merytorycznych, wyselekcjonowanych treści. Zero spamu, czysta wiedza inżynierska.
-          </p>
-
-          <hr style="border: 0; border-top: 1px solid #2D2D2D; margin-bottom: 20px;" />
-
-          <p style="font-size: 10px; font-family: monospace; color: #52525B; text-transform: uppercase;">
-            React 19 · TypeScript · Tailwind v4 · Warsztat AI Coding
-          </p>
-        </div>
-      `;
-
-      await transporter.sendMail({
-        from: `"Warsztat AI Coding" <${gmailUser}>`,
-        to: email,
-        subject: "Witaj w Warsztacie AI Coding! Potwierdzenie subskrypcji",
-        html: htmlBody,
-      });
-
-      emailSent = true;
-    } catch (err: any) {
-      console.error("Nodemailer error:", err);
-      emailError = err?.message || "Nieznany błąd serwera pocztowego";
+    if (isNew && gmailUser && gmailAppPassword) {
+      try {
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: { user: gmailUser, pass: gmailAppPassword },
+        });
+        await transporter.sendMail({
+          from: `"Warsztat AI Coding" <${gmailUser}>`,
+          to: email,
+          subject: "Witaj w Warsztacie AI Coding! Potwierdzenie subskrypcji",
+          html: `<div style="background:#121212;color:#fff;font-family:Arial,sans-serif;padding:40px;max-width:600px;margin:auto"><h1>Warsztat AI Coding</h1><p>Dziękujemy za zapisanie się do newslettera. Od teraz będziesz otrzymywać wyselekcjonowane materiały o pracy z AI.</p><p style="color:#10b981"><strong>● SUBSKRYPCJA AKTYWNA</strong></p></div>`,
+        });
+        emailSent = true;
+      } catch (error) {
+        console.error("Nodemailer error:", error);
+        emailError = getErrorMessage(error);
+      }
     }
-  }
 
-  return res.json({
-    success: true,
-    isNew,
-    emailSavedLocally: true,
-    gmailSent: emailSent,
-    gmailError: emailError,
-    message: emailSent
-      ? "Pomyślnie zapisano do newslettera! Potwierdzenie e-mail zostało wysłane."
-      : isNew 
-        ? "Zapisano e-mail lokalnie. (Uwaga: Brak konfiguracji Gmail SMTP do wysyłki e-maili)."
-        : "Ten adres e-mail jest już zapisany w naszej bazie."
-  });
-});
-
-// Serve health status
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok" });
-});
-
-// Configure Vite middleware in dev or serve static files in prod
-async function setupApp() {
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
+    return res.json({
+      success: true,
+      isNew,
+      emailSavedLocally: true,
+      gmailSent: emailSent,
+      gmailError: emailError,
+      message: emailSent
+        ? "Pomyślnie zapisano do newslettera! Potwierdzenie zostało wysłane."
+        : isNew
+          ? "Adres został zapisany. Wiadomość powitalna jest obecnie wyłączona."
+          : "Ten adres e-mail jest już zapisany w naszej bazie.",
     });
+  } catch (error) {
+    console.error("Subscription error:", error);
+    return res.status(500).json({ success: false, message: "Nie udało się zapisać adresu. Spróbuj ponownie później." });
+  }
+});
+
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok", storage: isProduction || process.env.USE_FIRESTORE ? "firestore" : "local" });
+});
+
+async function setupApp() {
+  if (!isProduction) {
+    const vite = await createViteServer({ server: { middlewareMode: true }, appType: "spa" });
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
+    app.get("*", (_req, res) => res.sendFile(path.join(distPath, "index.html")));
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+  app.listen(PORT, "0.0.0.0", () => console.log(`Server running on port ${PORT}`));
 }
 
-setupApp();
+setupApp().catch((error) => {
+  console.error("Server startup failed:", error);
+  process.exitCode = 1;
+});

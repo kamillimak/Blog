@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Mail, ArrowRight, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 
 export function NewsletterForm() {
+  const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
+  const backendConfigured = import.meta.env.DEV || apiBaseUrl.length > 0;
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
@@ -9,6 +11,7 @@ export function NewsletterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!backendConfigured) return;
     if (!email || !email.includes("@")) {
       setStatus("error");
       setMessage("Wprowadź prawidłowy adres e-mail.");
@@ -19,7 +22,7 @@ export function NewsletterForm() {
     setMessage("");
 
     try {
-      const response = await fetch("/api/subscribe", {
+      const response = await fetch(`${apiBaseUrl}/api/subscribe`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,6 +61,12 @@ export function NewsletterForm() {
         Otrzymuj zaawansowane techniczne opracowania i prompty prosto na swoją skrzynkę odbiorczą. zero spamu, czysta wiedza.
       </p>
 
+      {!backendConfigured && (
+        <p className="mb-4 border border-zinc-800 bg-zinc-900/60 p-3 text-[10px] font-mono uppercase tracking-wider text-zinc-400">
+          Zapisy do newslettera zostaną uruchomione wkrótce.
+        </p>
+      )}
+
       {status === "success" ? (
         <div className="bg-[#1e2925] border border-emerald-800 p-4 rounded-none text-zinc-300">
           <div className="flex items-start gap-2.5 mb-2.5">
@@ -69,7 +78,7 @@ export function NewsletterForm() {
           </p>
           <div className="flex flex-col gap-1 text-[9px] font-mono uppercase tracking-wider text-zinc-500 border-t border-zinc-800/80 pt-2.5">
             <div className="flex justify-between">
-              <span>Baza danych (lokalna):</span>
+              <span>Baza subskrybentów:</span>
               <span className={gmailStatus?.saved ? "text-emerald-500 font-bold" : "text-zinc-600"}>
                 {gmailStatus?.saved ? "ZAPISANO" : "POMINIĘTO"}
               </span>
@@ -98,7 +107,7 @@ export function NewsletterForm() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              disabled={status === "loading"}
+              disabled={status === "loading" || !backendConfigured}
               placeholder="Twój adres e-mail..."
               className="w-full pl-9 pr-4 py-3 bg-[#222222] border border-zinc-800 hover:border-zinc-700 focus:border-white focus:outline-none transition-all text-xs text-white placeholder-zinc-500 rounded-none font-sans"
               required
@@ -108,10 +117,12 @@ export function NewsletterForm() {
 
           <button
             type="submit"
-            disabled={status === "loading"}
+            disabled={status === "loading" || !backendConfigured}
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 bg-white hover:bg-zinc-200 text-[#1A1A1A] font-bold text-[10px] uppercase tracking-widest rounded-none transition-colors cursor-pointer disabled:bg-zinc-800 disabled:text-zinc-600"
           >
-            {status === "loading" ? (
+            {!backendConfigured ? (
+              <span>Newsletter wkrótce</span>
+            ) : status === "loading" ? (
               <>
                 <Loader2 size={12} className="animate-spin" />
                 <span>Przetwarzanie...</span>

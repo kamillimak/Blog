@@ -199,3 +199,34 @@ Repozytorium jest w pełni przygotowane do natychmiastowej, zautomatyzowanej edy
 1. Codex przeczyta wytyczne z pliku [AGENTS.md](./AGENTS.md) i automatycznie zrozumie całą architekturę (w tym nowy model full-stack Express + Vite).
 2. Codex łatwo odnajdzie i zmodyfikuje bazę danych w `src/data/articles.ts` lub endpointy w `server.ts` bez ryzyka uszkodzenia interfejsu.
 3. System kompilacji i sprawdzania typów gwarantuje, że każda zmiana zostanie zweryfikowana przed wdrożeniem.
+
+---
+
+## Produkcyjne wdrożenie: GitHub Pages + Cloud Run
+
+Repozytorium zawiera workflow `.github/workflows/deploy-pages.yml`. Po każdym pushu do `main` wykonuje on lint, buduje frontend z bazową ścieżką `/Blog/` i publikuje katalog `dist` w GitHub Pages.
+
+1. W repozytorium GitHub otwórz **Settings → Pages** i wybierz **Source: GitHub Actions**.
+2. Po wdrożeniu backendu dodaj w **Settings → Secrets and variables → Actions** sekret `VITE_API_BASE_URL`. Jego wartością ma być publiczny adres Cloud Run bez końcowego ukośnika.
+3. Uruchom workflow ręcznie w zakładce **Actions** albo wykonaj push do `main`.
+
+Frontend będzie dostępny pod `https://kamillimak.github.io/Blog/`.
+
+### Backend newslettera na Cloud Run
+
+Backend używa Firestore w produkcji i lokalnego `subscriptions.json` podczas pracy deweloperskiej. Kontener jest opisany w `Dockerfile` i respektuje zmienną `PORT` ustawianą przez Cloud Run.
+
+1. W projekcie Google Cloud `gen-lang-client-0172881890` włącz Cloud Run, Cloud Build, Artifact Registry i Firestore.
+2. Utwórz bazę Firestore w trybie Native. Konto usługi Cloud Run musi mieć rolę **Cloud Datastore User**.
+3. W Secret Manager utwórz opcjonalne sekrety `GMAIL_USER` i `GMAIL_APP_PASSWORD`. Bez nich adresy będą zapisywane, lecz wiadomość powitalna nie zostanie wysłana.
+4. Wdróż usługę z katalogu repozytorium:
+
+```bash
+gcloud auth login
+gcloud config set project gen-lang-client-0172881890
+gcloud run deploy blog-api --source . --region europe-central2 --allow-unauthenticated --set-env-vars GOOGLE_CLOUD_PROJECT=gen-lang-client-0172881890 --set-secrets GMAIL_USER=GMAIL_USER:latest,GMAIL_APP_PASSWORD=GMAIL_APP_PASSWORD:latest
+```
+
+5. Skopiuj URL zwrócony przez Cloud Run do sekretu GitHub `VITE_API_BASE_URL`, a następnie ponownie uruchom workflow Pages.
+
+Endpoint kontrolny backendu znajduje się pod `/api/health`. CORS dopuszcza GitHub Pages oraz lokalne adresy deweloperskie.

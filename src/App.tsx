@@ -1,12 +1,15 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Header } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
 import { HomePage } from "./pages/HomePage";
 import { ArticlesPage } from "./pages/ArticlesPage";
 import { ArticlePage } from "./pages/ArticlePage";
-import { WorkspacePage } from "./pages/WorkspacePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+
+const WorkspacePage = lazy(() =>
+  import("./pages/WorkspacePage").then((module) => ({ default: module.WorkspacePage })),
+);
 
 export default function App() {
   return (
@@ -21,7 +24,14 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/articles" element={<ArticlesPage />} />
             <Route path="/articles/:slug" element={<ArticlePage />} />
-            <Route path="/workspace" element={<WorkspacePage />} />
+            <Route
+              path="/workspace"
+              element={
+                <Suspense fallback={<main className="min-h-[60vh] flex items-center justify-center text-sm text-brand-muted">Ładowanie Strefy Twórcy…</main>}>
+                  <WorkspacePage />
+                </Suspense>
+              }
+            />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>

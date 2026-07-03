@@ -47,7 +47,7 @@ export function Footer() {
                 <Link to="/articles" className="hover:text-white transition-colors hover:underline underline-offset-4">Wszystkie artykuły</Link>
               </li>
               <li>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:underline underline-offset-4">Repozytorium GitHub</a>
+                <a href="https://github.com/kamillimak/Blog" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:underline underline-offset-4">Repozytorium GitHub</a>
               </li>
             </ul>
           </div>

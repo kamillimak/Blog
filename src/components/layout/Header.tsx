@@ -66,7 +66,7 @@ export function Header() {
             <span className="h-4 w-px bg-brand-border" />
 
             <a
-              href="https://github.com"
+              href="https://github.com/kamillimak/Blog"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-brand-muted hover:text-brand-text transition-colors"
@@ -120,7 +120,7 @@ export function Header() {
             <hr className="my-2 border-brand-border" />
             
             <a
-              href="https://github.com"
+              href="https://github.com/kamillimak/Blog"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}

@@ -1,0 +1,7 @@
+.git
+.github
+.env*
+node_modules
+dist
+subscriptions.json
+npm-debug.log*
