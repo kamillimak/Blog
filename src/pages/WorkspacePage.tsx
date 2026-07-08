@@ -435,7 +435,7 @@ export function WorkspacePage() {
           Strefa Twórcy
         </h1>
         <p className="font-serif text-lg text-brand-muted leading-relaxed max-w-3xl">
-          Połącz swój warsztat pracy z chmurą **Google Drive** oraz **Google Docs**. Twórz, edytuj i importuj swoje promptowe szkice oraz gotowe artykuły bezpośrednio z bezpiecznego poziomu platformy.
+          Połącz swój blog z chmurą **Google Drive** oraz **Google Docs**. Twórz, edytuj i importuj swoje promptowe szkice oraz gotowe artykuły bezpośrednio z bezpiecznego poziomu platformy.
         </p>
       </div>
 

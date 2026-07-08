@@ -6,11 +6,12 @@ import { ArticleCard } from "../components/article/ArticleCard";
 import { getGlobalStats, filterArticles } from "../utils/article";
 import { DailyBriefing } from "../components/article/DailyBriefing";
 import { AIContentDashboard } from "../components/article/AIContentDashboard";
+import { HeroSlider } from "../components/article/HeroSlider";
 
 export function HomePage() {
   // Set page title for SEO
   useEffect(() => {
-    document.title = "Warsztat AI Coding — Praktyczny workflow programowania z AI";
+    document.title = "BLOG AI Coding — Praktyczny workflow programowania z AI";
   }, []);
 
   // Stats
@@ -78,12 +79,9 @@ export function HomePage() {
               </div>
             </div>
 
-            {/* Featured Article Card */}
+            {/* Featured content slider */}
             <div className="lg:col-span-7">
-              <span className="block text-[10px] font-bold uppercase tracking-widest text-brand-muted mb-4">
-                WYRÓŻNIONY WPIS
-              </span>
-              <ArticleCard article={featuredArticle} featured={true} />
+              <HeroSlider />
             </div>
 
           </div>
@@ -94,7 +92,7 @@ export function HomePage() {
       <section id="stats-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
         <div className="bg-brand-card border border-brand-border rounded-none p-6 sm:p-8">
           <h2 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted mb-6">
-            WARSZTAT W LICZBACH
+            BLOG W LICZBACH
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
             
@@ -162,7 +160,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Daily AI & IT Briefing Section */}
+      {/* AI News Section */}
       <DailyBriefing />
 
       {latestDrafts.length > 0 && (

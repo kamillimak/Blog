@@ -20,7 +20,7 @@ export function Footer() {
               <KMSygnet size={40} />
               <div className="flex flex-col flex-shrink-0">
                 <span className="font-sans font-extrabold tracking-tighter text-lg uppercase leading-none">
-                  Warsztat AI Coding
+                  BLOG AI Coding
                 </span>
                 <span className="font-mono text-[9px] tracking-[0.15em] text-zinc-500 uppercase mt-1 leading-none">
                   Premium Tech Magazine
@@ -82,7 +82,7 @@ export function Footer() {
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs tracking-wider font-mono">
           <div className="text-zinc-500 uppercase">
-            &copy; {new Date().getFullYear()} Warsztat AI Coding — Minimalist Tech Magazine for Modern Engineers
+            &copy; {new Date().getFullYear()} BLOG AI Coding — Minimalist Tech Magazine for Modern Engineers
           </div>
           <button
             onClick={scrollToTop}

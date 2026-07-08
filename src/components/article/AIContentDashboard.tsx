@@ -80,6 +80,7 @@ export function AIContentDashboard() {
                 {category.items.map((item, itemIdx) => (
                   <div 
                     key={itemIdx} 
+                    id={category.id === "news" ? `trend-news-${item.id}` : undefined}
                     className="group/item border-b border-brand-border/60 pb-5 last:border-b-0 last:pb-0"
                   >
                     <div className="flex gap-4">

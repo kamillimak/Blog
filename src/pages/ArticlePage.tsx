@@ -47,7 +47,7 @@ export function ArticlePage() {
 
   useEffect(() => {
     if (article) {
-      document.title = `${article.title} — Warsztat AI Coding`;
+      document.title = `${article.title} — BLOG AI Coding`;
     }
   }, [article]);
 

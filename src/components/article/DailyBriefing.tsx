@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Tv, TrendingUp, ChevronLeft, ChevronRight, Pause, Play, ExternalLink } from "lucide-react";
+import { Tv, TrendingUp, ChevronLeft, ChevronRight, Pause, Play, ExternalLink, Calendar } from "lucide-react";
 
-interface NewsItem {
+export interface NewsItem {
   id: string;
   category: "Polska" | "Świat";
   title: string;
@@ -11,53 +11,57 @@ interface NewsItem {
   image?: string;
 }
 
+export const AI_NEWS_PUBLISHED_AT = "2026-07-08";
+
+export const AI_NEWS_ITEMS: NewsItem[] = [
+  {
+    id: "1",
+    category: "Polska",
+    title: "Służby ruszają ze szkoleniami z AI, dezinformacji i cyberhigieny",
+    content: "Ministerstwo Cyfryzacji uruchomiło program zaawansowanych kompetencji cyfrowych dla Policji, PSP i Straży Granicznej. W 2026 r. ma zostać przeszkolonych co najmniej 1750 osób, a zakres obejmuje AI, cyberbezpieczeństwo, rozpoznawanie manipulacji i przeciwdziałanie dezinformacji.",
+    source: "Ministerstwo Cyfryzacji",
+    sourceUrl: "https://www.gov.pl/web/cyfryzacja/wzmacniamy-kompetencje-cyfrowe-sluzb-odpowiedzialnych-za-bezpieczenstwo"
+  },
+  {
+    id: "2",
+    category: "Polska",
+    title: "Ministerstwo Cyfryzacji zapowiada spotkanie o Gigafabryce AI",
+    content: "Resort zaprosił na otwarte spotkanie online poświęcone projektowi polskiej Gigafabryki AI. Wydarzenie zaplanowano na 9 lipca 2026 r.; ma w nim uczestniczyć wiceminister cyfryzacji Dariusz Standerski, co sygnalizuje kolejny etap rozmów o krajowej infrastrukturze obliczeniowej dla AI.",
+    source: "Ministerstwo Cyfryzacji",
+    sourceUrl: "https://www.gov.pl/web/cyfryzacja/gigafabryka-ai---zapraszamy-na-spotkanie"
+  },
+  {
+    id: "3",
+    category: "Świat",
+    title: "Kimi K2.7 trafia do GitHub Copilot Business i Enterprise",
+    content: "GitHub rozszerzył dostępność modelu Kimi K2.7 Code na plany Copilot Business i Copilot Enterprise. To pierwszy otwartowagowy model dostępny w selektorze modeli Copilota, ale w organizacjach pozostaje domyślnie wyłączony i wymaga decyzji administratora.",
+    source: "GitHub Changelog",
+    sourceUrl: "https://github.blog/changelog/2026-07-07-kimi-k2-7-now-available-for-copilot-business-and-enterprise/"
+  },
+  {
+    id: "4",
+    category: "Świat",
+    title: "Rząd Alberty pokazuje skalę użycia Claude Code w cyberbezpieczeństwie",
+    content: "Anthropic opisał wdrożenie, w którym zespół technologiczny Alberty użył Claude Code do przeglądu 466 mln linii kodu w 20 godzin. Przypadek pokazuje praktyczny kierunek agentów AI w administracji: audyt dużych repozytoriów, generowanie poprawek, testów i planów modernizacji.",
+    source: "Anthropic",
+    sourceUrl: "https://www.anthropic.com/news/alberta-government-claude-cybersecurity"
+  },
+  {
+    id: "5",
+    category: "Świat",
+    title: "GitHub Copilot w VS Code dostaje ogólnodostępne narzędzia przeglądarki",
+    content: "Narzędzia przeglądarkowe Copilota w VS Code są już ogólnie dostępne. Agenci mogą otwierać strony, klikać, wpisywać dane, czytać treść, robić zrzuty ekranu i sprawdzać błędy konsoli, przy zachowaniu izolacji kart i kontroli użytkownika nad prywatnymi sesjami.",
+    source: "GitHub Changelog",
+    sourceUrl: "https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/"
+  }
+];
+
 export function DailyBriefing() {
   const [activeTab, setActiveTab] = useState<"all" | "pl" | "world">("all");
   const [isPlaying, setIsPlaying] = useState(true);
   const [tickerIndex, setTickerIndex] = useState(0);
 
-  const newsList: NewsItem[] = [
-    {
-      id: "1",
-      category: "Polska",
-      title: "Służby ruszają ze szkoleniami z AI, dezinformacji i cyberhigieny",
-      content: "Ministerstwo Cyfryzacji uruchomiło program zaawansowanych kompetencji cyfrowych dla Policji, PSP i Straży Granicznej. W 2026 r. ma zostać przeszkolonych co najmniej 1750 osób, a zakres obejmuje AI, cyberbezpieczeństwo, rozpoznawanie manipulacji i przeciwdziałanie dezinformacji.",
-      source: "Ministerstwo Cyfryzacji",
-      sourceUrl: "https://www.gov.pl/web/cyfryzacja/wzmacniamy-kompetencje-cyfrowe-sluzb-odpowiedzialnych-za-bezpieczenstwo"
-    },
-    {
-      id: "2",
-      category: "Polska",
-      title: "Ministerstwo Cyfryzacji zapowiada spotkanie o Gigafabryce AI",
-      content: "Resort zaprosił na otwarte spotkanie online poświęcone projektowi polskiej Gigafabryki AI. Wydarzenie zaplanowano na 9 lipca 2026 r.; ma w nim uczestniczyć wiceminister cyfryzacji Dariusz Standerski, co sygnalizuje kolejny etap rozmów o krajowej infrastrukturze obliczeniowej dla AI.",
-      source: "Ministerstwo Cyfryzacji",
-      sourceUrl: "https://www.gov.pl/web/cyfryzacja/gigafabryka-ai---zapraszamy-na-spotkanie"
-    },
-    {
-      id: "3",
-      category: "Świat",
-      title: "Kimi K2.7 trafia do GitHub Copilot Business i Enterprise",
-      content: "GitHub rozszerzył dostępność modelu Kimi K2.7 Code na plany Copilot Business i Copilot Enterprise. To pierwszy otwartowagowy model dostępny w selektorze modeli Copilota, ale w organizacjach pozostaje domyślnie wyłączony i wymaga decyzji administratora.",
-      source: "GitHub Changelog",
-      sourceUrl: "https://github.blog/changelog/2026-07-07-kimi-k2-7-now-available-for-copilot-business-and-enterprise/"
-    },
-    {
-      id: "4",
-      category: "Świat",
-      title: "Rząd Alberty pokazuje skalę użycia Claude Code w cyberbezpieczeństwie",
-      content: "Anthropic opisał wdrożenie, w którym zespół technologiczny Alberty użył Claude Code do przeglądu 466 mln linii kodu w 20 godzin. Przypadek pokazuje praktyczny kierunek agentów AI w administracji: audyt dużych repozytoriów, generowanie poprawek, testów i planów modernizacji.",
-      source: "Anthropic",
-      sourceUrl: "https://www.anthropic.com/news/alberta-government-claude-cybersecurity"
-    },
-    {
-      id: "5",
-      category: "Świat",
-      title: "GitHub Copilot w VS Code dostaje ogólnodostępne narzędzia przeglądarki",
-      content: "Narzędzia przeglądarkowe Copilota w VS Code są już ogólnie dostępne. Agenci mogą otwierać strony, klikać, wpisywać dane, czytać treść, robić zrzuty ekranu i sprawdzać błędy konsoli, przy zachowaniu izolacji kart i kontroli użytkownika nad prywatnymi sesjami.",
-      source: "GitHub Changelog",
-      sourceUrl: "https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/"
-    }
-  ];
+  const newsList: NewsItem[] = AI_NEWS_ITEMS;
 
   // Ticker automatic rotation effect
   useEffect(() => {
@@ -143,7 +147,7 @@ export function DailyBriefing() {
         </div>
       </div>
 
-      {/* 2. Main Daily AI & IT Briefing Container */}
+      {/* 2. Main AI News Container */}
       <div className="bg-brand-card border border-brand-border p-6 sm:p-8">
         
         {/* Header Grid */}
@@ -152,12 +156,15 @@ export function DailyBriefing() {
             <div className="flex items-center gap-2 mb-2">
               <span className="text-orange-500 text-lg">D</span>
               <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight uppercase text-brand-text">
-                Daily AI & IT Briefing
+                AI News
               </h2>
             </div>
             <p className="text-brand-muted text-xs">
               Codzienny, skondensowany przegląd kluczowych wydarzeń technologicznych i legislacyjnych z Polski oraz świata.
             </p>
+            <span className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-brand-muted">
+              <Calendar size={12} /> Opublikowano: 8 lipca 2026
+            </span>
           </div>
 
           {/* Tab Filter Controls */}
@@ -203,6 +210,7 @@ export function DailyBriefing() {
             {filteredNews.map((news) => (
               <div 
                 key={news.id} 
+                id={`ai-news-${news.id}`}
                 className="group border border-brand-border p-5 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300 bg-brand-bg/50"
               >
                 <div className="flex flex-col sm:flex-row gap-5">
@@ -232,6 +240,9 @@ export function DailyBriefing() {
                         <span className="text-[10px] font-mono text-brand-muted">
                           Źródło: <strong>{news.source}</strong>
                         </span>
+                        <time dateTime={AI_NEWS_PUBLISHED_AT} className="text-[10px] font-mono text-brand-muted">
+                          08.07.2026
+                        </time>
                       </div>
                       
                       <h3 className="font-extrabold text-brand-text text-sm sm:text-base tracking-tight leading-snug mb-2 group-hover:text-orange-500 transition-colors">

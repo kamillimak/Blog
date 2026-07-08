@@ -33,7 +33,7 @@ export function Header() {
               </div>
               <div className="flex flex-col">
                 <span className="font-sans font-bold text-lg sm:text-xl tracking-tighter uppercase leading-none text-brand-text">
-                  Warsztat AI Coding
+                  BLOG AI Coding
                 </span>
                 <span className="font-sans text-[10px] tracking-[0.15em] text-brand-muted font-medium uppercase mt-1 leading-none">
                   Codex · Trae · Claude · AI Studio

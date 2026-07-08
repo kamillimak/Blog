@@ -7,7 +7,7 @@ import { filterArticles } from "../utils/article";
 export function ArticlesPage() {
   // Set page title for SEO
   useEffect(() => {
-    document.title = "Artykuły i przewodniki — Warsztat AI Coding";
+    document.title = "Artykuły i przewodniki — BLOG AI Coding";
   }, []);
 
   // Search & Filter State

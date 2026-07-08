@@ -86,7 +86,7 @@ export const AI_TREND_BRIEFING: TrendBriefingCategory[] = [
       },
       {
         id: "ai-value-redesign-workshop",
-        title: "Warsztat redefinicji wartości z AI",
+        title: "BLOG redefinicji wartości z AI",
         summary: "McKinsey wskazuje, że trwała wartość nie wynika z samej produktywności. Pomagaj klientom projektować nowe oferty i modele obsługi.",
         sourceLabel: "McKinsey",
         sourceUrl: "https://www.mckinsey.com/capabilities/strategy-and-corporate-finance/our-insights/where-ai-will-create-value-and-where-it-wont",
