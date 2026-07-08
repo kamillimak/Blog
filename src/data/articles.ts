@@ -1,5 +1,4 @@
 import { Article } from "../types/article";
-import { DRAFT_ARTICLES } from "./draftArticles";
 
 export const ARTICLES: Article[] = [
   {
@@ -565,6 +564,5 @@ export interface FilterState {
         text: "Wdrożenie hybrydowego workflow łączącego AI Studio, Claude'a, Codexa i Trae pozwala na bezprecedensowy wzrost produktywności. Zamiast pisać powtarzalny kod, skupiasz się na projektowaniu, podejmowaniu decyzji i orkiestracji inteligentnych agentów. Stajesz się dyrygentem orkiestry, w której każdy muzyk gra dokładnie to, w czym jest najlepszy."
       }
     ]
-  },
-  ...DRAFT_ARTICLES
+  }
 ];
