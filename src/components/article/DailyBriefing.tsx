@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tv, Globe, MapPin, TrendingUp, ChevronLeft, ChevronRight, Pause, Play, ExternalLink } from "lucide-react";
+import { Tv, TrendingUp, ChevronLeft, ChevronRight, Pause, Play, ExternalLink } from "lucide-react";
 
 interface NewsItem {
   id: string;
@@ -20,42 +20,42 @@ export function DailyBriefing() {
     {
       id: "1",
       category: "Polska",
-      title: "AI może zwiększyć PKB Polski nawet o 12,1% do 2035 r.",
-      content: "Bank Światowy szacuje, że sztuczna inteligencja może podnieść realny PKB Polski o 1,3–12,1% do 2035 roku. Skala efektu zależy od inwestycji firm, kompetencji pracowników i otoczenia regulacyjnego; dziś AI wykorzystuje tylko 8% polskich przedsiębiorstw.",
-      source: "Bank Światowy",
-      sourceUrl: "https://www.worldbank.org/en/news/press-release/2026/06/22/ai-could-boost-poland-s-economy-by-up-to-12-by-2035-new-world-bank-group-report-finds"
+      title: "Służby ruszają ze szkoleniami z AI, dezinformacji i cyberhigieny",
+      content: "Ministerstwo Cyfryzacji uruchomiło program zaawansowanych kompetencji cyfrowych dla Policji, PSP i Straży Granicznej. W 2026 r. ma zostać przeszkolonych co najmniej 1750 osób, a zakres obejmuje AI, cyberbezpieczeństwo, rozpoznawanie manipulacji i przeciwdziałanie dezinformacji.",
+      source: "Ministerstwo Cyfryzacji",
+      sourceUrl: "https://www.gov.pl/web/cyfryzacja/wzmacniamy-kompetencje-cyfrowe-sluzb-odpowiedzialnych-za-bezpieczenstwo"
     },
     {
       id: "2",
       category: "Polska",
-      title: "BGK inwestuje w ElevenLabs; powstanie AI Lab Poland",
-      content: "Vinci, spółka z Grupy BGK, zainwestowała w ElevenLabs. W ramach współpracy firma ma utworzyć AI Lab Poland — krajowy ośrodek badań i rozwoju technologii głosowych oraz systemów sztucznej inteligencji.",
-      source: "Bank Gospodarstwa Krajowego",
-      sourceUrl: "https://media.bgk.pl/en/press-release/vinci-part-of-the-bgk-group-invests-in-elevenlabs-ai-lab-poland-will-be-established-1/"
+      title: "Ministerstwo Cyfryzacji zapowiada spotkanie o Gigafabryce AI",
+      content: "Resort zaprosił na otwarte spotkanie online poświęcone projektowi polskiej Gigafabryki AI. Wydarzenie zaplanowano na 9 lipca 2026 r.; ma w nim uczestniczyć wiceminister cyfryzacji Dariusz Standerski, co sygnalizuje kolejny etap rozmów o krajowej infrastrukturze obliczeniowej dla AI.",
+      source: "Ministerstwo Cyfryzacji",
+      sourceUrl: "https://www.gov.pl/web/cyfryzacja/gigafabryka-ai---zapraszamy-na-spotkanie"
     },
     {
       id: "3",
-      category: "Polska",
-      title: "12 tysięcy pracowni AI trafi do polskich szkół",
-      content: "Ministerstwo Cyfryzacji przeznacza blisko 1,9 mld zł z KPO na 8 tys. pracowni AI w szkołach podstawowych i 4 tys. w ponadpodstawowych. Oferty wykonawców otwarto 12 maja, a sprzęt ma dotrzeć przed rokiem szkolnym 2026/2027.",
-      source: "Ministerstwo Cyfryzacji",
-      sourceUrl: "https://www.gov.pl/web/cyfryzacja/otwarcie-ofert-wykonawcow-na-dostawe-12-tysiecy-pracowni-sztucznej-inteligencji-dla-szkol"
+      category: "Świat",
+      title: "Kimi K2.7 trafia do GitHub Copilot Business i Enterprise",
+      content: "GitHub rozszerzył dostępność modelu Kimi K2.7 Code na plany Copilot Business i Copilot Enterprise. To pierwszy otwartowagowy model dostępny w selektorze modeli Copilota, ale w organizacjach pozostaje domyślnie wyłączony i wymaga decyzji administratora.",
+      source: "GitHub Changelog",
+      sourceUrl: "https://github.blog/changelog/2026-07-07-kimi-k2-7-now-available-for-copilot-business-and-enterprise/"
     },
     {
       id: "4",
       category: "Świat",
-      title: "Anthropic udostępnia Claude Sonnet 5",
-      content: "Claude Sonnet 5 jest dostępny we wszystkich planach, w Claude Code i przez API. Anthropic pozycjonuje model jako wydajniejszą warstwę wykonawczą do agentów, programowania i długich zadań narzędziowych, z ceną promocyjną do końca sierpnia.",
+      title: "Rząd Alberty pokazuje skalę użycia Claude Code w cyberbezpieczeństwie",
+      content: "Anthropic opisał wdrożenie, w którym zespół technologiczny Alberty użył Claude Code do przeglądu 466 mln linii kodu w 20 godzin. Przypadek pokazuje praktyczny kierunek agentów AI w administracji: audyt dużych repozytoriów, generowanie poprawek, testów i planów modernizacji.",
       source: "Anthropic",
-      sourceUrl: "https://www.anthropic.com/news/claude-sonnet-5"
+      sourceUrl: "https://www.anthropic.com/news/alberta-government-claude-cybersecurity"
     },
     {
       id: "5",
       category: "Świat",
-      title: "OpenAI proponuje 5% udziałów dla rządu USA",
-      content: "Według Reutersa OpenAI zaproponowało przekazanie administracji USA 5% udziałów w ramach modelu publicznego udziału w korzyściach z AI. Koncepcja, inspirowana Alaska Permanent Fund, pokazuje rosnące powiązanie rozwoju modeli z polityką przemysłową państwa.",
-      source: "Reuters",
-      sourceUrl: "https://www.reuters.com/business/openai-proposes-handing-trump-administration-5-stake-ft-reports-2026-07-02/"
+      title: "GitHub Copilot w VS Code dostaje ogólnodostępne narzędzia przeglądarki",
+      content: "Narzędzia przeglądarkowe Copilota w VS Code są już ogólnie dostępne. Agenci mogą otwierać strony, klikać, wpisywać dane, czytać treść, robić zrzuty ekranu i sprawdzać błędy konsoli, przy zachowaniu izolacji kart i kontroli użytkownika nad prywatnymi sesjami.",
+      source: "GitHub Changelog",
+      sourceUrl: "https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/"
     }
   ];
 
@@ -103,7 +103,7 @@ export function DailyBriefing() {
         {/* Ticker Text Area */}
         <div className="flex-1 overflow-hidden min-w-0 flex items-center gap-3">
           <span className="text-[10px] font-mono uppercase tracking-wider text-orange-400 font-extrabold shrink-0 border border-orange-500/20 px-1.5 py-0.5 bg-orange-950/20">
-            {newsList[tickerIndex].category === "Polska" ? "🇵🇱 PL" : "🌍 ŚWIAT"}
+            {newsList[tickerIndex].category === "Polska" ? "PL" : "ŚWIAT"}
           </span>
           <a 
             href={newsList[tickerIndex].sourceUrl} 
@@ -150,13 +150,13 @@ export function DailyBriefing() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-brand-border pb-6 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-orange-500 text-lg">📅</span>
+              <span className="text-orange-500 text-lg">D</span>
               <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight uppercase text-brand-text">
                 Daily AI & IT Briefing
               </h2>
             </div>
             <p className="text-brand-muted text-xs">
-              Codzienny, skondensowany przegląd kluczowych wydarzeń technologicznych i legislacyjnych ze świata.
+              Codzienny, skondensowany przegląd kluczowych wydarzeń technologicznych i legislacyjnych z Polski oraz świata.
             </p>
           </div>
 
@@ -180,7 +180,7 @@ export function DailyBriefing() {
                   : "text-brand-muted hover:text-brand-text"
               }`}
             >
-              <span>🇵🇱 Polska</span>
+              <span>Polska</span>
             </button>
             <button
               onClick={() => setActiveTab("world")}
@@ -190,7 +190,7 @@ export function DailyBriefing() {
                   : "text-brand-muted hover:text-brand-text"
               }`}
             >
-              <span>🌍 Świat</span>
+              <span>Świat</span>
             </button>
           </div>
         </div>
@@ -227,7 +227,7 @@ export function DailyBriefing() {
                             ? "text-emerald-500 border-emerald-500/20 bg-emerald-500/5" 
                             : "text-sky-500 border-sky-500/20 bg-sky-500/5"
                         }`}>
-                          {news.category === "Polska" ? "🇵🇱 Polska" : "🌍 Świat"}
+                          {news.category}
                         </span>
                         <span className="text-[10px] font-mono text-brand-muted">
                           Źródło: <strong>{news.source}</strong>
@@ -271,41 +271,41 @@ export function DailyBriefing() {
               </div>
 
               <h3 className="font-extrabold text-brand-text text-lg tracking-tight uppercase leading-tight mb-4">
-                AI przechodzi od narzędzi do infrastruktury państwa
+                Agenci AI przechodzą do infrastruktury operacyjnej
               </h3>
 
               <div className="border-l-2 border-orange-500 pl-4 my-4">
                 <p className="text-xs text-brand-muted leading-relaxed italic font-serif">
-                  "Dzisiejsze wiadomości łączą trzy warstwy rozwoju AI: nowe modele agentowe, inwestycje w krajowy ekosystem oraz budowę kompetencji od szkół po przedsiębiorstwa."
+                  "Dzisiejsze wiadomości pokazują przesunięcie z demonstracji modeli do zarządzanych wdrożeń: administracja szkoli ludzi, firmy rozszerzają kontrolę nad modelami, a narzędzia programistyczne dostają realne środowiska wykonawcze."
                 </p>
               </div>
 
               <p className="text-xs text-brand-muted leading-relaxed font-sans mt-4">
-                Dla branży IT oznacza to, że przewagę będą budować nie tylko dostawcy najlepszych modeli, lecz także organizacje zdolne wdrożyć je w edukacji, procesach firmowych i bezpiecznej infrastrukturze.
+                Dla zespołów IT oznacza to większy nacisk na polityki dostępu, audyt działań agentów, bezpieczeństwo przeglądarek i praktyczne kompetencje użytkowników, którzy mają zatwierdzać wyniki pracy AI.
               </p>
 
               <div className="mt-6 pt-4 border-t border-brand-border/60 text-[9px] font-mono text-brand-muted uppercase tracking-wider">
-                Analiza z: <span className="text-brand-text font-bold">3 lipca 2026</span>
+                Analiza z: <span className="text-brand-text font-bold">8 lipca 2026</span>
               </div>
             </div>
 
             {/* Quick Micro Stats / Ticker Extra Info */}
             <div className="border border-brand-border hover:border-brand-text hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-text/5 transition-all duration-300 p-5 bg-brand-featured-bg">
               <h4 className="text-[9px] font-extrabold tracking-widest uppercase text-brand-muted mb-3">
-                METRYKI BRANŻOWE (LIPEC 2026)
+                METRYKI DNIA
               </h4>
               <div className="space-y-3.5 text-xs font-mono">
                 <div className="flex justify-between border-b border-brand-border pb-1.5">
-                  <span className="text-brand-muted">Adopcja AI w PL IT:</span>
-                  <span className="font-bold text-brand-text text-right">86.4%</span>
+                  <span className="text-brand-muted">Podział geograficzny:</span>
+                  <span className="font-bold text-brand-text text-right">PL 2 / Świat 3</span>
                 </div>
                 <div className="flex justify-between border-b border-brand-border pb-1.5">
-                  <span className="text-brand-muted">Średni koszt 1M tokenów:</span>
-                  <span className="font-bold text-brand-text text-right">-32% YoY</span>
+                  <span className="text-brand-muted">Źródła pierwotne:</span>
+                  <span className="font-bold text-brand-text text-right">5/5</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-brand-muted">Wzrost popytu na GPU:</span>
-                  <span className="font-bold text-orange-500 text-right">+210%</span>
+                  <span className="text-brand-muted">Status publikacji:</span>
+                  <span className="font-bold text-orange-500 text-right">DRAFT</span>
                 </div>
               </div>
             </div>

@@ -105,6 +105,13 @@ Projekt ewoluował przez szereg ustrukturyzowanych iteracji, z których każda w
 - **Bez przedwczesnej akceptacji**: Komplet mediów aktualizuje komunikaty artykułu, ale nie zmienia statusu `DRAFT`; publikacja nadal wymaga jawnej akceptacji merytorycznej.
 - **Obsługa GitHub Pages**: Renderer buduje ścieżki obrazów z `import.meta.env.BASE_URL`, dzięki czemu zasoby działają lokalnie i pod prefiksem `/Blog/` na produkcji.
 
+### 🔹 Iteracja 12: Uzupełnienie historycznych briefingów dziennych 4-7 lipca 2026
+- **Domknięcie luki archiwum**: Dodano brakujące briefingi dzienne dla 4, 5, 6 i 7 lipca 2026 r. w `content/daily-news/YYYY-MM-DD/YYYY-MM-DD.md`.
+- **Import redakcyjny jako DRAFT**: Utworzono odpowiadające im kopie w `content/draft/YYYY-MM-DD-daily-news/YYYY-MM-DD.md`, dzięki czemu aplikacja importuje je jako szkice z automatycznymi placeholderami dwóch grafik.
+- **Metodyka źródeł**: Każdy briefing zachowuje pięć pozycji, podział Polska/świat, daty publikacji i zdarzenia, bezpośrednie URL-e źródeł oraz jawny status roboczy.
+- **Synchronizacja Drive DRAFT**: Utworzono foldery `2026-07-04-daily-news` - `2026-07-07-daily-news` w katalogu Google Drive `DRAFT` i zapisano w nich surowe pliki Markdown bez konwersji do Google Docs, z readbackiem list folderów.
+- **Bez publikacji przed akceptacją**: Historyczne materiały nie zmieniają statusu na `APPROVED`; nadal wymagają weryfikacji merytorycznej i kompletu legalnych grafik.
+
 ---
 
 ## Stan projektu: teraz, uzgodnione działania i cel
