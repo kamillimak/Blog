@@ -11,48 +11,48 @@ export interface NewsItem {
   image?: string;
 }
 
-export const AI_NEWS_PUBLISHED_AT = "2026-07-08";
+export const AI_NEWS_PUBLISHED_AT = "2026-07-09";
 
 export const AI_NEWS_ITEMS: NewsItem[] = [
   {
     id: "1",
     category: "Polska",
-    title: "Służby ruszają ze szkoleniami z AI, dezinformacji i cyberhigieny",
-    content: "Ministerstwo Cyfryzacji uruchomiło program zaawansowanych kompetencji cyfrowych dla Policji, PSP i Straży Granicznej. W 2026 r. ma zostać przeszkolonych co najmniej 1750 osób, a zakres obejmuje AI, cyberbezpieczeństwo, rozpoznawanie manipulacji i przeciwdziałanie dezinformacji.",
+    title: "Polska delegacja wzmacnia rozmowy o globalnym zarządzaniu AI",
+    content: "Ministerstwo Cyfryzacji podsumowało udział Polski w wydarzeniach ONZ w Genewie dotyczących zarządzania sztuczną inteligencją. Resort akcentuje podejście, w którym wdrożenia AI w administracji i usługach publicznych mają być projektowane wokół bezpieczeństwa obywateli oraz międzynarodowych standardów.",
     source: "Ministerstwo Cyfryzacji",
-    sourceUrl: "https://www.gov.pl/web/cyfryzacja/wzmacniamy-kompetencje-cyfrowe-sluzb-odpowiedzialnych-za-bezpieczenstwo"
+    sourceUrl: "https://www.gov.pl/web/cyfryzacja/odpowiedzialne-zarzadzanie-sztuczna-inteligencja-w-centrum-rozmow-w-genewie"
   },
   {
     id: "2",
     category: "Polska",
-    title: "Ministerstwo Cyfryzacji zapowiada spotkanie o Gigafabryce AI",
-    content: "Resort zaprosił na otwarte spotkanie online poświęcone projektowi polskiej Gigafabryki AI. Wydarzenie zaplanowano na 9 lipca 2026 r.; ma w nim uczestniczyć wiceminister cyfryzacji Dariusz Standerski, co sygnalizuje kolejny etap rozmów o krajowej infrastrukturze obliczeniowej dla AI.",
+    title: "mPrawo jazdy w mObywatelu przekracza 7 milionów aktywacji",
+    content: "Cyfrowe prawo jazdy stało się drugim po mDowodzie najpopularniejszym dokumentem w aplikacji mObywatel. Resort wskazuje też na rosnące użycie usług dla kierowców, takich jak mStłuczka, Sprawdź OC, Punkty karne i Historia pojazdu, które automatyzują codzienne procesy administracyjne.",
+    source: "Ministerstwo Cyfryzacji",
+    sourceUrl: "https://www.gov.pl/web/cyfryzacja/juz-7-milionow-kierowcow-korzysta-z-mprawa-jazdy-w-mobywatelu"
+  },
+  {
+    id: "3",
+    category: "Polska",
+    title: "Spotkanie o Gigafabryce AI przechodzi z zapowiedzi do wydarzenia",
+    content: "Zapowiedziane przez Ministerstwo Cyfryzacji spotkanie online o projekcie Gigafabryki AI odbywa się 9 lipca 2026 r. z udziałem wiceministra Dariusza Standerskiego. Temat pozostaje kluczowy dla krajowej infrastruktury obliczeniowej, modeli AI i przyszłych usług publicznych opartych na dużej mocy obliczeniowej.",
     source: "Ministerstwo Cyfryzacji",
     sourceUrl: "https://www.gov.pl/web/cyfryzacja/gigafabryka-ai---zapraszamy-na-spotkanie"
   },
   {
-    id: "3",
-    category: "Świat",
-    title: "Kimi K2.7 trafia do GitHub Copilot Business i Enterprise",
-    content: "GitHub rozszerzył dostępność modelu Kimi K2.7 Code na plany Copilot Business i Copilot Enterprise. To pierwszy otwartowagowy model dostępny w selektorze modeli Copilota, ale w organizacjach pozostaje domyślnie wyłączony i wymaga decyzji administratora.",
-    source: "GitHub Changelog",
-    sourceUrl: "https://github.blog/changelog/2026-07-07-kimi-k2-7-now-available-for-copilot-business-and-enterprise/"
-  },
-  {
     id: "4",
     category: "Świat",
-    title: "Rząd Alberty pokazuje skalę użycia Claude Code w cyberbezpieczeństwie",
-    content: "Anthropic opisał wdrożenie, w którym zespół technologiczny Alberty użył Claude Code do przeglądu 466 mln linii kodu w 20 godzin. Przypadek pokazuje praktyczny kierunek agentów AI w administracji: audyt dużych repozytoriów, generowanie poprawek, testów i planów modernizacji.",
-    source: "Anthropic",
-    sourceUrl: "https://www.anthropic.com/news/alberta-government-claude-cybersecurity"
+    title: "Komisja Europejska przedstawia plan AI dla cyberbezpieczeństwa",
+    content: "Komisja Europejska opublikowała plan działań łączący AI i cyberbezpieczeństwo. Dokument zakłada rozwój zdolności oceny zaawansowanych modeli przed wejściem na rynek UE, koordynację państw członkowskich i przemysłu oraz uporządkowany dostęp do narzędzi AI przydatnych w ochronie infrastruktury cyfrowej.",
+    source: "Komisja Europejska",
+    sourceUrl: "https://digital-strategy.ec.europa.eu/en/news/commission-presents-eu-action-plan-cybersecurity-and-artificial-intelligence"
   },
   {
     id: "5",
     category: "Świat",
-    title: "GitHub Copilot w VS Code dostaje ogólnodostępne narzędzia przeglądarki",
-    content: "Narzędzia przeglądarkowe Copilota w VS Code są już ogólnie dostępne. Agenci mogą otwierać strony, klikać, wpisywać dane, czytać treść, robić zrzuty ekranu i sprawdzać błędy konsoli, przy zachowaniu izolacji kart i kontroli użytkownika nad prywatnymi sesjami.",
+    title: "GitHub podsumowuje czerwcowe wydania Copilota w VS Code",
+    content: "GitHub opisał aktualizacje Copilota w VS Code od wersji 1.123 do 1.127. Najważniejsze zmiany obejmują ogólną dostępność agentowych narzędzi przeglądarkowych, równoległe sesje agentów, lepszą widoczność kosztów, odkrywanie dostawców modeli z Marketplace i sprawniejsze działanie trybu Autopilot.",
     source: "GitHub Changelog",
-    sourceUrl: "https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/"
+    sourceUrl: "https://github.blog/changelog/2026-07-08-github-copilot-in-visual-studio-code-june-2026-releases/"
   }
 ];
 
@@ -163,7 +163,7 @@ export function DailyBriefing() {
               Codzienny, skondensowany przegląd kluczowych wydarzeń technologicznych i legislacyjnych z Polski oraz świata.
             </p>
             <span className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-brand-muted">
-              <Calendar size={12} /> Opublikowano: 8 lipca 2026
+              <Calendar size={12} /> Opublikowano: 9 lipca 2026
             </span>
           </div>
 
@@ -241,7 +241,7 @@ export function DailyBriefing() {
                           Źródło: <strong>{news.source}</strong>
                         </span>
                         <time dateTime={AI_NEWS_PUBLISHED_AT} className="text-[10px] font-mono text-brand-muted">
-                          08.07.2026
+                          09.07.2026
                         </time>
                       </div>
                       
@@ -282,21 +282,21 @@ export function DailyBriefing() {
               </div>
 
               <h3 className="font-extrabold text-brand-text text-lg tracking-tight uppercase leading-tight mb-4">
-                Agenci AI przechodzą do infrastruktury operacyjnej
+                AI staje się warstwą infrastruktury publicznej i narzędzi deweloperskich
               </h3>
 
               <div className="border-l-2 border-orange-500 pl-4 my-4">
                 <p className="text-xs text-brand-muted leading-relaxed italic font-serif">
-                  "Dzisiejsze wiadomości pokazują przesunięcie z demonstracji modeli do zarządzanych wdrożeń: administracja szkoli ludzi, firmy rozszerzają kontrolę nad modelami, a narzędzia programistyczne dostają realne środowiska wykonawcze."
+                  "Dzisiejsze wiadomości łączą trzy poziomy tej samej zmiany: administrację cyfrową, narodową infrastrukturę AI i narzędzia agentowe, które zaczynają być zarządzane jak krytyczne systemy pracy."
                 </p>
               </div>
 
               <p className="text-xs text-brand-muted leading-relaxed font-sans mt-4">
-                Dla zespołów IT oznacza to większy nacisk na polityki dostępu, audyt działań agentów, bezpieczeństwo przeglądarek i praktyczne kompetencje użytkowników, którzy mają zatwierdzać wyniki pracy AI.
+                Dla zespołów IT oznacza to większy nacisk na governance, obserwowalność agentów, kontrolę kosztów, jasne zasady dostępu do modeli oraz projektowanie usług publicznych jako produktów cyfrowych o wysokim zaufaniu.
               </p>
 
               <div className="mt-6 pt-4 border-t border-brand-border/60 text-[9px] font-mono text-brand-muted uppercase tracking-wider">
-                Analiza z: <span className="text-brand-text font-bold">8 lipca 2026</span>
+                Analiza z: <span className="text-brand-text font-bold">9 lipca 2026</span>
               </div>
             </div>
 
@@ -308,7 +308,7 @@ export function DailyBriefing() {
               <div className="space-y-3.5 text-xs font-mono">
                 <div className="flex justify-between border-b border-brand-border pb-1.5">
                   <span className="text-brand-muted">Podział geograficzny:</span>
-                  <span className="font-bold text-brand-text text-right">PL 2 / Świat 3</span>
+                  <span className="font-bold text-brand-text text-right">PL 3 / Świat 2</span>
                 </div>
                 <div className="flex justify-between border-b border-brand-border pb-1.5">
                   <span className="text-brand-muted">Źródła pierwotne:</span>

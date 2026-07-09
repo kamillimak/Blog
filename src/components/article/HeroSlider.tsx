@@ -17,8 +17,24 @@ type HeroSlide = {
   publishedAt: string;
   image: string;
   imageAlt: string;
+  video?: {
+    fhd: string;
+    fourK: string;
+  };
   articleSlug?: string;
   targetId?: string;
+};
+
+type NetworkInformation = {
+  effectiveType?: "slow-2g" | "2g" | "3g" | "4g";
+  downlink?: number;
+  saveData?: boolean;
+};
+
+type NavigatorWithConnection = Navigator & {
+  connection?: NetworkInformation;
+  mozConnection?: NetworkInformation;
+  webkitConnection?: NetworkInformation;
 };
 
 const slideStyles: Record<SlideKind, {
@@ -59,8 +75,13 @@ const slideStyles: Record<SlideKind, {
   },
 };
 
+const SLIDE_DURATION_MS = 7000;
+const VIDEO_PREWARM_LEAD_MS = 1400;
+
 export function HeroSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [prewarmIndex, setPrewarmIndex] = useState<number | null>(null);
+  const [heroVideoQuality, setHeroVideoQuality] = useState<"fhd" | "4k">("fhd");
   const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
   const slides = useMemo<HeroSlide[]>(() => {
@@ -77,6 +98,10 @@ export function HeroSlider() {
         description: article.description,
         publishedAt: article.publishedAt,
         image: "news/hero/article-ai-review.jpeg",
+        video: {
+          fhd: "news/hero/codex-second-engineer-fhd.mp4",
+          fourK: "news/hero/codex-second-engineer-4k.mp4",
+        },
         imageAlt: "Programista pracujący z agentem AI podczas przeglądu kodu",
         articleSlug: article.slug,
       },
@@ -88,6 +113,10 @@ export function HeroSlider() {
         description: trend.summary,
         publishedAt: AI_TREND_BRIEFING_DATE,
         image: "news/hero/trend-ai-infrastructure.jpeg",
+        video: {
+          fhd: "news/hero/verify-sources-fhd.mp4",
+          fourK: "news/hero/verify-sources-4k.mp4",
+        },
         imageAlt: "Ilustracja infrastruktury AI i przepływu danych w centrum obliczeniowym",
         targetId: `trend-news-${trend.id}`,
       },
@@ -99,6 +128,10 @@ export function HeroSlider() {
         description: tech.content,
         publishedAt: AI_NEWS_PUBLISHED_AT,
         image: "news/hero/tech-ai-assistant.jpeg",
+        video: {
+          fhd: "news/hero/tech-fhd.mp4",
+          fourK: "news/hero/tech-4k.mp4",
+        },
         imageAlt: "Stanowisko pracy z asystentem AI wspierającym programowanie",
         targetId: `ai-news-${tech.id}`,
       },
@@ -106,15 +139,46 @@ export function HeroSlider() {
   }, []);
 
   useEffect(() => {
-    const timer = window.setInterval(() => setActiveIndex((index) => (index + 1) % slides.length), 7000);
-    return () => window.clearInterval(timer);
-  }, [slides.length]);
+    const nav = navigator as NavigatorWithConnection;
+    const connection = nav.connection ?? nav.mozConnection ?? nav.webkitConnection;
+    const hasLargeViewport = window.innerWidth * window.devicePixelRatio >= 1800;
+    const fastConnection = !connection?.saveData && connection?.effectiveType === "4g" && (connection.downlink ?? 0) >= 8;
+    const unknownButLargeScreen = !connection && hasLargeViewport;
+
+    if ((fastConnection && hasLargeViewport) || unknownButLargeScreen) {
+      setHeroVideoQuality("4k");
+    }
+  }, []);
 
   const activeSlide = slides[activeIndex];
+  const prewarmSlide = prewarmIndex === null ? null : slides[prewarmIndex];
   const activeStyle = slideStyles[activeSlide.kind];
   const ActiveIcon = activeStyle.icon;
-  const move = (direction: number) => setActiveIndex((activeIndex + direction + slides.length) % slides.length);
+  const getVideoSrc = (slide: HeroSlide) => {
+    if (!slide.video) return null;
+    return assetUrl(heroVideoQuality === "4k" ? slide.video.fourK : slide.video.fhd);
+  };
+  const goToIndex = (index: number) => {
+    setPrewarmIndex(index);
+    setActiveIndex(index);
+    window.setTimeout(() => setPrewarmIndex(null), 250);
+  };
+  const move = (direction: number) => goToIndex((activeIndex + direction + slides.length) % slides.length);
   const scrollToTarget = () => activeSlide.targetId && document.getElementById(activeSlide.targetId)?.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  useEffect(() => {
+    const nextIndex = (activeIndex + 1) % slides.length;
+    const prewarmTimer = window.setTimeout(() => setPrewarmIndex(nextIndex), SLIDE_DURATION_MS - VIDEO_PREWARM_LEAD_MS);
+    const slideTimer = window.setTimeout(() => {
+      setActiveIndex(nextIndex);
+      window.setTimeout(() => setPrewarmIndex(null), 250);
+    }, SLIDE_DURATION_MS);
+
+    return () => {
+      window.clearTimeout(prewarmTimer);
+      window.clearTimeout(slideTimer);
+    };
+  }, [activeIndex, slides.length]);
 
   return (
     <div
@@ -131,6 +195,17 @@ export function HeroSlider() {
         }}
         className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
       />
+      {activeSlide.video && (
+        <HeroVideoBackground
+          fhdSrc={assetUrl(activeSlide.video.fhd)}
+          fourKSrc={assetUrl(activeSlide.video.fourK)}
+          quality={heroVideoQuality}
+          onUpgradeReady={() => setHeroVideoQuality("4k")}
+        />
+      )}
+      {prewarmSlide?.video && prewarmSlide.id !== activeSlide.id && (
+        <PrewarmVideo src={getVideoSrc(prewarmSlide)} />
+      )}
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/78 to-black/20" />
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/90 to-transparent" />
 
@@ -215,5 +290,62 @@ export function HeroSlider() {
         </div>
       </div>
     </div>
+  );
+}
+
+type HeroVideoBackgroundProps = {
+  fhdSrc: string;
+  fourKSrc: string;
+  quality: "fhd" | "4k";
+  onUpgradeReady: () => void;
+};
+
+function HeroVideoBackground({ fhdSrc, fourKSrc, quality, onUpgradeReady }: HeroVideoBackgroundProps) {
+  const activeSrc = quality === "4k" ? fourKSrc : fhdSrc;
+
+  return (
+    <>
+      <video
+        key={activeSrc}
+        className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
+        src={activeSrc}
+        poster=""
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+      />
+      {quality === "fhd" && (
+        <video
+          className="hidden"
+          src={fourKSrc}
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          onCanPlayThrough={onUpgradeReady}
+        />
+      )}
+    </>
+  );
+}
+
+function PrewarmVideo({ src }: { src: string | null }) {
+  if (!src) return null;
+
+  return (
+    <video
+      key={src}
+      className="absolute inset-0 h-full w-full object-cover opacity-0 pointer-events-none"
+      src={src}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      aria-hidden="true"
+    />
   );
 }
