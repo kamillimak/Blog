@@ -1,331 +1,278 @@
-import React, { useState, useEffect } from "react";
-import { Tv, TrendingUp, ChevronLeft, ChevronRight, Pause, Play, ExternalLink, Calendar } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import type { MouseEvent } from "react";
+import {
+  AlertTriangle,
+  BriefcaseBusiness,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+  Globe2,
+  Newspaper,
+  Pause,
+  Play,
+  Radio,
+  Sparkles,
+} from "lucide-react";
+import {
+  UNIFIED_NEWS_FEED,
+  type UnifiedNewsItem,
+  type UnifiedNewsKind,
+} from "../../data/newsFeed";
+import { formatPolishDate } from "../../utils/article";
 
-export interface NewsItem {
-  id: string;
-  category: "Polska" | "Świat";
-  title: string;
-  content: string;
-  source: string;
-  sourceUrl: string;
-  image?: string;
-}
+type FeedFilter = "all" | UnifiedNewsKind;
 
-export const AI_NEWS_PUBLISHED_AT = "2026-07-09";
-
-export const AI_NEWS_ITEMS: NewsItem[] = [
-  {
-    id: "1",
-    category: "Polska",
-    title: "Polska delegacja wzmacnia rozmowy o globalnym zarządzaniu AI",
-    content: "Ministerstwo Cyfryzacji podsumowało udział Polski w wydarzeniach ONZ w Genewie dotyczących zarządzania sztuczną inteligencją. Resort akcentuje podejście, w którym wdrożenia AI w administracji i usługach publicznych mają być projektowane wokół bezpieczeństwa obywateli oraz międzynarodowych standardów.",
-    source: "Ministerstwo Cyfryzacji",
-    sourceUrl: "https://www.gov.pl/web/cyfryzacja/odpowiedzialne-zarzadzanie-sztuczna-inteligencja-w-centrum-rozmow-w-genewie"
-  },
-  {
-    id: "2",
-    category: "Polska",
-    title: "mPrawo jazdy w mObywatelu przekracza 7 milionów aktywacji",
-    content: "Cyfrowe prawo jazdy stało się drugim po mDowodzie najpopularniejszym dokumentem w aplikacji mObywatel. Resort wskazuje też na rosnące użycie usług dla kierowców, takich jak mStłuczka, Sprawdź OC, Punkty karne i Historia pojazdu, które automatyzują codzienne procesy administracyjne.",
-    source: "Ministerstwo Cyfryzacji",
-    sourceUrl: "https://www.gov.pl/web/cyfryzacja/juz-7-milionow-kierowcow-korzysta-z-mprawa-jazdy-w-mobywatelu"
-  },
-  {
-    id: "3",
-    category: "Polska",
-    title: "Spotkanie o Gigafabryce AI przechodzi z zapowiedzi do wydarzenia",
-    content: "Zapowiedziane przez Ministerstwo Cyfryzacji spotkanie online o projekcie Gigafabryki AI odbywa się 9 lipca 2026 r. z udziałem wiceministra Dariusza Standerskiego. Temat pozostaje kluczowy dla krajowej infrastruktury obliczeniowej, modeli AI i przyszłych usług publicznych opartych na dużej mocy obliczeniowej.",
-    source: "Ministerstwo Cyfryzacji",
-    sourceUrl: "https://www.gov.pl/web/cyfryzacja/gigafabryka-ai---zapraszamy-na-spotkanie"
-  },
-  {
-    id: "4",
-    category: "Świat",
-    title: "Komisja Europejska przedstawia plan AI dla cyberbezpieczeństwa",
-    content: "Komisja Europejska opublikowała plan działań łączący AI i cyberbezpieczeństwo. Dokument zakłada rozwój zdolności oceny zaawansowanych modeli przed wejściem na rynek UE, koordynację państw członkowskich i przemysłu oraz uporządkowany dostęp do narzędzi AI przydatnych w ochronie infrastruktury cyfrowej.",
-    source: "Komisja Europejska",
-    sourceUrl: "https://digital-strategy.ec.europa.eu/en/news/commission-presents-eu-action-plan-cybersecurity-and-artificial-intelligence"
-  },
-  {
-    id: "5",
-    category: "Świat",
-    title: "GitHub podsumowuje czerwcowe wydania Copilota w VS Code",
-    content: "GitHub opisał aktualizacje Copilota w VS Code od wersji 1.123 do 1.127. Najważniejsze zmiany obejmują ogólną dostępność agentowych narzędzi przeglądarkowych, równoległe sesje agentów, lepszą widoczność kosztów, odkrywanie dostawców modeli z Marketplace i sprawniejsze działanie trybu Autopilot.",
-    source: "GitHub Changelog",
-    sourceUrl: "https://github.blog/changelog/2026-07-08-github-copilot-in-visual-studio-code-june-2026-releases/"
-  }
+const filters: { id: FeedFilter; label: string }[] = [
+  { id: "all", label: "Wszystkie" },
+  { id: "tech-pl", label: "Tech PL" },
+  { id: "tech-world", label: "Tech World" },
+  { id: "top3-news", label: "TOP 3 AI News" },
+  { id: "top3-crime", label: "TOP 3 Crime AI" },
+  { id: "top3-business", label: "TOP 3 AI Money" },
 ];
 
+const kindStyles: Record<UnifiedNewsKind, { badge: string; border: string; divider: string; date: string; ticker: string; icon: typeof Newspaper }> = {
+  "tech-pl": {
+    badge: "border-emerald-300 bg-emerald-600 text-white shadow-lg shadow-black/30",
+    border: "hover:border-emerald-500/60",
+    divider: "border-emerald-500",
+    date: "text-emerald-700",
+    ticker: "border-emerald-500 bg-[linear-gradient(135deg,#052e2b_0%,#065f46_42%,#111827_100%)]",
+    icon: Radio,
+  },
+  "tech-world": {
+    badge: "border-sky-300 bg-sky-600 text-white shadow-lg shadow-black/30",
+    border: "hover:border-sky-500/60",
+    divider: "border-sky-500",
+    date: "text-sky-700",
+    ticker: "border-sky-500 bg-[linear-gradient(135deg,#082f49_0%,#0369a1_42%,#111827_100%)]",
+    icon: Globe2,
+  },
+  "top3-news": {
+    badge: "border-violet-300 bg-violet-600 text-white shadow-lg shadow-black/30",
+    border: "hover:border-violet-500/60",
+    divider: "border-violet-500",
+    date: "text-violet-700",
+    ticker: "border-violet-500 bg-[linear-gradient(135deg,#2e1065_0%,#7c3aed_42%,#111827_100%)]",
+    icon: Sparkles,
+  },
+  "top3-crime": {
+    badge: "border-rose-300 bg-rose-600 text-white shadow-lg shadow-black/30",
+    border: "hover:border-rose-500/60",
+    divider: "border-rose-500",
+    date: "text-rose-700",
+    ticker: "border-rose-500 bg-[linear-gradient(135deg,#4c0519_0%,#be123c_42%,#111827_100%)]",
+    icon: AlertTriangle,
+  },
+  "top3-business": {
+    badge: "border-amber-300 bg-amber-500 text-black shadow-lg shadow-black/30",
+    border: "hover:border-amber-500/60",
+    divider: "border-amber-500",
+    date: "text-amber-700",
+    ticker: "border-amber-500 bg-[linear-gradient(135deg,#451a03_0%,#d97706_42%,#111827_100%)]",
+    icon: BriefcaseBusiness,
+  },
+};
+
+const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+
 export function DailyBriefing() {
-  const [activeTab, setActiveTab] = useState<"all" | "pl" | "world">("all");
+  const [activeFilter, setActiveFilter] = useState<FeedFilter>("all");
   const [isPlaying, setIsPlaying] = useState(true);
   const [tickerIndex, setTickerIndex] = useState(0);
 
-  const newsList: NewsItem[] = AI_NEWS_ITEMS;
+  const filteredNews = useMemo(() => {
+    if (activeFilter === "all") return UNIFIED_NEWS_FEED;
 
-  // Ticker automatic rotation effect
+    return UNIFIED_NEWS_FEED.filter((item) => item.kind === activeFilter);
+  }, [activeFilter]);
+
   useEffect(() => {
-    if (!isPlaying) return;
-    const interval = setInterval(() => {
-      setTickerIndex((prev) => (prev + 1) % newsList.length);
+    if (!isPlaying || UNIFIED_NEWS_FEED.length === 0) return;
+    const interval = window.setInterval(() => {
+      setTickerIndex((current) => (current + 1) % UNIFIED_NEWS_FEED.length);
     }, 6000);
-    return () => clearInterval(interval);
-  }, [isPlaying, newsList.length]);
 
-  const filteredNews = newsList.filter((news) => {
-    if (activeTab === "pl") return news.category === "Polska";
-    if (activeTab === "world") return news.category === "Świat";
-    return true;
-  });
+    return () => window.clearInterval(interval);
+  }, [isPlaying]);
 
-  const nextTicker = () => {
-    setTickerIndex((prev) => (prev + 1) % newsList.length);
-  };
+  useEffect(() => {
+    setTickerIndex(0);
+  }, [activeFilter]);
 
-  const prevTicker = () => {
-    setTickerIndex((prev) => (prev - 1 + newsList.length) % newsList.length);
+  const ticker = UNIFIED_NEWS_FEED[tickerIndex] ?? UNIFIED_NEWS_FEED[0];
+  const moveTicker = (direction: number) => {
+    setTickerIndex((current) => (current + direction + UNIFIED_NEWS_FEED.length) % UNIFIED_NEWS_FEED.length);
   };
 
   return (
-    <section id="daily-briefing-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 font-sans">
-      
-      {/* 1. TV Ticker Style Bar (with orange accent) */}
-      <div className="bg-[#1A1A1A] border border-brand-border border-l-4 border-l-orange-500 text-white p-3 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 mb-6 select-none relative overflow-hidden">
-        
-        {/* Glowing Orange Breaking Badge */}
-        <div className="flex items-center gap-2 shrink-0">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-600"></span>
-          </span>
-          <span className="bg-orange-600 text-[10px] font-extrabold px-2.5 py-1 uppercase tracking-widest text-white flex items-center gap-1.5">
-            <Tv size={11} />
-            PILNE NEWSY
-          </span>
+    <section id="daily-briefing-section" className="mt-14 border-y border-brand-border bg-brand-card py-12 font-sans">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {ticker && (
+          <div className={`mb-8 flex flex-col gap-3 border p-3 text-white md:flex-row md:items-center ${kindStyles[ticker.kind].ticker}`}>
+            <div className="flex shrink-0 items-center gap-2">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-500 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-orange-600" />
+              </span>
+              <span className="inline-flex items-center gap-1.5 bg-orange-600 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest">
+                <Newspaper size={12} />
+                Live feed
+              </span>
+            </div>
+
+            <a
+              href={ticker.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-w-0 flex-1 items-center gap-3 text-xs font-bold text-zinc-200 transition-colors hover:text-orange-300 sm:text-sm"
+            >
+              <span className={`shrink-0 border px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider ${kindStyles[ticker.kind].badge}`}>
+                {ticker.label}
+              </span>
+              <span className="truncate">{ticker.title}</span>
+              <ExternalLink size={12} className="shrink-0" />
+            </a>
+
+            <div className="flex shrink-0 items-center justify-end gap-1 border-t border-white/10 pt-2 md:border-t-0 md:pt-0">
+              <button
+                type="button"
+                onClick={() => setIsPlaying((value) => !value)}
+                aria-label={isPlaying ? "Wstrzymaj rotacje newsow" : "Wznow rotacje newsow"}
+                className="p-1.5 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                {isPlaying ? <Pause size={13} /> : <Play size={13} />}
+              </button>
+              <button
+                type="button"
+                onClick={() => moveTicker(-1)}
+                aria-label="Poprzedni news"
+                className="p-1.5 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <ChevronLeft size={14} />
+              </button>
+              <span className="px-1 font-mono text-[10px] text-zinc-500">
+                {tickerIndex + 1}/{UNIFIED_NEWS_FEED.length}
+              </span>
+              <button
+                type="button"
+                onClick={() => moveTicker(1)}
+                aria-label="Nastepny news"
+                className="p-1.5 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                <ChevronRight size={14} />
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="max-w-3xl">
+            <span className="text-[10px] font-black uppercase tracking-[0.24em] text-orange-600">Tech + TOP 3</span>
+            <h2 className="mt-3 text-3xl font-extrabold uppercase leading-none tracking-tight text-brand-text sm:text-4xl">
+              Newsroom
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-brand-muted">
+              Codzienny briefing z Polski i swiata oraz najnowszy pakiet TOP 3 sa polaczone w jeden skanowalny feed.
+              Kazdy material ma wyrazna etykiete, zrodlo oraz lokalne tlo wideo uruchamiane dopiero po najechaniu.
+            </p>
         </div>
 
-        {/* Ticker Text Area */}
-        <div className="flex-1 overflow-hidden min-w-0 flex items-center gap-3">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-orange-400 font-extrabold shrink-0 border border-orange-500/20 px-1.5 py-0.5 bg-orange-950/20">
-            {newsList[tickerIndex].category === "Polska" ? "PL" : "ŚWIAT"}
-          </span>
-          <a 
-            href={newsList[tickerIndex].sourceUrl} 
-            target="_blank" 
+        <div className="mt-8 flex flex-wrap gap-2 border-y border-brand-border py-4" aria-label="Filtry newsroomu">
+          {filters.map((filter) => (
+            <button
+              key={filter.id}
+              type="button"
+              onClick={() => setActiveFilter(filter.id)}
+              className={`border px-3 py-2 text-[10px] font-black uppercase tracking-widest transition-colors ${
+                activeFilter === filter.id
+                  ? "border-brand-text bg-brand-text text-brand-bg"
+                  : "border-brand-border bg-brand-featured-bg text-brand-muted hover:border-brand-text hover:text-brand-text"
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 gap-6">
+          {filteredNews.map((item, index) => (
+            <div key={item.id}>
+              <NewsCard item={item} featured={index === 0} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function NewsCard({ item, featured }: { item: UnifiedNewsItem; featured: boolean }) {
+  const styles = kindStyles[item.kind];
+  const Icon = kindStyles[item.kind].icon;
+  const handleVideoEnter = (event: MouseEvent<HTMLElement>) => {
+    const video = event.currentTarget.querySelector("video");
+    if (!video) return;
+    void video.play();
+  };
+  const handleVideoLeave = (event: MouseEvent<HTMLElement>) => {
+    const video = event.currentTarget.querySelector("video");
+    if (!video) return;
+    video.pause();
+    video.currentTime = 0;
+  };
+
+  return (
+    <article
+      id={`news-feed-${item.id}`}
+      onMouseEnter={handleVideoEnter}
+      onMouseLeave={handleVideoLeave}
+      className={`group grid overflow-hidden border border-brand-border bg-brand-bg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-12 ${styles.border}`}
+    >
+      <div className={`${featured ? "lg:col-span-5" : "lg:col-span-4"} relative min-h-64 overflow-hidden bg-brand-text`}>
+        <video
+          src={assetUrl(item.video)}
+          className="absolute inset-0 h-full w-full object-cover opacity-85 transition-transform duration-500 group-hover:scale-105"
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+        <span className={`absolute left-4 top-4 inline-flex items-center gap-1.5 border px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ${styles.badge}`}>
+          <Icon size={12} />
+          {item.label}
+        </span>
+        <span className="absolute bottom-4 left-4 text-[10px] font-bold uppercase tracking-widest text-white/75">
+          {item.groupLabel}
+        </span>
+      </div>
+
+      <div className={`${featured ? "lg:col-span-7" : "lg:col-span-8"} flex flex-col justify-between p-5 sm:p-7`}>
+        <div>
+          <div className="mb-4 flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-wider">
+            <time dateTime={item.publishedAt} className={`font-black ${styles.date}`}>
+              {formatPolishDate(item.publishedAt)}
+            </time>
+            <span className="text-brand-muted">{item.groupLabel}</span>
+          </div>
+          <h3 className="text-xl font-extrabold uppercase leading-tight tracking-tight text-brand-text transition-colors group-hover:text-orange-600 sm:text-2xl">
+            {item.title}
+          </h3>
+          <p className="mt-4 text-sm leading-relaxed text-brand-muted sm:text-base">{item.summary}</p>
+        </div>
+
+        <div className={`mt-6 flex flex-wrap items-center gap-3 border-t-2 pt-4 ${styles.divider}`}>
+          <a
+            href={item.sourceUrl}
+            target="_blank"
             rel="noopener noreferrer"
-            className="text-xs sm:text-sm text-zinc-200 hover:text-orange-400 font-bold truncate transition-colors flex items-center gap-1 group"
+            className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-brand-text transition-colors hover:text-orange-600"
           >
-            <span className="truncate">{newsList[tickerIndex].title}</span>
-            <ExternalLink size={11} className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+            {item.sourceLabel} <ExternalLink size={11} />
           </a>
         </div>
-
-        {/* Ticker Action Controls */}
-        <div className="flex items-center gap-1.5 shrink-0 border-t md:border-t-0 border-[#2D2D2D] pt-2 md:pt-0 justify-end">
-          <button 
-            onClick={() => setIsPlaying(!isPlaying)}
-            title={isPlaying ? "Wstrzymaj autorotację" : "Wznów autorotację"}
-            className="p-1.5 hover:bg-[#2D2D2D] text-zinc-400 hover:text-white transition-colors cursor-pointer"
-          >
-            {isPlaying ? <Pause size={12} /> : <Play size={12} />}
-          </button>
-          <button 
-            onClick={prevTicker} 
-            className="p-1.5 hover:bg-[#2D2D2D] text-zinc-400 hover:text-white transition-colors cursor-pointer"
-          >
-            <ChevronLeft size={14} />
-          </button>
-          <span className="text-[10px] font-mono text-zinc-500 px-1">
-            {tickerIndex + 1}/{newsList.length}
-          </span>
-          <button 
-            onClick={nextTicker} 
-            className="p-1.5 hover:bg-[#2D2D2D] text-zinc-400 hover:text-white transition-colors cursor-pointer"
-          >
-            <ChevronRight size={14} />
-          </button>
-        </div>
       </div>
-
-      {/* 2. Main AI News Container */}
-      <div className="bg-brand-card border border-brand-border p-6 sm:p-8">
-        
-        {/* Header Grid */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-brand-border pb-6 mb-8">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-orange-500 text-lg">D</span>
-              <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight uppercase text-brand-text">
-                TECH
-              </h2>
-            </div>
-            <p className="text-brand-muted text-xs">
-              Codzienny, skondensowany przegląd kluczowych wydarzeń technologicznych i legislacyjnych z Polski oraz świata.
-            </p>
-            <span className="mt-3 inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-brand-muted">
-              <Calendar size={12} /> Opublikowano: 9 lipca 2026
-            </span>
-          </div>
-
-          {/* Tab Filter Controls */}
-          <div className="flex items-center gap-1 border border-brand-border p-1 bg-brand-featured-bg self-start md:self-auto">
-            <button
-              onClick={() => setActiveTab("all")}
-              className={`px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
-                activeTab === "all" 
-                  ? "bg-brand-text text-brand-bg font-black" 
-                  : "text-brand-muted hover:text-brand-text"
-              }`}
-            >
-              Wszystko
-            </button>
-            <button
-              onClick={() => setActiveTab("pl")}
-              className={`px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1 ${
-                activeTab === "pl" 
-                  ? "bg-brand-text text-brand-bg font-black" 
-                  : "text-brand-muted hover:text-brand-text"
-              }`}
-            >
-              <span>Polska</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("world")}
-              className={`px-3 py-1.5 text-[9px] font-extrabold uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1 ${
-                activeTab === "world" 
-                  ? "bg-brand-text text-brand-bg font-black" 
-                  : "text-brand-muted hover:text-brand-text"
-              }`}
-            >
-              <span>Świat</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Content Layout Grid (Two-Column) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
-          {/* Column A (Left, 8 cols): Filtered News List */}
-          <div className="lg:col-span-8 space-y-8">
-            {filteredNews.map((news) => (
-              <div 
-                key={news.id} 
-                id={`ai-news-${news.id}`}
-                className="group border border-brand-border p-5 hover:border-orange-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300 bg-brand-bg/50"
-              >
-                <div className="flex flex-col sm:flex-row gap-5">
-                  {/* News Image */}
-                  {news.image && (
-                    <div className="sm:w-36 sm:h-24 shrink-0 overflow-hidden border border-brand-border bg-brand-featured-bg">
-                      <img 
-                        src={news.image} 
-                        alt={news.title} 
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 filter grayscale contrast-125"
-                      />
-                    </div>
-                  )}
-
-                  {/* News Text */}
-                  <div className="flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 border ${
-                          news.category === "Polska" 
-                            ? "text-emerald-500 border-emerald-500/20 bg-emerald-500/5" 
-                            : "text-sky-500 border-sky-500/20 bg-sky-500/5"
-                        }`}>
-                          {news.category}
-                        </span>
-                        <span className="text-[10px] font-mono text-brand-muted">
-                          Źródło: <strong>{news.source}</strong>
-                        </span>
-                        <time dateTime={AI_NEWS_PUBLISHED_AT} className="text-[10px] font-mono text-brand-muted">
-                          09.07.2026
-                        </time>
-                      </div>
-                      
-                      <h3 className="font-extrabold text-brand-text text-sm sm:text-base tracking-tight leading-snug mb-2 group-hover:text-orange-500 transition-colors">
-                        {news.title}
-                      </h3>
-                      
-                      <p className="text-xs text-brand-muted leading-relaxed font-sans line-clamp-3">
-                        {news.content}
-                      </p>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-brand-border/60 flex justify-between items-center">
-                      <a 
-                        href={news.sourceUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-[10px] font-extrabold tracking-widest text-brand-text uppercase hover:text-orange-500 transition-colors cursor-pointer"
-                      >
-                        <span>Czytaj źródło</span>
-                        <ExternalLink size={10} />
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Column B (Right, 4 cols): Daily Highlight Trend (Orange visual emphasis) */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="border border-orange-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-orange-500/5 transition-all duration-300 bg-orange-950/5 p-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-full blur-2xl pointer-events-none" />
-              
-              <div className="flex items-center gap-2 text-orange-500 font-extrabold text-[10px] tracking-widest uppercase mb-4">
-                <TrendingUp size={14} />
-                <span>NAJWAŻNIEJSZY TREND DNIA</span>
-              </div>
-
-              <h3 className="font-extrabold text-brand-text text-lg tracking-tight uppercase leading-tight mb-4">
-                AI staje się warstwą infrastruktury publicznej i narzędzi deweloperskich
-              </h3>
-
-              <div className="border-l-2 border-orange-500 pl-4 my-4">
-                <p className="text-xs text-brand-muted leading-relaxed italic font-serif">
-                  "Dzisiejsze wiadomości łączą trzy poziomy tej samej zmiany: administrację cyfrową, narodową infrastrukturę AI i narzędzia agentowe, które zaczynają być zarządzane jak krytyczne systemy pracy."
-                </p>
-              </div>
-
-              <p className="text-xs text-brand-muted leading-relaxed font-sans mt-4">
-                Dla zespołów IT oznacza to większy nacisk na governance, obserwowalność agentów, kontrolę kosztów, jasne zasady dostępu do modeli oraz projektowanie usług publicznych jako produktów cyfrowych o wysokim zaufaniu.
-              </p>
-
-              <div className="mt-6 pt-4 border-t border-brand-border/60 text-[9px] font-mono text-brand-muted uppercase tracking-wider">
-                Analiza z: <span className="text-brand-text font-bold">9 lipca 2026</span>
-              </div>
-            </div>
-
-            {/* Quick Micro Stats / Ticker Extra Info */}
-            <div className="border border-brand-border hover:border-brand-text hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-text/5 transition-all duration-300 p-5 bg-brand-featured-bg">
-              <h4 className="text-[9px] font-extrabold tracking-widest uppercase text-brand-muted mb-3">
-                METRYKI DNIA
-              </h4>
-              <div className="space-y-3.5 text-xs font-mono">
-                <div className="flex justify-between border-b border-brand-border pb-1.5">
-                  <span className="text-brand-muted">Podział geograficzny:</span>
-                  <span className="font-bold text-brand-text text-right">PL 3 / Świat 2</span>
-                </div>
-                <div className="flex justify-between border-b border-brand-border pb-1.5">
-                  <span className="text-brand-muted">Źródła pierwotne:</span>
-                  <span className="font-bold text-brand-text text-right">5/5</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-brand-muted">Status publikacji:</span>
-                  <span className="font-bold text-orange-500 text-right">DRAFT</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
+    </article>
   );
 }

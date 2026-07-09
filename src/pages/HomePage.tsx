@@ -5,7 +5,6 @@ import { ARTICLES } from "../data/articles";
 import { ArticleCard } from "../components/article/ArticleCard";
 import { getGlobalStats, filterArticles } from "../utils/article";
 import { DailyBriefing } from "../components/article/DailyBriefing";
-import { AIContentDashboard } from "../components/article/AIContentDashboard";
 import { HeroSlider } from "../components/article/HeroSlider";
 
 export function HomePage() {
@@ -25,10 +24,6 @@ export function HomePage() {
   // Latest/Featured Article for the Hero section
   const featuredArticle = useMemo(() => {
     return ARTICLES.find((a) => a.featured) || ARTICLES[0];
-  }, []);
-
-  const latestDrafts = useMemo(() => {
-    return ARTICLES.filter((article) => article.status === "DRAFT").slice(-6).reverse();
   }, []);
 
   // Filtered Library Articles
@@ -110,106 +105,8 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* 2. STATS SECTION (Bento grid style) */}
-      <section id="stats-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-        <div className="bg-brand-card border border-brand-border rounded-none p-6 sm:p-8">
-          <h2 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted mb-6">
-            BLOG W LICZBACH
-          </h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            {/* Stat 1 */}
-            <div className="bg-brand-featured-bg p-5 rounded-none border border-brand-border flex flex-col justify-between hover:border-brand-text transition-colors">
-              <div className="text-brand-muted mb-2">
-                <FileText size={18} />
-              </div>
-              <div className="mt-4">
-                <span className="block text-3xl font-mono font-bold text-brand-text leading-none">
-                  {stats.totalArticles}
-                </span>
-                <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
-                  Artykułów
-                </span>
-              </div>
-            </div>
-
-            {/* Stat 2 */}
-            <div className="bg-brand-featured-bg p-5 rounded-none border border-brand-border flex flex-col justify-between hover:border-brand-text transition-colors">
-              <div className="text-brand-muted mb-2">
-                <Clock size={18} />
-              </div>
-              <div className="mt-4">
-                <span className="block text-3xl font-mono font-bold text-brand-text leading-none">
-                  {stats.totalReadTime} <span className="text-sm font-sans font-semibold text-brand-muted">min</span>
-                </span>
-                <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
-                  Czas Czytania
-                </span>
-              </div>
-            </div>
-
-            {/* Stat 3 */}
-            <div className="bg-brand-featured-bg p-5 rounded-none border border-brand-border flex flex-col justify-between hover:border-brand-text transition-colors">
-              <div className="text-brand-muted mb-2">
-                <Award size={18} />
-              </div>
-              <div className="mt-4">
-                <span className="block text-3xl font-mono font-bold text-brand-text leading-none">
-                  {stats.totalWordCount.toLocaleString()}
-                </span>
-                <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
-                  Liczba Słów
-                </span>
-              </div>
-            </div>
-
-            {/* Stat 4 */}
-            <div className="bg-brand-featured-bg p-5 rounded-none border border-brand-border flex flex-col justify-between hover:border-brand-text transition-colors">
-              <div className="text-brand-muted mb-2">
-                <Settings size={18} />
-              </div>
-              <div className="mt-4">
-                <span className="block text-3xl font-mono font-bold text-brand-text leading-none">
-                  {stats.uniqueToolsCount}
-                </span>
-                <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
-                  Narzędzia AI
-                </span>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
       {/* AI News Section */}
       <DailyBriefing />
-
-      {latestDrafts.length > 0 && (
-        <section id="latest-drafts-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-amber-500/40 pb-5 mb-8">
-            <div>
-              <span className="text-[10px] font-black tracking-[0.2em] text-amber-600 uppercase">Redakcja / DRAFT</span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-brand-text uppercase mt-2">
-                Najnowsze szkice artykułów
-              </h2>
-              <p className="text-xs text-brand-muted mt-2 max-w-2xl">
-                Materiały oczekujące na zatwierdzenie merytoryczne i komplet co najmniej dwóch grafik.
-              </p>
-            </div>
-            <Link to="/articles" className="text-[10px] font-extrabold uppercase tracking-widest text-brand-text border-b border-brand-text">
-              Zobacz wszystkie
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {latestDrafts.map((article) => (
-              <div key={article.id}>
-                <ArticleCard article={article} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* 3. SYNERGISTIC WORKFLOW SECTION */}
       <section id="workflow-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
@@ -284,9 +181,6 @@ export function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* AI Content Dashboard Section */}
-      <AIContentDashboard />
 
       {/* 4. LIBRARY ARTICLES SECTION (Filters + Grid) */}
       <section id="library-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 scroll-mt-24">
@@ -462,6 +356,72 @@ export function HomePage() {
           </div>
         )}
 
+      </section>
+
+      {/* 5. STATS SECTION (Bento grid style) */}
+      <section id="stats-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+        <div className="bg-brand-card border border-brand-border rounded-none p-6 sm:p-8">
+          <h2 className="text-[10px] font-bold uppercase tracking-widest text-brand-muted mb-6">
+            BLOG W LICZBACH
+          </h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-brand-featured-bg p-5 rounded-none border border-brand-border flex flex-col justify-between hover:border-brand-text transition-colors">
+              <div className="text-brand-muted mb-2">
+                <FileText size={18} />
+              </div>
+              <div className="mt-4">
+                <span className="block text-3xl font-mono font-bold text-brand-text leading-none">
+                  {stats.totalArticles}
+                </span>
+                <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
+                  Artykułów
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-brand-featured-bg p-5 rounded-none border border-brand-border flex flex-col justify-between hover:border-brand-text transition-colors">
+              <div className="text-brand-muted mb-2">
+                <Clock size={18} />
+              </div>
+              <div className="mt-4">
+                <span className="block text-3xl font-mono font-bold text-brand-text leading-none">
+                  {stats.totalReadTime} <span className="text-sm font-sans font-semibold text-brand-muted">min</span>
+                </span>
+                <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
+                  Czas czytania
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-brand-featured-bg p-5 rounded-none border border-brand-border flex flex-col justify-between hover:border-brand-text transition-colors">
+              <div className="text-brand-muted mb-2">
+                <Award size={18} />
+              </div>
+              <div className="mt-4">
+                <span className="block text-3xl font-mono font-bold text-brand-text leading-none">
+                  {stats.totalWordCount.toLocaleString()}
+                </span>
+                <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
+                  Liczba słów
+                </span>
+              </div>
+            </div>
+
+            <div className="bg-brand-featured-bg p-5 rounded-none border border-brand-border flex flex-col justify-between hover:border-brand-text transition-colors">
+              <div className="text-brand-muted mb-2">
+                <Settings size={18} />
+              </div>
+              <div className="mt-4">
+                <span className="block text-3xl font-mono font-bold text-brand-text leading-none">
+                  {stats.uniqueToolsCount}
+                </span>
+                <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
+                  Narzędzia AI
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
     </div>
