@@ -2,10 +2,12 @@ import React, { lazy, Suspense } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import { Header } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
+import { PageSkeleton } from "./components/layout/PageSkeleton";
 import { HomePage } from "./pages/HomePage";
 import { ArticlesPage } from "./pages/ArticlesPage";
 import { ArticlePage } from "./pages/ArticlePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { PrivacyPage } from "./pages/PrivacyPage";
 import { GoogleAnalytics } from "./components/analytics/GoogleAnalytics";
 
 const WorkspacePage = lazy(() =>
@@ -27,10 +29,11 @@ export default function App() {
             <Route path="/articles" element={<ArticlesPage />} />
             <Route path="/articles/:period/:publication" element={<ArticlePage />} />
             <Route path="/articles/:slug" element={<ArticlePage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
             <Route
               path="/workspace"
               element={
-                <Suspense fallback={<main className="min-h-[60vh] flex items-center justify-center text-sm text-brand-muted">Ładowanie Strefy Twórcy…</main>}>
+                <Suspense fallback={<PageSkeleton />}>
                   <WorkspacePage />
                 </Suspense>
               }

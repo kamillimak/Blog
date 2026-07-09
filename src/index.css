@@ -21,13 +21,33 @@ html {
   background-color: #FDFDFB;
 }
 
+html.dark {
+  --color-brand-bg: #0F0F0E;
+  --color-brand-card: #161616;
+  --color-brand-featured-bg: #20201D;
+  --color-brand-border: #34342F;
+  --color-brand-text: #F5F2EA;
+  --color-brand-muted: #B8B3A7;
+  --color-brand-sage: #A8B084;
+  color-scheme: dark;
+  background-color: #0F0F0E;
+}
+
 body {
   color: #1A1A1A;
+}
+
+html.dark body {
+  color: #F5F2EA;
 }
 
 /* High contrast focus ring for accessibility and theme style */
 *:focus-visible {
   outline: 2px solid #1A1A1A;
   outline-offset: 2px;
+}
+
+html.dark *:focus-visible {
+  outline-color: #F5F2EA;
 }
 

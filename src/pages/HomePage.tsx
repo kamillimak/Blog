@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, RotateCcw, Award, Clock, FileText, Settings, Sparkles, Layout, Code, Terminal, MessageSquare } from "lucide-react";
+import { Search, RotateCcw, Award, Clock, FileText, Settings, ArrowRight, BriefcaseBusiness, Mail, Newspaper, Users } from "lucide-react";
 import { ARTICLES } from "../data/articles";
 import { ArticleCard } from "../components/article/ArticleCard";
 import { getGlobalStats, filterArticles } from "../utils/article";
@@ -10,7 +10,7 @@ import { HeroSlider } from "../components/article/HeroSlider";
 export function HomePage() {
   // Set page title for SEO
   useEffect(() => {
-    document.title = "BLOG AI Coding — Praktyczny workflow programowania z AI";
+    document.title = "Blog technologiczny — Codex · Trae · Claude · AI Studio";
   }, []);
 
   // Stats
@@ -20,11 +20,6 @@ export function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-  // Latest/Featured Article for the Hero section
-  const featuredArticle = useMemo(() => {
-    return ARTICLES.find((a) => a.featured) || ARTICLES[0];
-  }, []);
 
   // Filtered Library Articles
   const filteredArticles = useMemo(() => {
@@ -59,11 +54,11 @@ export function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-6">
                 <span className="inline-block px-3 py-1 bg-brand-text text-brand-bg text-[10px] font-bold uppercase tracking-widest rounded-none mb-4">
-                  O mnie
+                  Blog technologiczny Kamila Mikołajczyka
                 </span>
                 <div className="flex items-center justify-between gap-4">
                   <h1 className="text-[32px] sm:text-5xl lg:text-[64px] font-bold leading-[0.9] tracking-tighter text-brand-text uppercase min-w-0">
-                    Kamil<br/>Mikołajczyk
+                    Praktyczny warsztat AI dla twórców, liderów i zespołów IT
                   </h1>
                   <div className="lg:hidden shrink-0 h-20 w-20 sm:h-28 sm:w-28 rounded-full border border-brand-border bg-brand-featured-bg p-1.5 overflow-hidden">
                     <img
@@ -74,16 +69,27 @@ export function HomePage() {
                   </div>
                 </div>
                 <p className="text-brand-muted text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Jestem pasjonatem technologii, sztucznej inteligencji i praktycznego wykorzystania narzędzi AI w codziennej pracy. Zapraszam Cię do mojego świata eksperymentów, automatyzacji i pomysłów, które pomagają lepiej rozumieć nowoczesny cyfrowy warsztat.
+                  Blog o pracy z Codex, Trae, Claude i AI Studio: od codziennych newsów technologicznych, przez automatyzacje, po konkretne workflow dla osób, które chcą szybciej projektować, wdrażać i opowiadać o produktach AI.
                 </p>
-                <div className="pt-2">
+                <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <Link
-                    to={`/articles/${featuredArticle.slug}`}
+                    to="/articles"
                     className="inline-flex items-center justify-center px-8 py-4 bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white text-xs font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer"
                   >
-                    <span>Wejdź do mojego świata</span>
+                    <span>Czytaj artykuły</span>
+                    <ArrowRight size={14} className="ml-2" />
                   </Link>
+                  <a
+                    href="mailto:kontakt@kamillimak.pl"
+                    className="inline-flex items-center justify-center px-8 py-4 border border-brand-text text-brand-text hover:bg-brand-text hover:text-brand-bg text-xs font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer"
+                  >
+                    <Mail size={14} className="mr-2" />
+                    <span>Kontakt</span>
+                  </a>
                 </div>
+                <p className="text-[10px] font-mono uppercase tracking-wider text-brand-muted">
+                  Autor: Kamil Mikołajczyk · Senior IT Project Manager · Product Owner · AI & Digital Transformation
+                </p>
               </div>
               <div className="hidden lg:block lg:col-span-5">
                 <div className="border border-brand-border bg-brand-featured-bg p-3 max-w-sm lg:max-w-none">
@@ -107,6 +113,53 @@ export function HomePage() {
 
       {/* AI News Section */}
       <DailyBriefing />
+
+      {/* Audience Section */}
+      <section id="audience-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="border-y border-brand-border py-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-4">
+              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-muted uppercase block mb-3">
+                Dla kogo jest ten blog
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-sans font-extrabold tracking-tight uppercase text-brand-text">
+                Dla osób, które chcą rozumieć AI w praktyce, nie tylko w teorii
+              </h2>
+            </div>
+            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                {
+                  icon: BriefcaseBusiness,
+                  title: "Liderzy i PM/PO",
+                  text: "Scenariusze użycia AI w procesach, backlogach, analizie i komunikacji z zespołem."
+                },
+                {
+                  icon: Users,
+                  title: "Twórcy AI-native",
+                  text: "Workflow, automatyzacje i narzędzia, które pomagają zamieniać pomysły w prototypy."
+                },
+                {
+                  icon: Newspaper,
+                  title: "Osoby śledzące tech",
+                  text: "Newsroom AI, TOP 3 i briefing trendów z podziałem na Polskę i świat."
+                }
+              ].map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div key={item.title} className="border border-brand-border bg-brand-card p-5">
+                    <div className="mb-5 flex h-10 w-10 items-center justify-center border border-brand-border bg-brand-featured-bg text-brand-text">
+                      <Icon size={18} />
+                    </div>
+                    <h3 className="mb-2 text-sm font-extrabold uppercase tracking-tight text-brand-text">{item.title}</h3>
+                    <p className="text-sm leading-relaxed text-brand-muted">{item.text}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* 3. SYNERGISTIC WORKFLOW SECTION */}
       <section id="workflow-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">

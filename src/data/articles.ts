@@ -564,5 +564,121 @@ export interface FilterState {
         text: "Wdrożenie hybrydowego workflow łączącego AI Studio, Claude'a, Codexa i Trae pozwala na bezprecedensowy wzrost produktywności. Zamiast pisać powtarzalny kod, skupiasz się na projektowaniu, podejmowaniu decyzji i orkiestracji inteligentnych agentów. Stajesz się dyrygentem orkiestry, w której każdy muzyk gra dokładnie to, w czym jest najlepszy."
       }
     ]
+  },
+  {
+    id: "6",
+    slug: "jak-powstawal-blog-ai-coding",
+    title: "Jak powstawał blog AI Coding: changelog jako historia produktu",
+    subtitle: "Od statycznego SPA po newsroom, automatyzacje, SEO i ciemny motyw",
+    description: "Kulisy kolejnych iteracji nad blogiem technologicznym: architektura React/Vite, publikacje, newsroom AI, slider video, integracje Google, SEO oraz decyzje UX, które zmieniają prosty blog w pełniejszy produkt redakcyjny.",
+    category: "Strategia",
+    tool: "Codex",
+    author: {
+      name: "Kamil Mikołajczyk",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
+      avatar: "KM"
+    },
+    publishedAt: "2026-07-09",
+    readTime: 8,
+    wordCount: 1750,
+    heroImage: "workflow_hero",
+    imageAlt: "Schemat rozwoju bloga technologicznego od fundamentu po newsroom i SEO",
+    imageCaption: "Rys. 6: Changelog jako mapa iteracyjnego rozwoju produktu redakcyjnego.",
+    accentColor: "emerald",
+    featured: false,
+    tags: ["Changelog", "Product", "SEO", "React", "AI Workflow"],
+    pullQuote: "Dobry changelog nie jest listą technicznych drobiazgów. Jest pamięcią produktu: pokazuje decyzje, priorytety i kierunek dojrzewania.",
+    keyTakeaways: [
+      "Blog można rozwijać jak produkt: małymi iteracjami, z jasnym celem każdej zmiany.",
+      "Newsroom, automatyzacje i biblioteka artykułów powinny mieć oddzielne źródła danych i statusy publikacji.",
+      "SEO, polityka prywatności, CTA i responsywność nie są dodatkami, tylko częścią wiarygodności.",
+      "Changelog pomaga utrzymać ciągłość pracy między kolejnymi agentami AI i przyszłymi wdrożeniami."
+    ],
+    sections: [
+      {
+        type: "heading",
+        level: 2,
+        text: "Część 1: Fundament techniczny",
+        id: "fundament-techniczny"
+      },
+      {
+        type: "paragraph",
+        text: "Projekt zaczął się jako statyczne SPA oparte o React 19, TypeScript, Vite i Tailwind CSS v4. Najważniejszą decyzją architektoniczną było rozdzielenie treści artykułów od komponentów interfejsu. Dzięki temu blog nie stał się jedną dużą stroną z ręcznie wpisanym HTML, tylko uporządkowaną aplikacją, w której dane, layout, routing i typy mają osobne odpowiedzialności."
+      },
+      {
+        type: "paragraph",
+        text: "HashRouter został wybrany z myślą o GitHub Pages, aby bezpiecznie obsługiwać bezpośrednie linki do artykułów bez błędów 404. To praktyczny kompromis dla projektu, który ma działać stabilnie jako statyczna publikacja."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Część 2: Od bloga do narzędzia redakcyjnego",
+        id: "narzedzie-redakcyjne"
+      },
+      {
+        type: "paragraph",
+        text: "Kolejna iteracja dodała elementy zaplecza redakcyjnego: newsletter, lokalny fallback zapisu subskrypcji, integrację Gmail SMTP oraz Strefę Twórcy połączoną z Google Drive i Google Docs. Blog zaczął działać nie tylko jako miejsce publikacji, ale jako środowisko pracy nad treściami."
+      },
+      {
+        type: "bulletList",
+        items: [
+          "Newsletter zbiera adresy nawet wtedy, gdy SMTP nie jest skonfigurowany.",
+          "Strefa Twórcy pozwala pracować z dokumentami Google bez ręcznego kopiowania treści.",
+          "Tokeny Google są trzymane w pamięci, a nie w localStorage, co ogranicza ryzyko bezpieczeństwa."
+        ]
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Część 3: Newsroom, automatyzacje i statusy publikacji",
+        id: "newsroom-automatyzacje"
+      },
+      {
+        type: "paragraph",
+        text: "Największa zmiana produktowa dotyczyła newsroomu. Dzienne newsy, materiały TOP 3 i AI briefing zostały spięte w jeden układ, ale bez mieszania szkiców z publicznymi artykułami. To ważne, bo automatyzacja może tworzyć treść szybko, ale publikacja wymaga osobnej decyzji redakcyjnej."
+      },
+      {
+        type: "paragraph",
+        text: "Widok newsroomu dostał etykiety Tech PL, Tech World oraz trzy podkategorie TOP 3. Karty newsów pokazują źródło, datę, mocniejsze tło labeli i lokalne video, które może uruchamiać się po najechaniu lub po zatrzymaniu scrolla na mobile."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Część 4: Mobile, SEO i zaufanie",
+        id: "mobile-seo-zaufanie"
+      },
+      {
+        type: "paragraph",
+        text: "Po rozbudowie treści priorytet przeszedł na mobile responsiveness, widoczność i konwersję. Slider został dopasowany do małych ekranów, przyciski przestały wypadać poza viewport, a sekcja hero otrzymała mocniejszy headline oraz dwa CTA: czytanie artykułów i kontakt."
+      },
+      {
+        type: "paragraph",
+        text: "Warstwa SEO została uzupełniona o meta title, description, Open Graph, Twitter Card, canonical, sitemap, robots i schema.org. Dodanie polityki prywatności oraz jawnego kontaktu jest szczególnie istotne po włączeniu Google Analytics i formularza newslettera."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Część 5: Dlaczego changelog zostaje w repozytorium",
+        id: "dlaczego-changelog"
+      },
+      {
+        type: "paragraph",
+        text: "Changelog jest tu czymś więcej niż dodatkiem do GitHuba. To zapis decyzji produktowych, który pomaga kolejnym agentom AI i ludziom zrozumieć, dlaczego blog wygląda i działa w określony sposób. Zamiast odtwarzać historię z commitów, można szybko zobaczyć kolejne etapy: fundament, full-stack, automatyzacje, newsroom, SEO i UX."
+      },
+      {
+        type: "quote",
+        text: "Najlepsze projekty AI-native nie powstają w jednym wielkim skoku. Powstają przez serię małych, dobrze opisanych iteracji."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Co dalej",
+        id: "co-dalej"
+      },
+      {
+        type: "paragraph",
+        text: "Następny etap to dalsza profesjonalizacja publikacji: lepsze obrazy OG dla każdego artykułu, statyczne generowanie pod SEO, panel redakcyjny statusów, testy wizualne oraz automatyczne raportowanie efektów publikacji."
+      }
+    ]
   }
 ];

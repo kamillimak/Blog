@@ -1,11 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Github, Compass, Layers } from "lucide-react";
+import { Menu, X, Github, Compass, Layers, Mail, Moon, Sun } from "lucide-react";
 import { KMSygnet } from "./KMSygnet";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    const savedTheme = window.localStorage.getItem("blog-theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const shouldUseDark = savedTheme ? savedTheme === "dark" : prefersDark;
+
+    document.documentElement.classList.toggle("dark", shouldUseDark);
+    setIsDarkMode(shouldUseDark);
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = !isDarkMode;
+
+    document.documentElement.classList.toggle("dark", nextTheme);
+    window.localStorage.setItem("blog-theme", nextTheme ? "dark" : "light");
+    setIsDarkMode(nextTheme);
+  };
 
   const isLinkActive = (path: string) => {
     if (path === "/") {
@@ -65,6 +83,14 @@ export function Header() {
             <span className="h-4 w-px bg-brand-border" />
 
             <a
+              href="mailto:kontakt@kamillimak.pl"
+              className="flex items-center gap-2 px-4 py-2 border border-brand-text bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white hover:border-brand-sage transition-colors font-bold uppercase tracking-wider text-[10px]"
+            >
+              <Mail size={15} />
+              <span>Kontakt</span>
+            </a>
+
+            <a
               href="https://github.com/kamillimak/Blog"
               target="_blank"
               rel="noopener noreferrer"
@@ -74,10 +100,27 @@ export function Header() {
               <Github size={18} />
               <span>GitHub</span>
             </a>
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex h-9 w-9 items-center justify-center border border-brand-border text-brand-muted hover:text-brand-text hover:border-brand-text transition-colors"
+              aria-label={isDarkMode ? "Włącz jasny motyw" : "Włącz ciemny motyw"}
+            >
+              {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
+            </button>
           </nav>
 
           {/* Mobile menu button */}
-          <div className="flex md:hidden">
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="inline-flex h-10 w-10 items-center justify-center border border-brand-border text-brand-muted hover:text-brand-text hover:border-brand-text transition-colors"
+              aria-label={isDarkMode ? "Włącz jasny motyw" : "Włącz ciemny motyw"}
+            >
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
@@ -117,7 +160,16 @@ export function Header() {
             })}
             
             <hr className="my-2 border-brand-border" />
-            
+
+            <a
+              href="mailto:kontakt@kamillimak.pl"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 px-3 py-3 rounded-none text-base font-bold uppercase tracking-wide bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white transition-colors"
+            >
+              <Mail size={18} />
+              <span>Kontakt</span>
+            </a>
+
             <a
               href="https://github.com/kamillimak/Blog"
               target="_blank"

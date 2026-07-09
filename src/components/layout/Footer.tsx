@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Cpu, ArrowUp } from "lucide-react";
+import { ArrowUp, Cpu, Github, Linkedin, Mail } from "lucide-react";
 import { NewsletterForm } from "./NewsletterForm";
 import { KMSygnet } from "./KMSygnet";
 
@@ -35,7 +35,7 @@ export function Footer() {
 
       <footer id="app-footer" className="bg-[#1A1A1A] text-zinc-400 py-16 border-t border-[#2D2D2D] font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           
           {/* Brand Info */}
           <div className="col-span-1 md:col-span-2 lg:col-span-1">
@@ -70,6 +70,9 @@ export function Footer() {
                 <Link to="/articles" className="hover:text-white transition-colors hover:underline underline-offset-4">Wszystkie artykuły</Link>
               </li>
               <li>
+                <Link to="/privacy" className="hover:text-white transition-colors hover:underline underline-offset-4">Polityka prywatności</Link>
+              </li>
+              <li>
                 <a href="https://github.com/kamillimak/Blog" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors hover:underline underline-offset-4">Repozytorium GitHub</a>
               </li>
             </ul>
@@ -90,6 +93,31 @@ export function Footer() {
               </li>
               <li>
                 <span className="text-zinc-400 hover:text-white transition-colors cursor-default">AI STUDIO · Wide Context</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div className="col-span-1">
+            <h3 className="text-white text-xs font-bold tracking-[0.15em] uppercase mb-5 border-l-2 border-brand-sage pl-3">Kontakt</h3>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <a href="mailto:kontakt@kamillimak.pl" className="inline-flex items-center gap-2 hover:text-white transition-colors hover:underline underline-offset-4">
+                  <Mail size={15} />
+                  kontakt@kamillimak.pl
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/kamil-mikolajczyk/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-white transition-colors hover:underline underline-offset-4">
+                  <Linkedin size={15} />
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/kamillimak" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:text-white transition-colors hover:underline underline-offset-4">
+                  <Github size={15} />
+                  GitHub
+                </a>
               </li>
             </ul>
           </div>
