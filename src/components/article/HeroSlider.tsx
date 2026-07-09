@@ -1,49 +1,103 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, ChevronLeft, ChevronRight, Newspaper } from "lucide-react";
+import { ArrowRight, Calendar, ChevronLeft, ChevronRight, Code2, Newspaper, Sparkles } from "lucide-react";
 import { ARTICLES } from "../../data/articles";
 import { AI_TREND_BRIEFING, AI_TREND_BRIEFING_DATE } from "../../data/aiTrendBriefing";
 import { AI_NEWS_ITEMS, AI_NEWS_PUBLISHED_AT } from "./DailyBriefing";
 import { formatPolishDate } from "../../utils/article";
 
+type SlideKind = "Artykuł" | "Trend" | "TECH";
+
 type HeroSlide = {
   id: string;
-  kind: "Artykuł" | "News" | "AI News";
+  kind: SlideKind;
+  label: string;
   title: string;
   description: string;
   publishedAt: string;
+  image: string;
+  imageAlt: string;
   articleSlug?: string;
   targetId?: string;
 };
 
+const slideStyles: Record<SlideKind, {
+  label: string;
+  badge: string;
+  border: string;
+  hover: string;
+  ring: string;
+  icon: typeof Code2;
+}> = {
+  Artykuł: {
+    label: "Artykuł",
+    badge: "bg-indigo-500 text-white border-indigo-400",
+    border: "border-indigo-500/70",
+    hover: "hover:bg-indigo-600",
+    ring: "bg-indigo-500",
+    icon: Code2,
+  },
+  Trend: {
+    label: "Trend",
+    badge: "bg-emerald-500 text-white border-emerald-400",
+    border: "border-emerald-500/70",
+    hover: "hover:bg-emerald-600",
+    ring: "bg-emerald-500",
+    icon: Sparkles,
+  },
+  TECH: {
+    label: "TECH",
+    badge: "bg-orange-500 text-white border-orange-400",
+    border: "border-orange-500/70",
+    hover: "hover:bg-orange-600",
+    ring: "bg-orange-500",
+    icon: Newspaper,
+  },
+};
+
 export function HeroSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
+
   const slides = useMemo<HeroSlide[]>(() => {
-    const articles = ARTICLES.filter((article) => article.status !== "DRAFT").slice(0, 2).map((article) => ({
-      id: `article-${article.id}`,
-      kind: "Artykuł" as const,
-      title: article.title,
-      description: article.description,
-      publishedAt: article.publishedAt,
-      articleSlug: article.slug,
-    }));
-    const trendNews = AI_TREND_BRIEFING[0].items.slice(0, 2).map((item) => ({
-      id: `trend-${item.id}`,
-      kind: "News" as const,
-      title: item.title,
-      description: item.summary,
-      publishedAt: AI_TREND_BRIEFING_DATE,
-      targetId: `trend-news-${item.id}`,
-    }));
-    const aiNews = AI_NEWS_ITEMS.slice(0, 2).map((item) => ({
-      id: `ai-news-slide-${item.id}`,
-      kind: "AI News" as const,
-      title: item.title,
-      description: item.content,
-      publishedAt: AI_NEWS_PUBLISHED_AT,
-      targetId: `ai-news-${item.id}`,
-    }));
-    return [...articles, ...trendNews, ...aiNews];
+    const article = ARTICLES.find((item) => item.featured) ?? ARTICLES[0];
+    const trend = AI_TREND_BRIEFING[0].items[0];
+    const tech = AI_NEWS_ITEMS[0];
+
+    return [
+      {
+        id: `article-${article.id}`,
+        kind: "Artykuł",
+        label: "Artykuł",
+        title: article.title,
+        description: article.description,
+        publishedAt: article.publishedAt,
+        image: "/news/hero/article-ai-review.jpeg",
+        imageAlt: "Programista pracujący z agentem AI podczas przeglądu kodu",
+        articleSlug: article.slug,
+      },
+      {
+        id: `trend-${trend.id}`,
+        kind: "Trend",
+        label: "Trend",
+        title: trend.title,
+        description: trend.summary,
+        publishedAt: AI_TREND_BRIEFING_DATE,
+        image: "/news/hero/trend-ai-infrastructure.jpeg",
+        imageAlt: "Ilustracja infrastruktury AI i przepływu danych w centrum obliczeniowym",
+        targetId: `trend-news-${trend.id}`,
+      },
+      {
+        id: `tech-${tech.id}`,
+        kind: "TECH",
+        label: "TECH",
+        title: tech.title,
+        description: tech.content,
+        publishedAt: AI_NEWS_PUBLISHED_AT,
+        image: "/news/hero/tech-ai-assistant.jpeg",
+        imageAlt: "Stanowisko pracy z asystentem AI wspierającym programowanie",
+        targetId: `ai-news-${tech.id}`,
+      },
+    ];
   }, []);
 
   useEffect(() => {
@@ -52,45 +106,104 @@ export function HeroSlider() {
   }, [slides.length]);
 
   const activeSlide = slides[activeIndex];
+  const activeStyle = slideStyles[activeSlide.kind];
+  const ActiveIcon = activeStyle.icon;
   const move = (direction: number) => setActiveIndex((activeIndex + direction + slides.length) % slides.length);
   const scrollToTarget = () => activeSlide.targetId && document.getElementById(activeSlide.targetId)?.scrollIntoView({ behavior: "smooth", block: "center" });
 
   return (
-    <div id="hero-slider" className="border border-brand-border bg-brand-featured-bg min-h-[430px] flex flex-col" aria-roledescription="carousel" aria-label="Najważniejsze materiały">
-      <div className="flex items-center justify-between border-b border-brand-border px-5 py-4">
-        <span className="text-[10px] font-black uppercase tracking-widest text-brand-muted">Na pierwszym planie</span>
-        <span className="font-mono text-[10px] text-brand-muted">{String(activeIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}</span>
-      </div>
-      <div className="flex flex-1 flex-col justify-between p-6 sm:p-8" aria-live="polite">
-        <div>
-          <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-orange-600">
-            <Newspaper size={14} /> {activeSlide.kind}
+    <div
+      id="hero-slider"
+      className={`relative min-h-[520px] overflow-hidden border bg-[#111111] text-white ${activeStyle.border}`}
+      aria-roledescription="carousel"
+      aria-label="Najważniejsze materiały"
+    >
+      <img
+        src={activeSlide.image}
+        alt={activeSlide.imageAlt}
+        className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-black via-black/78 to-black/20" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/90 to-transparent" />
+
+      <div className="relative z-10 flex min-h-[520px] flex-col justify-between p-5 sm:p-8 lg:p-10">
+        <div className="flex flex-col gap-4 border-b border-white/15 pb-5 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-wrap items-center gap-2" aria-label="Kategorie slidera">
+            {slides.map((slide, index) => {
+              const style = slideStyles[slide.kind];
+              const Icon = style.icon;
+              return (
+                <button
+                  key={slide.id}
+                  type="button"
+                  onClick={() => setActiveIndex(index)}
+                  aria-current={index === activeIndex}
+                  className={`inline-flex items-center gap-2 border px-3 py-2 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                    index === activeIndex ? style.badge : "border-white/20 bg-black/35 text-white/70 hover:border-white/45 hover:text-white"
+                  }`}
+                >
+                  <Icon size={13} />
+                  {style.label}
+                </button>
+              );
+            })}
+          </div>
+          <span className="font-mono text-[10px] uppercase tracking-widest text-white/60">
+            {String(activeIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
           </span>
-          <h2 className="mt-5 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight text-brand-text">{activeSlide.title}</h2>
-          <p className="mt-4 text-sm leading-relaxed text-brand-muted line-clamp-4">{activeSlide.description}</p>
         </div>
-        <div className="mt-8">
-          <time dateTime={activeSlide.publishedAt} className="mb-5 flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider text-brand-muted">
-            <Calendar size={13} /> {formatPolishDate(activeSlide.publishedAt)}
-          </time>
-          {activeSlide.articleSlug ? (
-            <Link to={`/articles/${activeSlide.articleSlug}`} className="inline-flex items-center gap-2 bg-brand-text px-5 py-3 text-[10px] font-black uppercase tracking-widest text-brand-bg hover:bg-orange-600 transition-colors">
-              Czytaj materiał <ArrowRight size={14} />
-            </Link>
-          ) : (
-            <button type="button" onClick={scrollToTarget} className="inline-flex items-center gap-2 bg-brand-text px-5 py-3 text-[10px] font-black uppercase tracking-widest text-brand-bg hover:bg-orange-600 transition-colors cursor-pointer">
-              Przejdź do newsa <ArrowRight size={14} />
+
+        <div className="grid gap-8 py-10 lg:grid-cols-12 lg:items-end">
+          <div className="max-w-3xl lg:col-span-8">
+            <span className={`inline-flex items-center gap-2 border px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ${activeStyle.badge}`}>
+              <ActiveIcon size={14} />
+              {activeSlide.label}
+            </span>
+            <h2 className="mt-5 text-3xl font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-5xl lg:text-6xl">
+              {activeSlide.title}
+            </h2>
+            <p className="mt-5 max-w-2xl text-sm leading-relaxed text-zinc-200 sm:text-base">
+              {activeSlide.description}
+            </p>
+          </div>
+
+          <div className="lg:col-span-4 lg:justify-self-end">
+            <time dateTime={activeSlide.publishedAt} className="mb-5 flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider text-zinc-300">
+              <Calendar size={13} /> {formatPolishDate(activeSlide.publishedAt)}
+            </time>
+            {activeSlide.articleSlug ? (
+              <Link to={`/articles/${activeSlide.articleSlug}`} className={`inline-flex items-center gap-2 bg-white px-5 py-3 text-[10px] font-black uppercase tracking-widest text-black transition-colors ${activeStyle.hover}`}>
+                Czytaj materiał <ArrowRight size={14} />
+              </Link>
+            ) : (
+              <button type="button" onClick={scrollToTarget} className={`inline-flex items-center gap-2 bg-white px-5 py-3 text-[10px] font-black uppercase tracking-widest text-black transition-colors cursor-pointer ${activeStyle.hover}`}>
+                Przejdź do sekcji <ArrowRight size={14} />
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between border-t border-white/15 pt-4">
+          <div className="flex gap-2" aria-label="Wybór slajdu">
+            {slides.map((slide, index) => (
+              <button
+                key={slide.id}
+                type="button"
+                onClick={() => setActiveIndex(index)}
+                aria-label={`Slajd ${index + 1}: ${slide.title}`}
+                aria-current={index === activeIndex}
+                className={`h-2.5 w-10 border border-white/25 transition-colors cursor-pointer ${index === activeIndex ? slideStyles[slide.kind].ring : "bg-white/20"}`}
+              />
+            ))}
+          </div>
+          <div className="flex gap-1">
+            <button type="button" onClick={() => move(-1)} aria-label="Poprzedni slajd" className="border border-white/20 p-2 text-white hover:border-white cursor-pointer">
+              <ChevronLeft size={16} />
             </button>
-          )}
-        </div>
-      </div>
-      <div className="flex items-center justify-between border-t border-brand-border px-4 py-3">
-        <div className="flex gap-2" aria-label="Wybór slajdu">
-          {slides.map((slide, index) => <button key={slide.id} type="button" onClick={() => setActiveIndex(index)} aria-label={`Slajd ${index + 1}: ${slide.title}`} aria-current={index === activeIndex} className={`h-2 w-2 border border-brand-text transition-colors cursor-pointer ${index === activeIndex ? "bg-brand-text" : "bg-transparent"}`} />)}
-        </div>
-        <div className="flex gap-1">
-          <button type="button" onClick={() => move(-1)} aria-label="Poprzedni slajd" className="p-2 border border-brand-border hover:border-brand-text cursor-pointer"><ChevronLeft size={16} /></button>
-          <button type="button" onClick={() => move(1)} aria-label="Następny slajd" className="p-2 border border-brand-border hover:border-brand-text cursor-pointer"><ChevronRight size={16} /></button>
+            <button type="button" onClick={() => move(1)} aria-label="Następny slajd" className="border border-white/20 p-2 text-white hover:border-white cursor-pointer">
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

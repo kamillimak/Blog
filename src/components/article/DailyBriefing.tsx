@@ -156,7 +156,7 @@ export function DailyBriefing() {
             <div className="flex items-center gap-2 mb-2">
               <span className="text-orange-500 text-lg">D</span>
               <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight uppercase text-brand-text">
-                AI News
+                TECH
               </h2>
             </div>
             <p className="text-brand-muted text-xs">

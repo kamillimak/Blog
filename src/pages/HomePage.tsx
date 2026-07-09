@@ -56,10 +56,10 @@ export function HomePage() {
       {/* 1. HERO SECTION & INTRODUCTION */}
       <section id="hero-section" className="bg-brand-bg border-b border-brand-border pt-10 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="space-y-10">
             
             {/* Intro text */}
-            <div className="lg:col-span-5 space-y-6">
+            <div className="max-w-4xl space-y-6">
               <span className="inline-block px-3 py-1 bg-brand-text text-brand-bg text-[10px] font-bold uppercase tracking-widest rounded-none mb-4">
                 Premium Magazine Workflow
               </span>
@@ -80,7 +80,7 @@ export function HomePage() {
             </div>
 
             {/* Featured content slider */}
-            <div className="lg:col-span-7">
+            <div className="w-full">
               <HeroSlider />
             </div>
 
