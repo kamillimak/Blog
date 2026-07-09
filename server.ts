@@ -8,12 +8,14 @@ import { getFirestore } from "firebase-admin/firestore";
 import nodemailer from "nodemailer";
 import path from "path";
 import { createServer as createViteServer } from "vite";
+import { ARTICLES } from "./src/data/articles";
 
 dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const isProduction = process.env.NODE_ENV === "production";
+const shouldUseFirestore = () => (isProduction && process.env.USE_FIRESTORE !== "false") || process.env.USE_FIRESTORE === "true";
 const pagesOrigin = "https://kamillimak.github.io";
 const allowedOrigins = new Set([
   pagesOrigin,
@@ -34,6 +36,7 @@ app.use(cors({
 }));
 
 const SUBSCRIPTIONS_FILE = path.join(process.cwd(), "subscriptions.json");
+const CONTENT_DIR = path.join(process.cwd(), "content");
 
 function normalizeEmail(value: unknown): string | null {
   if (typeof value !== "string") return null;
@@ -71,7 +74,7 @@ function initializeAdmin() {
 }
 
 async function saveSubscription(email: string): Promise<boolean> {
-  if (!isProduction && !process.env.USE_FIRESTORE) return saveLocalSubscription(email);
+  if (!shouldUseFirestore()) return saveLocalSubscription(email);
 
   initializeAdmin();
   const id = crypto.createHash("sha256").update(email).digest("hex");
@@ -81,6 +84,98 @@ async function saveSubscription(email: string): Promise<boolean> {
 
   await reference.set({ email, subscribedAt: new Date().toISOString(), source: "blog" });
   return true;
+}
+
+async function getSubscriberEmails(): Promise<string[]> {
+  if (!shouldUseFirestore()) return getLocalSubscriptions();
+
+  initializeAdmin();
+  const snapshot = await getFirestore().collection("newsletterSubscriptions").get();
+  return snapshot.docs
+    .map((document) => document.data().email)
+    .filter((email): email is string => typeof email === "string" && Boolean(normalizeEmail(email)));
+}
+
+function getMarkdownFiles(directory: string): string[] {
+  try {
+    return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+      const entryPath = path.join(directory, entry.name);
+      if (entry.isDirectory()) return getMarkdownFiles(entryPath);
+      return entry.name.endsWith(".md") ? [entryPath] : [];
+    });
+  } catch {
+    return [];
+  }
+}
+
+function stripMarkdown(value: string): string {
+  return value
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+    .replace(/[*_`>#-]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getRecentNewsletterItems(hours = 24) {
+  const now = Date.now();
+  const since = now - hours * 60 * 60 * 1000;
+  const articleItems = ARTICLES
+    .filter((article) => new Date(article.publishedAt).getTime() >= since)
+    .map((article) => ({
+      title: article.title,
+      description: article.description,
+      label: `Artykuł · ${article.category}`,
+      url: `https://kamillimak.github.io/Blog/#/articles/${article.slug}`,
+      date: article.publishedAt,
+    }));
+
+  const markdownItems = [
+    ...getMarkdownFiles(path.join(CONTENT_DIR, "daily-news")),
+    ...getMarkdownFiles(path.join(CONTENT_DIR, "top-3")),
+  ]
+    .filter((file) => !file.endsWith("README.md"))
+    .map((file) => {
+      const markdown = fs.readFileSync(file, "utf8");
+      const date = markdown.match(/(\d{4}-\d{2}-\d{2})/)?.[1] ?? "";
+      return {
+        title: stripMarkdown(markdown.match(/^#\s+(.+)$/m)?.[1] ?? path.basename(file, ".md")),
+        description: stripMarkdown(markdown.split(/\r?\n\r?\n/).find((block) => !block.startsWith("#")) ?? ""),
+        label: file.includes(`${path.sep}top-3${path.sep}`) ? "TOP 3" : "Newsroom",
+        url: "https://kamillimak.github.io/Blog/#/",
+        date,
+      };
+    })
+    .filter((item) => {
+      const timestamp = new Date(item.date).getTime();
+      return Number.isFinite(timestamp) && timestamp >= since;
+    })
+    .slice(0, 12);
+
+  return [...articleItems, ...markdownItems].sort((left, right) => right.date.localeCompare(left.date));
+}
+
+function renderDailyDigestHtml(items: ReturnType<typeof getRecentNewsletterItems>) {
+  const list = items
+    .map(
+      (item) => `
+        <tr>
+          <td style="padding:18px 0;border-top:1px solid #333">
+            <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#a8b084;font-weight:700">${item.label}</div>
+            <h2 style="margin:6px 0 8px;font-size:20px;line-height:1.25;color:#f5f2ea">${item.title}</h2>
+            <p style="margin:0 0 10px;color:#b8b3a7;line-height:1.55">${item.description || "Nowość z ostatnich 24 godzin na blogu."}</p>
+            <a href="${item.url}" style="color:#f5f2ea;font-weight:700;text-transform:uppercase;font-size:12px">Otwórz</a>
+          </td>
+        </tr>`,
+    )
+    .join("");
+
+  return `<div style="background:#11110f;color:#f5f2ea;font-family:Arial,sans-serif;padding:32px;max-width:680px;margin:auto">
+    <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#a8b084;font-weight:700">Warsztat AI Coding</p>
+    <h1 style="font-size:32px;line-height:1.05;margin:0 0 12px">Nowości z ostatnich 24h</h1>
+    <p style="color:#b8b3a7;line-height:1.6;margin:0 0 24px">Krótki dzienny digest artykułów, newsów i materiałów AI opublikowanych lub wygenerowanych w ostatniej dobie.</p>
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${list}</table>
+    <p style="margin-top:28px;color:#70706b;font-size:12px">Otrzymujesz tę wiadomość, bo zapisano ten adres do newslettera Warsztat AI Coding.</p>
+  </div>`;
 }
 
 function getErrorMessage(error: unknown): string {
@@ -137,8 +232,58 @@ app.post("/api/subscribe", async (req, res) => {
   }
 });
 
+app.post("/api/newsletter/daily-digest", async (req, res) => {
+  const cronSecret = process.env.CRON_SECRET;
+  const providedSecret = req.header("x-cron-secret") || req.header("authorization")?.replace(/^Bearer\s+/i, "");
+  if (isProduction && (!cronSecret || providedSecret !== cronSecret)) {
+    return res.status(401).json({ success: false, message: "Brak autoryzacji zadania newslettera." });
+  }
+
+  try {
+    const subscribers = await getSubscriberEmails();
+    const items = getRecentNewsletterItems(24);
+    const dryRun = req.query.dryRun === "1" || req.body?.dryRun === true;
+
+    if (items.length === 0) {
+      return res.json({ success: true, sent: 0, subscribers: subscribers.length, items: 0, message: "Brak nowości z ostatnich 24h." });
+    }
+
+    if (dryRun) {
+      return res.json({ success: true, dryRun: true, sent: 0, subscribers: subscribers.length, items: items.length });
+    }
+
+    const gmailUser = process.env.GMAIL_USER;
+    const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
+    if (!gmailUser || !gmailAppPassword) {
+      return res.status(503).json({ success: false, message: "Brak konfiguracji Gmail SMTP." });
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: { user: gmailUser, pass: gmailAppPassword },
+    });
+    const html = renderDailyDigestHtml(items);
+
+    let sent = 0;
+    for (const subscriber of subscribers) {
+      await transporter.sendMail({
+        from: `"Warsztat AI Coding" <${gmailUser}>`,
+        to: subscriber,
+        subject: "Warsztat AI Coding: nowości z ostatnich 24h",
+        html,
+      });
+      sent += 1;
+    }
+
+    return res.json({ success: true, sent, subscribers: subscribers.length, items: items.length });
+  } catch (error) {
+    console.error("Daily digest error:", error);
+    return res.status(500).json({ success: false, message: "Nie udało się wysłać dziennego newslettera." });
+  }
+});
+
 app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", storage: isProduction || process.env.USE_FIRESTORE ? "firestore" : "local" });
+  res.json({ status: "ok", storage: shouldUseFirestore() ? "firestore" : "local" });
 });
 
 async function setupApp() {

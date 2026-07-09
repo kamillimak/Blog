@@ -8,6 +8,7 @@ import { ArticlesPage } from "./pages/ArticlesPage";
 import { ArticlePage } from "./pages/ArticlePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
+import { ConsentBanner } from "./components/analytics/ConsentBanner";
 import { GoogleAnalytics } from "./components/analytics/GoogleAnalytics";
 
 const WorkspacePage = lazy(() =>
@@ -44,6 +45,7 @@ export default function App() {
 
         {/* Global Footer */}
         <Footer />
+        <ConsentBanner />
       </div>
     </Router>
   );

@@ -11,5 +11,6 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=build /app/dist ./dist
+COPY --from=build /app/content ./content
 EXPOSE 8080
 CMD ["node", "dist/server.cjs"]

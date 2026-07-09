@@ -12,6 +12,17 @@ Wszystkie istotne zmiany w projekcie „Warsztat AI Coding” są dokumentowane 
 - Dodano stronę polityki prywatności i linki zaufania w stopce.
 - Dodano przełącznik jasny/ciemny motyw z zapisem wyboru w `localStorage`.
 
+## 2026-07-09 — SSG, OG images, Consent Mode i Web Vitals
+
+- Dodano Web Vitals dashboard mierzący lokalnie FCP, LCP, CLS, INP oraz TTFB.
+- Wdrożono Google Consent Mode v2 z domyślnie odmówioną zgodą analityczną.
+- Dodano banner zgód pozwalający zaakceptować analitykę albo wybrać tylko niezbędne ustawienia.
+- Dodano skrypt `scripts/generate-seo-assets.ts`, który po buildzie generuje statyczne strony SEO dla artykułów i newsów.
+- Dodano dynamiczne grafiki OG w SVG dla artykułów oraz newsów.
+- Rozszerzono build klienta o krok `npm run generate:seo`.
+- Dodano artykuł strategiczny o 10 feature’ach do dalszego rozwoju bloga.
+- Dodano artykuł opisujący tę iterację wdrożeniową.
+
 ## 2026-07-09 — Newsroom i slider video
 
 - Połączono newsy z Polski, świata, TOP 3 oraz AI briefing w jeden newsroom.

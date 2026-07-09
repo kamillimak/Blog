@@ -9,6 +9,11 @@ import { ArticleCard } from "../components/article/ArticleCard";
 import { formatPolishDate, getRelatedArticles, copyToClipboard } from "../utils/article";
 import { ReadingProgress } from "../components/article/ReadingProgress";
 
+const setMetaTag = (selector: string, attribute: "content" | "href", value: string) => {
+  const element = document.head.querySelector(selector);
+  if (element) element.setAttribute(attribute, value);
+};
+
 export function ArticlePage() {
   const { slug, period, publication } = useParams<{
     slug?: string;
@@ -47,7 +52,18 @@ export function ArticlePage() {
 
   useEffect(() => {
     if (article) {
-      document.title = `${article.title} — BLOG AI Coding`;
+      const canonical = `${window.location.origin}${import.meta.env.BASE_URL}articles/${article.slug}/`;
+      const ogImage = `${window.location.origin}${import.meta.env.BASE_URL}og/articles/${article.slug}.svg`;
+
+      document.title = `${article.title} — Blog technologiczny`;
+      setMetaTag('meta[name="description"]', "content", article.description);
+      setMetaTag('meta[property="og:title"]', "content", article.title);
+      setMetaTag('meta[property="og:description"]', "content", article.description);
+      setMetaTag('meta[property="og:image"]', "content", ogImage);
+      setMetaTag('meta[name="twitter:title"]', "content", article.title);
+      setMetaTag('meta[name="twitter:description"]', "content", article.description);
+      setMetaTag('meta[name="twitter:image"]', "content", ogImage);
+      setMetaTag('link[rel="canonical"]', "href", canonical);
     }
   }, [article]);
 

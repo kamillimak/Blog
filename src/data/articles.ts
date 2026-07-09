@@ -680,5 +680,229 @@ export interface FilterState {
         text: "Następny etap to dalsza profesjonalizacja publikacji: lepsze obrazy OG dla każdego artykułu, statyczne generowanie pod SEO, panel redakcyjny statusów, testy wizualne oraz automatyczne raportowanie efektów publikacji."
       }
     ]
+  },
+  {
+    id: "7",
+    slug: "10-featureow-ktore-rozwina-blog-ai-coding",
+    title: "10 feature’ów, które rozwiną blog AI Coding",
+    subtitle: "Dlaczego warto wdrożyć SEO SSG, OG images, Consent Mode, Web Vitals i panel redakcyjny",
+    description: "Strategiczny przegląd dziesięciu funkcji, które mogą zwiększyć widoczność, zaufanie, jakość techniczną i powtarzalność pracy redakcyjnej na blogu technologicznym.",
+    category: "Strategia",
+    tool: "AI Studio",
+    author: {
+      name: "Kamil Mikołajczyk",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
+      avatar: "KM"
+    },
+    publishedAt: "2026-07-09",
+    readTime: 10,
+    wordCount: 2100,
+    heroImage: "aistudio_hero",
+    imageAlt: "Mapa rozwoju funkcji bloga technologicznego AI Coding",
+    imageCaption: "Rys. 7: Dziesięć funkcji, które przesuwają blog z poziomu publikacji do produktu redakcyjnego.",
+    accentColor: "sky",
+    featured: false,
+    tags: ["SEO", "Product Roadmap", "Web Vitals", "Consent Mode", "Content Ops"],
+    pullQuote: "Feature ma sens wtedy, gdy poprawia jeden z czterech obszarów: widoczność, zaufanie, szybkość decyzji albo powtarzalność procesu.",
+    keyTakeaways: [
+      "Pre-render i dynamiczne OG images zwiększają szansę, że treść będzie poprawnie widoczna w Google i social media.",
+      "Consent Mode v2 oraz polityka prywatności wzmacniają zaufanie i porządkują analitykę.",
+      "Dashboard Web Vitals zamienia wydajność z abstrakcyjnego tematu w codzienny wskaźnik produktu.",
+      "Panel redakcyjny, bramka grafik i CI redukują ryzyko publikacji niedopracowanych materiałów."
+    ],
+    sections: [
+      {
+        type: "heading",
+        level: 2,
+        text: "1. Pre-render/SSG dla artykułów pod SEO",
+        id: "pre-render-ssg"
+      },
+      {
+        type: "paragraph",
+        text: "SPA jest wygodne w rozwoju, ale roboty wyszukiwarek i podglądy social media wolą gotowy HTML. Pre-render lub SSG daje każdemu artykułowi własną statyczną stronę z tytułem, opisem, treścią, canonicalem i JSON-LD. To zwiększa czytelność dla crawlerów i zmniejsza zależność SEO od JavaScriptu."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "2. Dynamiczne OG images",
+        id: "dynamiczne-og-images"
+      },
+      {
+        type: "paragraph",
+        text: "Kiedy artykuł albo news trafia na LinkedIn, pierwszym kontaktem odbiorcy często jest obraz podglądu. Dynamiczne OG images pozwalają automatycznie tworzyć spójne banery z tytułem, kategorią i brandingiem. To ma bezpośredni wpływ na klikalność i profesjonalny odbiór treści."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "3. Consent Mode v2 i banner zgód",
+        id: "consent-mode"
+      },
+      {
+        type: "paragraph",
+        text: "Analityka bez przejrzystej zgody osłabia zaufanie. Consent Mode v2 pozwala uporządkować działanie Google Analytics, jasno rozdzielić zgodę na pomiar od reklam i dać użytkownikowi realny wybór. To ważne szczególnie wtedy, gdy blog ma wspierać markę ekspercką."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "4. Lokalny indeks wyszukiwania",
+        id: "lokalny-indeks"
+      },
+      {
+        type: "paragraph",
+        text: "Wraz ze wzrostem liczby newsów i artykułów zwykły filtr przestaje wystarczać. Lokalny indeks wyszukiwania pozwala szybko przeszukiwać tytuły, tagi, leady, kategorie i źródła bez wysyłania zapytań na zewnętrzny serwer. To poprawia UX i utrzymuje prywatność."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "5. Panel redakcyjny DRAFT/APPROVED",
+        id: "panel-redakcyjny"
+      },
+      {
+        type: "paragraph",
+        text: "Automatyzacje mogą produkować dużo treści, ale publikacja wymaga kontroli jakości. Panel statusów pozwala szybko zobaczyć, co jest szkicem, co ma komplet grafik, co przeszło weryfikację i co może trafić na stronę publiczną."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "6. Bramka publikacji z kompletem grafik",
+        id: "bramka-grafik"
+      },
+      {
+        type: "paragraph",
+        text: "Materiał bez grafiki wygląda jak niedokończony. Automatyczna bramka blokująca publikację bez kompletu legalnych, lokalnych grafik chroni jakość wizualną bloga i ogranicza ryzyko przypadkowego użycia zewnętrznych zasobów."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "7. Web Vitals dashboard",
+        id: "web-vitals-dashboard"
+      },
+      {
+        type: "paragraph",
+        text: "Core Web Vitals przekładają się na odczucie szybkości, komfort czytania i pośrednio na SEO. Dashboard widoczny w projekcie sprawia, że wydajność nie jest sprawdzana dopiero po problemach, tylko staje się stałym elementem pracy nad produktem."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "8. Rekomendowane artykuły pod wpisem",
+        id: "rekomendacje"
+      },
+      {
+        type: "paragraph",
+        text: "Czytelnik, który kończy artykuł, jest w najlepszym momencie na kolejny krok. Rekomendacje zwiększają liczbę odsłon, prowadzą użytkownika przez temat i pomagają budować ścieżki wiedzy zamiast pojedynczych, oderwanych wpisów."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "9. Generator grafik LinkedIn",
+        id: "generator-linkedin"
+      },
+      {
+        type: "paragraph",
+        text: "Jeśli blog regularnie publikuje newsy, ręczne projektowanie grafik szybko staje się wąskim gardłem. Generator szablonów LinkedIn pozwala utrzymać spójność marki i skrócić drogę od publikacji newsa do dystrybucji w social media."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "10. Playwright CI dla mobile i krytycznych route",
+        id: "playwright-ci"
+      },
+      {
+        type: "paragraph",
+        text: "Najbardziej bolesne błędy frontendowe często pojawiają się na mobile: overflow, niedziałające menu, za małe przyciski, niewidoczne video. Testy Playwright w CI mogą automatycznie sprawdzać slider, newsroom, artykuły i politykę prywatności przed publikacją."
+      }
+    ]
+  },
+  {
+    id: "8",
+    slug: "iteracja-seo-vitals-og-consent",
+    title: "Iteracja SEO, Web Vitals, OG images i Consent Mode",
+    subtitle: "Jak blog dostał statyczne strony pod SEO, dashboard jakości i uporządkowaną analitykę",
+    description: "Opis konkretnej iteracji wdrożeniowej: statyczne snapshoty artykułów i newsów, generowane grafiki OG, Consent Mode v2, banner zgód oraz Web Vitals dashboard.",
+    category: "Workflow",
+    tool: "Codex",
+    author: {
+      name: "Kamil Mikołajczyk",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
+      avatar: "KM"
+    },
+    publishedAt: "2026-07-09",
+    readTime: 7,
+    wordCount: 1650,
+    heroImage: "codex_hero",
+    imageAlt: "Proces wdrożenia SEO, analityki i pomiaru jakości technicznej bloga",
+    imageCaption: "Rys. 8: Iteracja łącząca widoczność, prywatność, social preview i wydajność.",
+    accentColor: "indigo",
+    featured: false,
+    tags: ["Iteration", "SSG", "Open Graph", "GA4", "Web Vitals"],
+    pullQuote: "Ta iteracja nie dodaje kolejnej dekoracji. Dodaje mechanizmy, które pomagają blogowi być widocznym, mierzalnym i godnym zaufania.",
+    keyTakeaways: [
+      "SSG snapshoty dają artykułom i newsom statyczne HTML pod crawlery.",
+      "OG images są generowane automatycznie z danych treści.",
+      "Consent Mode v2 porządkuje działanie Google Analytics i decyzje użytkownika.",
+      "Web Vitals dashboard pokazuje jakość techniczną bez opuszczania strony."
+    ],
+    sections: [
+      {
+        type: "heading",
+        level: 2,
+        text: "Zakres iteracji",
+        id: "zakres-iteracji"
+      },
+      {
+        type: "paragraph",
+        text: "W tej iteracji blog dostał cztery elementy, które wzmacniają go jako produkt: pre-render/SSG dla artykułów i newsów, automatyczne grafiki Open Graph, Consent Mode v2 z bannerem zgód oraz dashboard Web Vitals."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Statyczne strony dla crawlerów",
+        id: "statyczne-strony"
+      },
+      {
+        type: "paragraph",
+        text: "Aplikacja nadal działa jako HashRouter, ale build generuje dodatkowe pliki HTML w katalogu dist. Każdy artykuł dostaje własny adres statyczny z title, description, canonical, JSON-LD i skrótem treści. Newsroom również otrzymuje statyczne strony dla wybranych materiałów."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Dynamiczne OG images",
+        id: "dynamiczne-og"
+      },
+      {
+        type: "paragraph",
+        text: "Ten sam generator tworzy pliki SVG w katalogach og/articles i og/news. Obrazy zawierają tytuł, kategorię, krótki opis i branding bloga, dzięki czemu linki udostępniane w social media mają spójny, profesjonalny podgląd."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Consent Mode i prywatność",
+        id: "consent-prywatnosc"
+      },
+      {
+        type: "paragraph",
+        text: "Google Analytics działa teraz z domyślnie odmówioną zgodą na analitykę, a użytkownik może świadomie zaakceptować pomiar lub wybrać tylko niezbędne ustawienia. Decyzja jest zapisywana lokalnie i aktualizuje tryb zgód w gtag."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Web Vitals jako panel operacyjny",
+        id: "web-vitals-panel"
+      },
+      {
+        type: "paragraph",
+        text: "Na stronie głównej pojawił się dashboard FCP, LCP, CLS, INP i TTFB. To pomiar lokalny w przeglądarce, który daje szybki sygnał, czy kolejne zmiany nie pogarszają komfortu korzystania ze strony."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Efekt końcowy",
+        id: "efekt-koncowy"
+      },
+      {
+        type: "paragraph",
+        text: "Blog jest teraz lepiej przygotowany do publikacji, dystrybucji i pomiaru. Treść jest czytelniejsza dla crawlerów, linki mają własne grafiki, analityka szanuje decyzje użytkownika, a wydajność stała się widocznym elementem dashboardu."
+      }
+    ]
   }
 ];
