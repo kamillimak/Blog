@@ -63,25 +63,34 @@ export function HomePage() {
             {/* About author */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-6">
-              <span className="inline-block px-3 py-1 bg-brand-text text-brand-bg text-[10px] font-bold uppercase tracking-widest rounded-none mb-4">
-                O mnie
-              </span>
-              <h1 className="text-4xl sm:text-5xl lg:text-[64px] font-bold leading-[0.9] tracking-tighter text-brand-text uppercase">
-                Kamil<br/>Mikołajczyk
-              </h1>
-              <p className="text-brand-muted text-base sm:text-lg leading-relaxed max-w-2xl">
-                Jestem pasjonatem technologii, sztucznej inteligencji i praktycznego wykorzystania narzędzi AI w codziennej pracy. Zapraszam Cię do mojego świata eksperymentów, automatyzacji i pomysłów, które pomagają lepiej rozumieć nowoczesny cyfrowy warsztat.
-              </p>
-              <div className="pt-2">
-                <Link
-                  to={`/articles/${featuredArticle.slug}`}
-                  className="inline-flex items-center justify-center px-8 py-4 bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white text-xs font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer"
-                >
-                  <span>Wejdź do mojego świata</span>
-                </Link>
+                <span className="inline-block px-3 py-1 bg-brand-text text-brand-bg text-[10px] font-bold uppercase tracking-widest rounded-none mb-4">
+                  O mnie
+                </span>
+                <div className="flex items-center justify-between gap-4">
+                  <h1 className="text-[32px] sm:text-5xl lg:text-[64px] font-bold leading-[0.9] tracking-tighter text-brand-text uppercase min-w-0">
+                    Kamil<br/>Mikołajczyk
+                  </h1>
+                  <div className="lg:hidden shrink-0 h-20 w-20 sm:h-28 sm:w-28 rounded-full border border-brand-border bg-brand-featured-bg p-1.5 overflow-hidden">
+                    <img
+                      src={profileImage}
+                      alt="Kamil Mikołajczyk"
+                      className="h-full w-full rounded-full object-cover object-top grayscale-[15%]"
+                    />
+                  </div>
+                </div>
+                <p className="text-brand-muted text-base sm:text-lg leading-relaxed max-w-2xl">
+                  Jestem pasjonatem technologii, sztucznej inteligencji i praktycznego wykorzystania narzędzi AI w codziennej pracy. Zapraszam Cię do mojego świata eksperymentów, automatyzacji i pomysłów, które pomagają lepiej rozumieć nowoczesny cyfrowy warsztat.
+                </p>
+                <div className="pt-2">
+                  <Link
+                    to={`/articles/${featuredArticle.slug}`}
+                    className="inline-flex items-center justify-center px-8 py-4 bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white text-xs font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer"
+                  >
+                    <span>Wejdź do mojego świata</span>
+                  </Link>
+                </div>
               </div>
-              </div>
-              <div className="lg:col-span-5">
+              <div className="hidden lg:block lg:col-span-5">
                 <div className="border border-brand-border bg-brand-featured-bg p-3 max-w-sm lg:max-w-none">
                   <img
                     src={profileImage}
