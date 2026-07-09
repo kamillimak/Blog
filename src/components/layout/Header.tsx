@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Github, Compass, Layers, Mail, Moon, Sun } from "lucide-react";
 import { KMSygnet } from "./KMSygnet";
@@ -33,8 +33,8 @@ export function Header() {
   };
 
   const navLinks = [
-    { to: "/", label: "Strona gĹ‚Ăłwna", icon: Compass },
-    { to: "/articles", label: "Wszystkie artykuĹ‚y", icon: Layers },
+    { to: "/", label: "Strona główna", icon: Compass },
+    { to: "/articles", label: "Wszystkie artykuły", icon: Layers },
   ];
 
   return (
@@ -53,7 +53,7 @@ export function Header() {
                   BLOG AI Coding
                 </span>
                 <span className="hidden min-[380px]:block truncate font-sans text-[9px] sm:text-[10px] tracking-[0.12em] sm:tracking-[0.15em] text-brand-muted font-medium uppercase mt-1 leading-none">
-                  Codex Â· Trae Â· Claude Â· AI Studio
+                  Codex · Trae · Claude · AI Studio
                 </span>
               </div>
             </Link>
@@ -105,7 +105,7 @@ export function Header() {
               type="button"
               onClick={toggleTheme}
               className="flex h-9 w-9 items-center justify-center border border-brand-border text-brand-muted hover:text-brand-text hover:border-brand-text transition-colors"
-              aria-label={isDarkMode ? "WĹ‚Ä…cz jasny motyw" : "WĹ‚Ä…cz ciemny motyw"}
+              aria-label={isDarkMode ? "Włącz jasny motyw" : "Włącz ciemny motyw"}
             >
               {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
             </button>
@@ -120,7 +120,7 @@ export function Header() {
               aria-controls="mobile-menu"
               aria-expanded={isOpen}
             >
-              <span className="sr-only">OtwĂłrz menu gĹ‚Ăłwne</span>
+              <span className="sr-only">Otwórz menu główne</span>
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -157,7 +157,7 @@ export function Header() {
               type="button"
               onClick={toggleTheme}
               className="flex w-full items-center gap-3 px-3 py-3 rounded-none text-base font-bold uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors"
-              aria-label={isDarkMode ? "WĹ‚Ä…cz jasny motyw" : "WĹ‚Ä…cz ciemny motyw"}
+              aria-label={isDarkMode ? "Włącz jasny motyw" : "Włącz ciemny motyw"}
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
               <span>{isDarkMode ? "Jasny motyw" : "Ciemny motyw"}</span>

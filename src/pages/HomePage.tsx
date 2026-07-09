@@ -1,4 +1,4 @@
-﻿import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Search, RotateCcw, Award, Clock, FileText, Settings, ArrowRight, BriefcaseBusiness, Mail, Newspaper, Users } from "lucide-react";
 import { ARTICLES } from "../data/articles";
@@ -11,7 +11,7 @@ import { WebVitalsDashboard } from "../components/analytics/WebVitalsDashboard";
 export function HomePage() {
   // Set page title for SEO
   useEffect(() => {
-    document.title = "Blog technologiczny â€” Codex Â· Trae Â· Claude Â· AI Studio";
+    document.title = "Blog technologiczny — Codex · Trae · Claude · AI Studio";
   }, []);
 
   // Stats
@@ -55,29 +55,29 @@ export function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-6">
                 <span className="inline-block px-3 py-1 bg-brand-text text-brand-bg text-[10px] font-bold uppercase tracking-widest rounded-none mb-4">
-                  Blog technologiczny Kamila MikoĹ‚ajczyka
+                  Blog technologiczny Kamila Mikołajczyka
                 </span>
                 <div className="flex items-center justify-between gap-4">
                   <h1 className="text-[32px] sm:text-5xl lg:text-[64px] font-bold leading-[0.9] tracking-tighter text-brand-text uppercase min-w-0">
-                    Praktyczny warsztat AI dla twĂłrcĂłw, liderĂłw i zespoĹ‚Ăłw IT
+                    Praktyczny warsztat AI dla twórców, liderów i zespołów IT
                   </h1>
                   <div className="lg:hidden shrink-0 h-20 w-20 sm:h-28 sm:w-28 rounded-full border border-brand-border bg-brand-featured-bg p-1.5 overflow-hidden">
                     <img
                       src={profileImage}
-                      alt="Kamil MikoĹ‚ajczyk"
+                      alt="Kamil Mikołajczyk"
                       className="h-full w-full rounded-full object-cover object-top grayscale-[15%]"
                     />
                   </div>
                 </div>
                 <p className="text-brand-muted text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Blog o pracy z Codex, Trae, Claude i AI Studio: od codziennych newsĂłw technologicznych, przez automatyzacje, po konkretne workflow dla osĂłb, ktĂłre chcÄ… szybciej projektowaÄ‡, wdraĹĽaÄ‡ i opowiadaÄ‡ o produktach AI.
+                  Blog o pracy z Codex, Trae, Claude i AI Studio: od codziennych newsów technologicznych, przez automatyzacje, po konkretne workflow dla osób, które chcą szybciej projektować, wdrażać i opowiadać o produktach AI.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 pt-2">
                   <Link
                     to="/articles"
                     className="inline-flex items-center justify-center px-8 py-4 bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white text-xs font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer"
                   >
-                    <span>Czytaj artykuĹ‚y</span>
+                    <span>Czytaj artykuły</span>
                     <ArrowRight size={14} className="ml-2" />
                   </Link>
                   <a
@@ -89,14 +89,14 @@ export function HomePage() {
                   </a>
                 </div>
                 <p className="text-[10px] font-mono uppercase tracking-wider text-brand-muted">
-                  Autor: Kamil MikoĹ‚ajczyk Â· Senior IT Project Manager Â· Product Owner Â· AI & Digital Transformation
+                  Autor: Kamil Mikołajczyk · Senior IT Project Manager · Product Owner · AI & Digital Transformation
                 </p>
               </div>
               <div className="hidden lg:block lg:col-span-5">
                 <div className="border border-brand-border bg-brand-featured-bg p-3 max-w-sm lg:max-w-none">
                   <img
                     src={profileImage}
-                    alt="Kamil MikoĹ‚ajczyk"
+                    alt="Kamil Mikołajczyk"
                     className="aspect-[4/5] w-full object-cover object-top grayscale-[15%]"
                   />
                 </div>
@@ -124,7 +124,7 @@ export function HomePage() {
                 Dla kogo jest ten blog
               </span>
               <h2 className="text-2xl sm:text-3xl font-sans font-extrabold tracking-tight uppercase text-brand-text">
-                Dla osĂłb, ktĂłre chcÄ… rozumieÄ‡ AI w praktyce, nie tylko w teorii
+                Dla osób, które chcą rozumieć AI w praktyce, nie tylko w teorii
               </h2>
             </div>
             <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -132,17 +132,17 @@ export function HomePage() {
                 {
                   icon: BriefcaseBusiness,
                   title: "Liderzy i PM/PO",
-                  text: "Scenariusze uĹĽycia AI w procesach, backlogach, analizie i komunikacji z zespoĹ‚em."
+                  text: "Scenariusze użycia AI w procesach, backlogach, analizie i komunikacji z zespołem."
                 },
                 {
                   icon: Users,
-                  title: "TwĂłrcy AI-native",
-                  text: "Workflow, automatyzacje i narzÄ™dzia, ktĂłre pomagajÄ… zamieniaÄ‡ pomysĹ‚y w prototypy."
+                  title: "Twórcy AI-native",
+                  text: "Workflow, automatyzacje i narzędzia, które pomagają zamieniać pomysły w prototypy."
                 },
                 {
                   icon: Newspaper,
-                  title: "Osoby Ĺ›ledzÄ…ce tech",
-                  text: "Newsroom AI, TOP 3 i briefing trendĂłw z podziaĹ‚em na PolskÄ™ i Ĺ›wiat."
+                  title: "Osoby śledzące tech",
+                  text: "Newsroom AI, TOP 3 i briefing trendów z podziałem na Polskę i świat."
                 }
               ].map((item) => {
                 const Icon = item.icon;
@@ -174,7 +174,7 @@ export function HomePage() {
               Jeden proces, cztery wyspecjalizowane role
             </h2>
             <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
-              Nowoczesny twĂłrca i orkiestrator AI nie polega na jednym asystencie. SkutecznoĹ›Ä‡ polega na rozdzielaniu zadaĹ„ wedĹ‚ug mocnych stron poszczegĂłlnych modeli, tworzÄ…c zintegrowany Ĺ‚aĹ„cuch dostarczania kodu i aplikacji.
+              Nowoczesny twórca i orkiestrator AI nie polega na jednym asystencie. Skuteczność polega na rozdzielaniu zadań według mocnych stron poszczególnych modeli, tworząc zintegrowany łańcuch dostarczania kodu i aplikacji.
             </p>
           </div>
 
@@ -189,7 +189,7 @@ export function HomePage() {
                 AI Studio
               </h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                <strong>Mapa i kontekst.</strong> Skanowanie caĹ‚ego repozytorium, analiza architektury, wykrywanie zaleĹĽnoĹ›ci i tworzenie globalnej strategii.
+                <strong>Mapa i kontekst.</strong> Skanowanie całego repozytorium, analiza architektury, wykrywanie zależności i tworzenie globalnej strategii.
               </p>
             </div>
 
@@ -202,7 +202,7 @@ export function HomePage() {
                 Claude
               </h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                <strong>Projekt architektury.</strong> Projektowanie struktur danych, Ĺ›cisĹ‚e typowanie TypeScript, wybĂłr bibliotek i planowanie refaktoryzacji.
+                <strong>Projekt architektury.</strong> Projektowanie struktur danych, ścisłe typowanie TypeScript, wybór bibliotek i planowanie refaktoryzacji.
               </p>
             </div>
 
@@ -215,7 +215,7 @@ export function HomePage() {
                 Codex
               </h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                <strong>Praca w repozytorium.</strong> Autonomiczne generowanie moduĹ‚Ăłw, Ĺ‚Ä…czenie plikĂłw, pisanie testĂłw jednostkowych i linter-walidacja.
+                <strong>Praca w repozytorium.</strong> Autonomiczne generowanie modułów, łączenie plików, pisanie testów jednostkowych i linter-walidacja.
               </p>
             </div>
 
@@ -228,7 +228,7 @@ export function HomePage() {
                 Trae
               </h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                <strong>WykoĹ„czenie i UI.</strong> Szybkie, lokalne poprawki w edytorze, iterowanie stylĂłw Tailwind CSS, obsĹ‚uga zdarzeĹ„ i dopieszczanie mikro-detali.
+                <strong>Wykończenie i UI.</strong> Szybkie, lokalne poprawki w edytorze, iterowanie stylów Tailwind CSS, obsługa zdarzeń i dopieszczanie mikro-detali.
               </p>
             </div>
 
@@ -242,15 +242,15 @@ export function HomePage() {
         <div className="border-b border-brand-border pb-5 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
             <h2 className="text-2xl sm:text-3xl font-sans font-extrabold tracking-tight uppercase text-brand-text">
-              Biblioteka artykuĹ‚Ăłw
+              Biblioteka artykułów
             </h2>
             <p className="text-brand-muted text-xs mt-1">
-              Przeszukuj, filtruj i odkrywaj artykuĹ‚y na podstawie narzÄ™dzi i kategorii.
+              Przeszukuj, filtruj i odkrywaj artykuły na podstawie narzędzi i kategorii.
             </p>
           </div>
           
           <div className="text-[10px] text-brand-muted font-bold font-mono uppercase tracking-wider bg-brand-featured-bg px-3 py-1.5 rounded-none border border-brand-border self-start md:self-auto">
-            Pokazano: <span className="text-brand-text font-bold text-xs">{filteredArticles.length}</span> z {ARTICLES.length} wpisĂłw
+            Pokazano: <span className="text-brand-text font-bold text-xs">{filteredArticles.length}</span> z {ARTICLES.length} wpisów
           </div>
         </div>
 
@@ -267,15 +267,15 @@ export function HomePage() {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Szukaj artykuĹ‚u, tagu..."
+                placeholder="Szukaj artykułu, tagu..."
                 className="w-full pl-9 pr-4 py-2 border border-brand-border rounded-none text-xs bg-brand-featured-bg focus:bg-white focus:outline-none focus:border-brand-text transition-all font-sans text-brand-text"
-                aria-label="Wyszukaj artykuĹ‚y"
+                aria-label="Wyszukaj artykuły"
               />
             </div>
 
             {/* Tool Filter Selector */}
             <div className="lg:col-span-5 flex flex-wrap gap-1.5 items-center">
-              <span className="text-[10px] text-brand-muted font-bold mr-1 uppercase tracking-wider">NarzÄ™dzie:</span>
+              <span className="text-[10px] text-brand-muted font-bold mr-1 uppercase tracking-wider">Narzędzie:</span>
               <button
                 onClick={() => setSelectedTool(null)}
                 className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-all cursor-pointer border ${
@@ -343,7 +343,7 @@ export function HomePage() {
                 )}
                 {selectedTool && (
                   <span className="px-2 py-0.5 bg-brand-featured-bg border border-brand-border text-brand-text font-bold">
-                    NarzÄ™dzie: {selectedTool}
+                    Narzędzie: {selectedTool}
                   </span>
                 )}
                 {selectedCategory && (
@@ -396,9 +396,9 @@ export function HomePage() {
             <div className="w-12 h-12 bg-brand-featured-bg border border-brand-border text-brand-muted flex items-center justify-center rounded-none mx-auto mb-4">
               <Search size={20} />
             </div>
-            <h3 className="font-sans font-extrabold text-brand-text text-base uppercase tracking-tight mb-2">Brak wynikĂłw wyszukiwania</h3>
+            <h3 className="font-sans font-extrabold text-brand-text text-base uppercase tracking-tight mb-2">Brak wyników wyszukiwania</h3>
             <p className="text-brand-muted text-xs max-w-sm mx-auto mb-6">
-              Nie znaleĹşliĹ›my artykuĹ‚Ăłw speĹ‚niajÄ…cych podane kryteria. SprĂłbuj zmieniÄ‡ filtry lub wyszukiwanÄ… frazÄ™.
+              Nie znaleźliśmy artykułów spełniających podane kryteria. Spróbuj zmienić filtry lub wyszukiwaną frazę.
             </p>
             <button
               onClick={handleResetFilters}
@@ -430,7 +430,7 @@ export function HomePage() {
                   {stats.totalArticles}
                 </span>
                 <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
-                  ArtykuĹ‚Ăłw
+                  Artykułów
                 </span>
               </div>
             </div>
@@ -458,7 +458,7 @@ export function HomePage() {
                   {stats.totalWordCount.toLocaleString()}
                 </span>
                 <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
-                  Liczba sĹ‚Ăłw
+                  Liczba słów
                 </span>
               </div>
             </div>
@@ -472,7 +472,7 @@ export function HomePage() {
                   {stats.uniqueToolsCount}
                 </span>
                 <span className="block text-[10px] uppercase tracking-wider text-brand-muted font-bold mt-2">
-                  NarzÄ™dzia AI
+                  Narzędzia AI
                 </span>
               </div>
             </div>

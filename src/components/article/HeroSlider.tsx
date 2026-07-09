@@ -99,7 +99,7 @@ export function HeroSlider() {
       {
         id: `article-${article.id}`,
         tone: "article",
-        label: "Artykul",
+        label: "Artykuł",
         title: article.title,
         description: article.description,
         publishedAt: article.publishedAt,
@@ -132,7 +132,7 @@ export function HeroSlider() {
       id="hero-slider"
       className={`relative min-h-[460px] w-full max-w-full overflow-hidden border bg-black text-white sm:min-h-[520px] ${activeStyle.border}`}
       aria-roledescription="carousel"
-      aria-label="Najwazniejsze materialy"
+      aria-label="Najważniejsze materiały"
     >
       <video
         key={activeSlide.video}
@@ -196,7 +196,7 @@ export function HeroSlider() {
             </time>
             {activeSlide.articleSlug ? (
               <Link to={`/articles/${activeSlide.articleSlug}`} className={`inline-flex items-center gap-2 bg-white px-5 py-3 text-[10px] font-black uppercase tracking-widest text-black transition-colors ${activeStyle.hover}`}>
-                Czytaj material <ArrowRight size={14} />
+                Czytaj materiał <ArrowRight size={14} />
               </Link>
             ) : (
               <button type="button" onClick={scrollToTarget} className={`inline-flex items-center gap-2 bg-white px-5 py-3 text-[10px] font-black uppercase tracking-widest text-black transition-colors ${activeStyle.hover}`}>

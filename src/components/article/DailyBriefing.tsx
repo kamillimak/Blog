@@ -221,7 +221,7 @@ export function DailyBriefing() {
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-brand-muted">
               Codzienny briefing z Polski i swiata oraz najnowszy pakiet TOP 3 sa polaczone w jeden skanowalny feed.
-              Kazdy material ma wyrazna etykiete, zrodlo oraz lokalne tlo wideo uruchamiane dopiero po najechaniu.
+              Każdy materiał ma wyraźną etykietę, źródło oraz lokalne tło wideo uruchamiane dopiero po najechaniu.
             </p>
         </div>
 
