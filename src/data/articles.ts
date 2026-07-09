@@ -11,7 +11,7 @@ export const ARTICLES: Article[] = [
     tool: "Codex",
     author: {
       name: "Kamil Mikołajczyk",
-      role: "Senior Solutions Architect & AI Practitioner",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
       avatar: "KM"
     },
     publishedAt: "2026-06-28",
@@ -135,7 +135,7 @@ Dodaj walidację po stronie klienta do komponentu ContactForm.tsx.
     tool: "Trae",
     author: {
       name: "Kamil Mikołajczyk",
-      role: "Senior Solutions Architect & AI Practitioner",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
       avatar: "KM"
     },
     publishedAt: "2026-06-29",
@@ -150,7 +150,7 @@ Dodaj walidację po stronie klienta do komponentu ContactForm.tsx.
     pullQuote: "Trae jest najmocniejszy wtedy, gdy zadanie mieści się w widoku edytora i ma jasny efekt wizualny albo techniczny.",
     keyTakeaways: [
       "Trae świetnie nadaje się do mikro-zadań: szybka zmiana klas Tailwind, poprawka w jednym komponencie, dopisanie prostego helpera.",
-      "Zawsze kontroluj widok różnic (diff) linia po linii przed kliknięciem 'Accept'.",
+      "Zawsze kontroluj widok różnic (diff) linia po linii przed kliknięciem „Accept”.",
       "Nie zmuszaj lokalnego asystenta do wielkich zmian architektonicznych bez wcześniejszego rozbicia ich na mniejsze etapy.",
       "Trae najlepiej sprawdza się w połączeniu z uruchomionym obok dev serverem, dając natychmiastową wizualną informację zwrotną."
     ],
@@ -177,15 +177,15 @@ Dodaj walidację po stronie klienta do komponentu ContactForm.tsx.
       },
       {
         type: "paragraph",
-        text: "Najlepsze rezultaty z Trae osiąga się, pracując w bardzo krótkich cyklach. Zamiast zlecać mu 'Napisz cały widok profilu użytkownika', rozbij to zadanie na serię małych kroków:"
+        text: "Najlepsze rezultaty z Trae osiąga się, pracując w bardzo krótkich cyklach. Zamiast zlecać mu „Napisz cały widok profilu użytkownika”, rozbij to zadanie na serię małych kroków:"
       },
       {
         type: "bulletList",
         items: [
-          "Krok 1: 'Stwórz szkielet komponentu profilu z polami na imię, email i avatar przy użyciu podstawowego flexboxa.'",
-          "Krok 2: 'Dodaj hover efekty i stany focus dla wszystkich pól formularza.'",
-          "Krok 3: 'Zaimplementuj prostą obsługę błędów – jeśli imię jest puste, pokaż małą czerwoną etykietę.'",
-          "Krok 4: 'Spraw, aby avatar miał okrągły kształt i delikatny cień na ciemnym tle.'"
+          "Krok 1: „Stwórz szkielet komponentu profilu z polami na imię, email i avatar przy użyciu podstawowego flexboxa”.",
+          "Krok 2: „Dodaj hover efekty i stany focus dla wszystkich pól formularza”.",
+          "Krok 3: „Zaimplementuj prostą obsługę błędów – jeśli imię jest puste, pokaż małą czerwoną etykietę”.",
+          "Krok 4: „Spraw, aby avatar miał okrągły kształt i delikatny cień na ciemnym tle”."
         ]
       },
       {
@@ -255,7 +255,7 @@ export function Button({ isLoading, onClick, children }: ButtonProps) {
     tool: "Claude",
     author: {
       name: "Kamil Mikołajczyk",
-      role: "Senior Solutions Architect & AI Practitioner",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
       avatar: "KM"
     },
     publishedAt: "2026-06-30",
@@ -269,7 +269,7 @@ export function Button({ isLoading, onClick, children }: ButtonProps) {
     tags: ["Claude", "Refactoring", "Clean Architecture", "TypeScript"],
     pullQuote: "Claude jest najlepszy tam, gdzie kod potrzebuje myślenia, a nie tylko dopisania kolejnej funkcji.",
     keyTakeaways: [
-      "Wykorzystuj Claude do analizy 'smrodu w kodzie' (code smell) i projektowania optymalnych struktur danych.",
+      "Wykorzystuj Claude do analizy „smrodu w kodzie” (code smell) i projektowania optymalnych struktur danych.",
       "Zanim napiszesz kod, poproś o analizę 3 alternatywnych podejść architektonicznych wraz z ich zaletami i wadami.",
       "Claude doskonale radzi sobie z tworzeniem ścisłych i wysoce elastycznych definicji typów TypeScript.",
       "Gotowy, zaakceptowany plan architektoniczny od Claude'a stanowi idealny materiał wsadowy (brief) dla Codexa."
@@ -283,7 +283,7 @@ export function Button({ isLoading, onClick, children }: ButtonProps) {
       },
       {
         type: "paragraph",
-        text: "Dopisanie kolejnego warunku 'if' w komponencie potrafi każdy prosty generator kodu. Jednak po kilku miesiącach takiego 'rozwoju', aplikacja staje się niespłacalnym długiem technicznym. Komponenty mają po 2000 linijek kodu, stan jest rozproszony, a drobna zmiana w jednym miejscu wywołuje lawinę błędów w innych częściach systemu."
+        text: "Dopisanie kolejnego warunku „if” w komponencie potrafi każdy prosty generator kodu. Jednak po kilku miesiącach takiego „rozwoju”, aplikacja staje się niespłacalnym długiem technicznym. Komponenty mają po 2000 linijek kodu, stan jest rozproszony, a drobna zmiana w jednym miejscu wywołuje lawinę błędów w innych częściach systemu."
       },
       {
         type: "paragraph",
@@ -297,15 +297,15 @@ export function Button({ isLoading, onClick, children }: ButtonProps) {
       },
       {
         type: "paragraph",
-        text: "Nie proś Claude'a od razu o 'przepisanie pliku'. Podejdź do tego jak do technicznego brainstormingu z drugim głównym programistą (Staff Engineer):"
+        text: "Nie proś Claude'a od razu o „przepisanie pliku”. Podejdź do tego jak do technicznego brainstormingu z drugim głównym programistą (Staff Engineer):"
       },
       {
         type: "numberedList",
         items: [
-          "Przekaż Claude'owi kod źródłowy skomplikowanego modułu i zapytaj: 'Jakie problemy architektoniczne, antywzorce i potencjalne wąskie gardła widzisz w tym kodzie?'",
+          "Przekaż Claude'owi kod źródłowy skomplikowanego modułu i zapytaj: „Jakie problemy architektoniczne, antywzorce i potencjalne wąskie gardła widzisz w tym kodzie?”",
           "Poproś o zaproponowanie nowego podziału komponentów i przepływu danych bez pisania pełnego kodu, a jedynie w postaci opisu ról i interfejsów (TypeScript types).",
           "Przeanalizujcie razem kompromisy techniczne – zapytaj o wady proponowanego rozwiązania.",
-          "Poproś o wygenerowanie precyzyjnego planu migracji 'krok po kroku', który można bezpiecznie wdrażać bez paraliżowania pracy reszty zespołu."
+          "Poproś o wygenerowanie precyzyjnego planu migracji „krok po kroku”, który można bezpiecznie wdrażać bez paraliżowania pracy reszty zespołu."
         ]
       },
       {
@@ -352,7 +352,7 @@ export interface FilterState {
       },
       {
         type: "paragraph",
-        text: "Złota zasada brzmi: używaj Claude'a do generowania 'mapy drogowej' (blueprint) i szablonów typów. Kiedy plan jest gotowy i zatwierdzony przez Ciebie, skopiuj go i przekaż go jako brief do Codexa (który świetnie zrealizuje masową edycję plików w repozytorium) lub wykonaj precyzyjne poprawki lokalnie za pomocą Trae. Pozwoli Ci to maksymalnie oszczędzić czas i tokeny, zachowując najwyższą jakość inżynierską."
+        text: "Złota zasada brzmi: używaj Claude'a do generowania „mapy drogowej” (blueprint) i szablonów typów. Kiedy plan jest gotowy i zatwierdzony przez Ciebie, skopiuj go i przekaż go jako brief do Codexa (który świetnie zrealizuje masową edycję plików w repozytorium) lub wykonaj precyzyjne poprawki lokalnie za pomocą Trae. Pozwoli Ci to maksymalnie oszczędzić czas i tokeny, zachowując najwyższą jakość inżynierską."
       }
     ]
   },
@@ -366,7 +366,7 @@ export interface FilterState {
     tool: "AI Studio",
     author: {
       name: "Kamil Mikołajczyk",
-      role: "Senior Solutions Architect & AI Practitioner",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
       avatar: "KM"
     },
     publishedAt: "2026-07-01",
@@ -444,7 +444,7 @@ export interface FilterState {
       },
       {
         type: "paragraph",
-        text: "Największa wartość z audytu w AI Studio płynie wtedy, gdy wnioski przekształcamy w konkretne zadania. Model po przeanalizowaniu całości potrafi precyzyjnie wskazać, które pliki i w jakiej kolejności należy zmodyfikować, aby osiągnąć pożądany cel biznesowy lub techniczny. Otrzymujemy gotową, spójną instrukcję działania, eliminującą ryzyko 'ślepych uliczek' podczas pisania kodu."
+        text: "Największa wartość z audytu w AI Studio płynie wtedy, gdy wnioski przekształcamy w konkretne zadania. Model po przeanalizowaniu całości potrafi precyzyjnie wskazać, które pliki i w jakiej kolejności należy zmodyfikować, aby osiągnąć pożądany cel biznesowy lub techniczny. Otrzymujemy gotową, spójną instrukcję działania, eliminującą ryzyko „ślepych uliczek” podczas pisania kodu."
       }
     ]
   },
@@ -458,7 +458,7 @@ export interface FilterState {
     tool: "AI Studio",
     author: {
       name: "Kamil Mikołajczyk",
-      role: "Senior Solutions Architect & AI Practitioner",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
       avatar: "KM"
     },
     publishedAt: "2026-07-01",
@@ -467,7 +467,7 @@ export interface FilterState {
     heroImage: "workflow_hero",
     imageAlt: "Przedstawienie synergii czterech narzędzi AI połączonych w spójny łańcuch dostarczania oprogramowania",
     imageCaption: "Rys. 5: Schemat współdziałania AI Studio, Claude, Codex i Trae w codziennym cyklu wytwórczym oprogramowania.",
-    accentColor: "indigo",
+    accentColor: "violet",
     featured: false,
     tags: ["Workflow", "AI Engineering", "Productivity", "Best Practices"],
     pullQuote: "Nie wygrywa ten, kto używa najwięcej narzędzi AI. Wygrywa ten, kto wie, kiedy każde z nich ma milczeć.",

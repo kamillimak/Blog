@@ -6,6 +6,7 @@ import { HomePage } from "./pages/HomePage";
 import { ArticlesPage } from "./pages/ArticlesPage";
 import { ArticlePage } from "./pages/ArticlePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import { GoogleAnalytics } from "./components/analytics/GoogleAnalytics";
 
 const WorkspacePage = lazy(() =>
   import("./pages/WorkspacePage").then((module) => ({ default: module.WorkspacePage })),
@@ -14,6 +15,7 @@ const WorkspacePage = lazy(() =>
 export default function App() {
   return (
     <Router>
+      <GoogleAnalytics />
       <div className="min-h-screen flex flex-col justify-between bg-brand-bg text-brand-text antialiased selection:bg-brand-text selection:text-brand-bg">
         <div>
           {/* Global Header */}

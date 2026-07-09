@@ -1,0 +1,19 @@
+{
+  "name": "Warsztat AI Coding",
+  "short_name": "AI Coding",
+  "description": "Praktyczny blog o agentach AI, automatyzacjach i nowoczesnym workflow twórcy AI-native.",
+  "lang": "pl-PL",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#FDFDFB",
+  "theme_color": "#1A1A1A",
+  "icons": [
+    {
+      "src": "images/kamil-mikolajczyk.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

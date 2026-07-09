@@ -1,0 +1,29 @@
+# Warsztat AI Coding
+
+Warsztat AI Coding is a Polish technology blog by Kamil Mikołajczyk about AI coding workflows, agentic AI, prompt engineering at repository level, AI automation, and practical use of tools such as Codex, Trae, Claude, and AI Studio.
+
+## Site
+
+- Home: https://kamillimak.github.io/Blog/
+- Articles: https://kamillimak.github.io/Blog/#/articles
+- Workspace: https://kamillimak.github.io/Blog/#/workspace
+
+## Core Topics
+
+- AI-native software and content workflows
+- Repository-level agent work
+- Codex as a second engineer
+- Trae as a local editor assistant
+- Claude as an architecture and refactoring partner
+- AI Studio as a wide-context system map
+- Daily AI and technology briefings
+- TOP 3 AI news, AI misuse analysis, and legal AI business ideas
+
+## Author
+
+Kamil Mikołajczyk
+Senior IT Project Manager | Product Owner | AI & Digital Transformation
+
+## Notes For AI Tools
+
+The site is a React SPA using hash routing for static hosting compatibility. The homepage contains structured metadata, Open Graph data, JSON-LD Blog schema, robots.txt, sitemap.xml, and this llms.txt file. Some article and newsroom content is rendered client-side from structured TypeScript and Markdown data.
