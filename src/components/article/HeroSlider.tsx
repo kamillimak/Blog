@@ -130,7 +130,7 @@ export function HeroSlider() {
   return (
     <div
       id="hero-slider"
-      className={`relative min-h-[520px] overflow-hidden border bg-black text-white ${activeStyle.border}`}
+      className={`relative min-h-[460px] w-full max-w-full overflow-hidden border bg-black text-white sm:min-h-[520px] ${activeStyle.border}`}
       aria-roledescription="carousel"
       aria-label="Najwazniejsze materialy"
     >
@@ -148,9 +148,9 @@ export function HeroSlider() {
       <div className="absolute inset-0 bg-gradient-to-r from-black/82 via-black/38 to-black/5" />
       <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/78 via-black/25 to-transparent" />
 
-      <div className="relative z-10 flex min-h-[520px] flex-col justify-between p-5 sm:p-8 lg:p-10">
-        <div className="flex flex-col gap-4 border-b border-white/15 pb-5 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-wrap items-center gap-2" aria-label="Kategorie slidera">
+      <div className="relative z-10 flex min-h-[460px] flex-col justify-between p-4 sm:min-h-[520px] sm:p-8 lg:p-10">
+        <div className="flex items-center justify-end border-b border-white/15 pb-4 md:justify-between md:pb-5">
+          <div className="hidden flex-wrap items-center gap-2 md:flex" aria-label="Kategorie slidera">
             {slides.map((slide, index) => {
               const style = slideStyles[slide.tone];
               const Icon = style.icon;
@@ -176,16 +176,16 @@ export function HeroSlider() {
           </span>
         </div>
 
-        <div className="grid gap-8 py-10 lg:grid-cols-12 lg:items-end">
+        <div className="grid gap-6 py-7 sm:py-10 lg:grid-cols-12 lg:items-end">
           <div className="max-w-3xl lg:col-span-8">
-            <span className={`inline-flex items-center gap-2 border px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ${activeStyle.badge}`}>
-              <ActiveIcon size={14} />
+            <span className={`inline-flex items-center gap-2 border px-2.5 py-1.5 text-[9px] font-black uppercase tracking-widest sm:px-3 sm:text-[10px] ${activeStyle.badge}`}>
+              <ActiveIcon size={13} />
               {activeSlide.label}
             </span>
-            <h2 className="mt-5 text-3xl font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h2 className="mt-4 max-w-full text-2xl font-extrabold uppercase leading-[1] tracking-tight text-white sm:mt-5 sm:text-5xl lg:text-6xl">
               {activeSlide.title}
             </h2>
-            <p className="mt-5 max-w-2xl text-sm leading-relaxed text-zinc-200 sm:text-base">
+            <p className="mt-4 max-w-2xl text-xs leading-relaxed text-zinc-200 sm:mt-5 sm:text-base">
               {activeSlide.description}
             </p>
           </div>
@@ -206,8 +206,8 @@ export function HeroSlider() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between border-t border-white/15 pt-4">
-          <div className="flex gap-2" aria-label="Wybor slajdu">
+        <div className="flex items-center justify-between gap-3 border-t border-white/15 pt-4">
+          <div className="flex min-w-0 flex-1 flex-wrap gap-1.5 sm:gap-2" aria-label="Wybor slajdu">
             {slides.map((slide, index) => (
               <button
                 key={slide.id}
@@ -215,11 +215,11 @@ export function HeroSlider() {
                 onClick={() => setActiveIndex(index)}
                 aria-label={`Slajd ${index + 1}: ${slide.title}`}
                 aria-current={index === activeIndex}
-                className={`h-2.5 w-10 border border-white/25 transition-colors ${index === activeIndex ? slideStyles[slide.tone].ring : "bg-white/20"}`}
+                className={`h-2.5 w-6 border border-white/25 transition-colors sm:w-10 ${index === activeIndex ? slideStyles[slide.tone].ring : "bg-white/20"}`}
               />
             ))}
           </div>
-          <div className="flex gap-1">
+          <div className="flex shrink-0 gap-1">
             <button type="button" onClick={() => move(-1)} aria-label="Poprzedni slajd" className="border border-white/20 p-2 text-white hover:border-white">
               <ChevronLeft size={16} />
             </button>

@@ -100,6 +100,54 @@ export function DailyBriefing() {
     setTickerIndex(0);
   }, [activeFilter]);
 
+  useEffect(() => {
+    let scrollTimer: number | undefined;
+
+    const pauseVideo = (video: HTMLVideoElement) => {
+      video.pause();
+      video.currentTime = 0;
+    };
+
+    const playFocusedVideo = () => {
+      const cards = Array.from(document.querySelectorAll<HTMLElement>("#daily-briefing-section [id^='news-feed-']"));
+      const viewportCenter = window.innerHeight / 2;
+      const focusedCard = cards
+        .map((card) => {
+          const rect = card.getBoundingClientRect();
+          const visible = rect.bottom > 96 && rect.top < window.innerHeight - 96;
+          const distance = Math.abs(rect.top + rect.height / 2 - viewportCenter);
+
+          return { card, visible, distance };
+        })
+        .filter((item) => item.visible)
+        .sort((left, right) => left.distance - right.distance)[0]?.card;
+
+      cards.forEach((card) => {
+        const video = card.querySelector("video");
+        if (!video) return;
+
+        if (card === focusedCard) {
+          void video.play();
+        } else {
+          pauseVideo(video);
+        }
+      });
+    };
+
+    const handleScroll = () => {
+      if (scrollTimer) window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(playFocusedVideo, 180);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    playFocusedVideo();
+
+    return () => {
+      if (scrollTimer) window.clearTimeout(scrollTimer);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [filteredNews]);
+
   const ticker = UNIFIED_NEWS_FEED[tickerIndex] ?? UNIFIED_NEWS_FEED[0];
   const moveTicker = (direction: number) => {
     setTickerIndex((current) => (current + direction + UNIFIED_NEWS_FEED.length) % UNIFIED_NEWS_FEED.length);
@@ -267,9 +315,9 @@ function NewsCard({ item, featured }: { item: UnifiedNewsItem; featured: boolean
             href={item.sourceUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-brand-text transition-colors hover:text-orange-600"
+            className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-brand-text transition-colors hover:text-orange-600"
           >
-            {item.sourceLabel} <ExternalLink size={11} />
+            {item.sourceLabel} <ExternalLink className="h-4 w-4 shrink-0 sm:h-3 sm:w-3" />
           </a>
         </div>
       </div>

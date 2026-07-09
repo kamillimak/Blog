@@ -1,17 +1,40 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Cpu, ArrowUp } from "lucide-react";
 import { NewsletterForm } from "./NewsletterForm";
 import { KMSygnet } from "./KMSygnet";
 
 export function Footer() {
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setShowBackToTop(window.scrollY > 520);
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer id="app-footer" className="bg-[#1A1A1A] text-zinc-400 py-16 border-t border-[#2D2D2D] font-sans">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <>
+      <button
+        type="button"
+        onClick={scrollToTop}
+        aria-label="Wróć do góry"
+        className={`fixed bottom-5 right-4 z-50 flex h-11 w-11 items-center justify-center border border-brand-text bg-brand-text text-brand-bg shadow-xl transition-all sm:hidden ${
+          showBackToTop ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
+        }`}
+      >
+        <ArrowUp size={20} />
+      </button>
+
+      <footer id="app-footer" className="bg-[#1A1A1A] text-zinc-400 py-16 border-t border-[#2D2D2D] font-sans">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           
           {/* Brand Info */}
@@ -93,7 +116,8 @@ export function Footer() {
             <ArrowUp size={12} />
           </button>
         </div>
-      </div>
-    </footer>
+        </div>
+      </footer>
+    </>
   );
 }
