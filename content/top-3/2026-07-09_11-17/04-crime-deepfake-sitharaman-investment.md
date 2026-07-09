@@ -1,15 +1,15 @@
-# Deepfake w reklamie inwestycyjnej: profesor stracił oszczędności po fałszywym autorytecie
+# Deepfake w reklamie inwestycyjnej: profesor stracił oszczędności po podszyciu się pod minister finansów
 
 **Status:** DRAFT  
 **Data aktualności:** 2026-07-09
 
 ## Lead
 
-Economic Times opisał 9 lipca 2026 r. sprawę emerytowanego profesora z Bengaluru, który miał stracić ponad 61 lakh rupii po kontakcie z fałszywą reklamą inwestycyjną wykorzystującą deepfake minister finansów Indii Nirmali Sitharaman. To kolejny przykład, w którym AI wzmacnia stary mechanizm oszustwa: autorytet, presję i fałszywe zyski.
+Economic Times opisał 9 lipca 2026 r. sprawę emerytowanego profesora z Bengaluru, który miał stracić ponad 61 lakh rupii po kontakcie z fałszywą reklamą inwestycyjną wykorzystującą deepfake Nirmali Sitharaman, minister finansów Indii. To kolejny przykład, jak AI wzmacnia znany schemat oszustwa: podszycie się pod osobę publiczną, presję czasu i obietnicę szybkiego zysku.
 
 ## Rozwinięcie
 
-**Fakty:** Według relacji Economic Times ofiara zobaczyła na Facebooku zmanipulowany materiał wideo sugerujący legalną okazję inwestycyjną. Następnie komunikacja miała przenieść się do Telegrama i rozmów telefonicznych, gdzie oszuści pokazywali rzekome zyski i nakłaniali do kolejnych wpłat. Publiczne poradniki FBI i FTC wskazują, że oszustwa inwestycyjne oraz podszywanie się pod autorytety należy weryfikować poza kanałem wskazanym przez rozmówcę.
+**Fakty:** Według relacji Economic Times ofiara zobaczyła na Facebooku zmanipulowany materiał wideo sugerujący legalną okazję inwestycyjną. Następnie komunikacja miała przenieść się do Telegrama i rozmów telefonicznych, gdzie oszuści pokazywali rzekome zyski i nakłaniali do kolejnych wpłat. Publiczne poradniki FBI i FTC wskazują, że oszustwa inwestycyjne oraz podszywanie się pod osoby publiczne lub instytucje należy weryfikować poza kanałem wskazanym przez rozmówcę.
 
 **Wniosek redakcyjny:** deepfake nie tworzy całego przestępstwa od zera. Uwiarygadnia pierwszy kontakt, skraca czas namysłu ofiary i sprawia, że klasyczne czerwone flagi wyglądają mniej oczywiście.
 

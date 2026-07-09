@@ -1,5 +1,5 @@
-{
-  "name": "Warsztat AI Coding",
+﻿{
+  "name": "AI w praktyce",
   "description": "Premium, minimalistyczny magazyn technologiczny poświęcony pracy z agentami AI i nowoczesnemu workflow programistycznemu.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

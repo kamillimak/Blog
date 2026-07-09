@@ -1,6 +1,6 @@
-# Warsztat AI Coding
+﻿# AI w praktyce
 
-Warsztat AI Coding is a Polish technology blog by Kamil Mikołajczyk about AI coding workflows, agentic AI, prompt engineering at repository level, AI automation, and practical use of tools such as Codex, Trae, Claude, and AI Studio.
+AI w praktyce is a Polish technology blog by Kamil Mikołajczyk about AI coding workflows, agentic AI, prompt engineering at repository level, AI automation, and practical use of tools such as Codex, Trae, Claude, and AI Studio.
 
 ## Site
 

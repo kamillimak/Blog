@@ -1,26 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, RefreshCw, Compass } from "lucide-react";
+import { ArrowLeft, Compass } from "lucide-react";
 
 export function NotFoundPage() {
   return (
     <div className="bg-brand-bg min-h-[70vh] flex items-center justify-center py-20 px-4 text-brand-text">
-      <div id="notfound-card" className="max-w-md w-full bg-brand-card border border-brand-border rounded-none p-8 sm:p-10 text-center">
-        
-        {/* Visual code sign */}
+      <div
+        id="notfound-card"
+        className="max-w-md w-full bg-brand-card border border-brand-border rounded-none p-8 sm:p-10 text-center"
+      >
         <div className="w-16 h-16 bg-brand-featured-bg text-brand-text border border-brand-border flex items-center justify-center rounded-none mx-auto mb-6">
           <span className="font-mono text-2xl font-extrabold">404</span>
         </div>
 
-        {/* Text */}
         <h1 className="font-sans font-extrabold text-2xl text-brand-text uppercase mb-3 tracking-tight">
           Nie znaleziono strony
         </h1>
         <p className="text-brand-muted text-xs leading-relaxed mb-8 font-sans">
-          Przepraszamy, ale strona o podanym adresie URL nie istnieje w naszym Warsztacie AI Coding. Mogła zostać przeniesiona lub usunięta.
+          Przepraszamy, ale strona o podanym adresie URL nie istnieje w blogu AI w praktyce. Mogła zostać przeniesiona lub usunięta.
         </p>
 
-        {/* Action Button Links */}
         <div className="flex flex-col gap-3">
           <Link
             to="/"

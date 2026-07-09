@@ -1,6 +1,6 @@
-# Changelog
+﻿# Changelog
 
-Wszystkie istotne zmiany w projekcie „Warsztat AI Coding” są dokumentowane w tym pliku.
+Wszystkie istotne zmiany w projekcie „AI w praktyce” są dokumentowane w tym pliku.
 
 ## 2026-07-09 — SEO, konwersja i zaufanie
 

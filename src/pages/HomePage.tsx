@@ -59,7 +59,7 @@ export function HomePage() {
                 </span>
                 <div className="flex items-center justify-between gap-4">
                   <h1 className="text-[32px] sm:text-5xl lg:text-[64px] font-bold leading-[0.9] tracking-tighter text-brand-text uppercase min-w-0">
-                    Praktyczny warsztat AI dla twórców, liderów i zespołów IT
+                    Praktyczne podejście do AI
                   </h1>
                   <div className="lg:hidden shrink-0 h-20 w-20 sm:h-28 sm:w-28 rounded-full border border-brand-border bg-brand-featured-bg p-1.5 overflow-hidden">
                     <img

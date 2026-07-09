@@ -12,7 +12,7 @@
 
 ## TOP 3 kryminalne wykorzystania AI
 
-4. [Deepfake inwestycyjny: gdy fałszywy autorytet prowadzi do realnej straty](04-crime-deepfake-investment-scam.md)
+4. [Deepfake inwestycyjny: podszycie pod osobę publiczną prowadzi do realnej straty](04-crime-deepfake-investment-scam.md)
 5. [NCA i IWF ostrzegają rodziców przed publicznym udostępnianiem zdjęć dzieci](05-crime-ai-csam-guidance.md)
 6. [Illinois dopisuje AI deepfake do szkolnych polityk cyberprzemocy](06-crime-ai-school-deepfakes.md)
 

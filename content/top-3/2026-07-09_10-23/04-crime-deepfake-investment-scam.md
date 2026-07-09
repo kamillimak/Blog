@@ -1,4 +1,4 @@
-# Deepfake inwestycyjny: gdy fałszywy autorytet prowadzi do realnej straty
+# Deepfake inwestycyjny: podszycie pod osobę publiczną prowadzi do realnej straty
 
 **Status:** DRAFT  
 **Data aktualności:** 2026-07-09
@@ -11,7 +11,7 @@ Indyjskie media opisały 9 lipca 2026 r. przypadek emerytowanego profesora z Ben
 
 **Fakty:** Według relacji Economic Times oszuści wykorzystali zmanipulowane wideo w mediach społecznościowych, komunikację przez Telegram, zagraniczne połączenia i fałszywe potwierdzenia zysków. Materiał należy traktować jako opis pojedynczej sprawy medialnej, a nie jako statystykę trendu.
 
-**Wniosek redakcyjny:** mechanizm jest typowy dla oszustw inwestycyjnych: najpierw autorytet, potem pilność, potem przeniesienie rozmowy do prywatnego kanału i seria przelewów. AI zwiększa wiarygodność pierwszego kontaktu, ale obrona nadal polega na kontroli procesu.
+**Wniosek redakcyjny:** mechanizm jest typowy dla oszustw inwestycyjnych: najpierw rozpoznawalna osoba lub instytucja, potem pilność, potem przeniesienie rozmowy do prywatnego kanału i seria przelewów. AI zwiększa wiarygodność pierwszego kontaktu, ale obrona nadal polega na kontroli procesu.
 
 ## Znaczenie
 

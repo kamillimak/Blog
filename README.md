@@ -1,6 +1,6 @@
-# Warsztat AI Coding — Kompletny Blog Technologiczny
+﻿# AI w praktyce — Kompletny Blog Technologiczny
 
-**Warsztat AI Coding** to nowoczesny, w pełni responsywny blog technologiczny o wysokiej estetyce wizualnej (premium minimalist magazine), stworzony z myślą o programistach, architektach i pasjonatach inżynierii oprogramowania wspomaganej przez sztuczną inteligencję. 
+**AI w praktyce** to nowoczesny, w pełni responsywny blog technologiczny o wysokiej estetyce wizualnej (premium minimalist magazine), stworzony z myślą o programistach, architektach i pasjonatach inżynierii oprogramowania wspomaganej przez sztuczną inteligencję. 
 
 Blog skupia się wokół synergii czterech przełomowych narzędzi deweloperskich: **Codex**, **Trae**, **Claude** oraz **AI Studio**, pokazując ich unikalne role w jednym, spójnym przepływie pracy (workflow).
 

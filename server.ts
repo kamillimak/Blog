@@ -1,4 +1,4 @@
-import cors from "cors";
+﻿import cors from "cors";
 import crypto from "crypto";
 import dotenv from "dotenv";
 import express from "express";
@@ -170,11 +170,11 @@ function renderDailyDigestHtml(items: ReturnType<typeof getRecentNewsletterItems
     .join("");
 
   return `<div style="background:#11110f;color:#f5f2ea;font-family:Arial,sans-serif;padding:32px;max-width:680px;margin:auto">
-    <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#a8b084;font-weight:700">Warsztat AI Coding</p>
+    <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#a8b084;font-weight:700">AI w praktyce</p>
     <h1 style="font-size:32px;line-height:1.05;margin:0 0 12px">Nowości z ostatnich 24h</h1>
     <p style="color:#b8b3a7;line-height:1.6;margin:0 0 24px">Krótki dzienny digest artykułów, newsów i materiałów AI opublikowanych lub wygenerowanych w ostatniej dobie.</p>
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0">${list}</table>
-    <p style="margin-top:28px;color:#70706b;font-size:12px">Otrzymujesz tę wiadomość, bo zapisano ten adres do newslettera Warsztat AI Coding.</p>
+    <p style="margin-top:28px;color:#70706b;font-size:12px">Otrzymujesz tę wiadomość, bo zapisano ten adres do newslettera AI w praktyce.</p>
   </div>`;
 }
 
@@ -202,10 +202,10 @@ app.post("/api/subscribe", async (req, res) => {
           auth: { user: gmailUser, pass: gmailAppPassword },
         });
         await transporter.sendMail({
-          from: `"Warsztat AI Coding" <${gmailUser}>`,
+          from: `"AI w praktyce" <${gmailUser}>`,
           to: email,
           subject: "Witaj w Warsztacie AI Coding! Potwierdzenie subskrypcji",
-          html: `<div style="background:#121212;color:#fff;font-family:Arial,sans-serif;padding:40px;max-width:600px;margin:auto"><h1>Warsztat AI Coding</h1><p>Dziękujemy za zapisanie się do newslettera. Od teraz będziesz otrzymywać wyselekcjonowane materiały o pracy z AI.</p><p style="color:#10b981"><strong>● SUBSKRYPCJA AKTYWNA</strong></p></div>`,
+          html: `<div style="background:#121212;color:#fff;font-family:Arial,sans-serif;padding:40px;max-width:600px;margin:auto"><h1>AI w praktyce</h1><p>Dziękujemy za zapisanie się do newslettera. Od teraz będziesz otrzymywać wyselekcjonowane materiały o pracy z AI.</p><p style="color:#10b981"><strong>● SUBSKRYPCJA AKTYWNA</strong></p></div>`,
         });
         emailSent = true;
       } catch (error) {
@@ -267,9 +267,9 @@ app.post("/api/newsletter/daily-digest", async (req, res) => {
     let sent = 0;
     for (const subscriber of subscribers) {
       await transporter.sendMail({
-        from: `"Warsztat AI Coding" <${gmailUser}>`,
+        from: `"AI w praktyce" <${gmailUser}>`,
         to: subscriber,
-        subject: "Warsztat AI Coding: nowości z ostatnich 24h",
+        subject: "AI w praktyce: nowości z ostatnich 24h",
         html,
       });
       sent += 1;

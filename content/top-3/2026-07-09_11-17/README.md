@@ -12,7 +12,7 @@
 
 ## TOP 3 kryminalne wykorzystania AI
 
-4. [Deepfake w reklamie inwestycyjnej: profesor stracił oszczędności po fałszywym autorytecie](04-crime-deepfake-sitharaman-investment.md)
+4. [Deepfake w reklamie inwestycyjnej: profesor stracił oszczędności po podszyciu się pod minister finansów](04-crime-deepfake-sitharaman-investment.md)
 5. [Szkoły aktualizują polityki po deepfake'ach: Illinois wpisuje AI do cyberprzemocy](05-crime-school-ai-deepfake-policy.md)
 6. [TAKE IT DOWN Act: usuwanie intymnych deepfake'ów staje się obowiązkiem platform](06-crime-ai-deepfake-takedown-context.md)
 

@@ -1,9 +1,9 @@
-# Warsztat AI Coding — Instrukcja dla Agentów AI (Codex, Trae, Claude)
+﻿# AI w praktyce — Instrukcja dla Agentów AI (Codex, Trae, Claude)
 
 Ten plik służy jako główne źródło prawdy i kontekstu architektonicznego dla kolejnych agentów AI pracujących w tym repozytorium. Przed przystąpieniem do jakichkolwiek modyfikacji kodu, przeczytaj poniższe wytyczne.
 
 ## 1. CEL PROJEKTU
-Projekt „Warsztat AI Coding” to zaawansowany technologicznie, responsywny blog poświęcony pracy z agentami AI, inżynierii promptów na poziomie repozytorium oraz nowoczesnemu workflow programistycznemu. Projekt jest w pełni statycznym SPA (Single Page Application) przystosowanym do stabilnego działania na platformach takich jak GitHub Pages.
+Projekt „AI w praktyce” to zaawansowany technologicznie, responsywny blog poświęcony pracy z agentami AI, inżynierii promptów na poziomie repozytorium oraz nowoczesnemu workflow programistycznemu. Projekt jest w pełni statycznym SPA (Single Page Application) przystosowanym do stabilnego działania na platformach takich jak GitHub Pages.
 
 ## 2. STACK TECHNOLOGICZNY
 - **Framework**: React 19 (Functional Components, Hooks)

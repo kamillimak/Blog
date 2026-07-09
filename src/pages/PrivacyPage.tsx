@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+﻿import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export function PrivacyPage() {
@@ -21,7 +21,7 @@ export function PrivacyPage() {
             Polityka prywatności
           </h1>
           <p className="mt-4 text-sm leading-relaxed text-brand-muted">
-            Ta strona opisuje, jakie dane mogą być przetwarzane podczas korzystania z bloga Warsztat AI Coding.
+            Ta strona opisuje, jakie dane mogą być przetwarzane podczas korzystania z bloga AI w praktyce.
           </p>
         </div>
 
