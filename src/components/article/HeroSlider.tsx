@@ -25,6 +25,7 @@ const slideStyles: Record<SlideKind, {
   label: string;
   badge: string;
   border: string;
+  gradient: string;
   hover: string;
   ring: string;
   icon: typeof Code2;
@@ -33,6 +34,7 @@ const slideStyles: Record<SlideKind, {
     label: "Artykuł",
     badge: "bg-indigo-500 text-white border-indigo-400",
     border: "border-indigo-500/70",
+    gradient: "bg-[radial-gradient(circle_at_75%_20%,rgba(99,102,241,0.42),transparent_34%),linear-gradient(135deg,#111827_0%,#1e1b4b_52%,#020617_100%)]",
     hover: "hover:bg-indigo-600",
     ring: "bg-indigo-500",
     icon: Code2,
@@ -41,6 +43,7 @@ const slideStyles: Record<SlideKind, {
     label: "Trend",
     badge: "bg-emerald-500 text-white border-emerald-400",
     border: "border-emerald-500/70",
+    gradient: "bg-[radial-gradient(circle_at_75%_20%,rgba(16,185,129,0.42),transparent_34%),linear-gradient(135deg,#052e2b_0%,#064e3b_48%,#020617_100%)]",
     hover: "hover:bg-emerald-600",
     ring: "bg-emerald-500",
     icon: Sparkles,
@@ -49,6 +52,7 @@ const slideStyles: Record<SlideKind, {
     label: "TECH",
     badge: "bg-orange-500 text-white border-orange-400",
     border: "border-orange-500/70",
+    gradient: "bg-[radial-gradient(circle_at_75%_20%,rgba(249,115,22,0.42),transparent_34%),linear-gradient(135deg,#431407_0%,#7c2d12_48%,#020617_100%)]",
     hover: "hover:bg-orange-600",
     ring: "bg-orange-500",
     icon: Newspaper,
@@ -57,6 +61,7 @@ const slideStyles: Record<SlideKind, {
 
 export function HeroSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
   const slides = useMemo<HeroSlide[]>(() => {
     const article = ARTICLES.find((item) => item.featured) ?? ARTICLES[0];
@@ -71,7 +76,7 @@ export function HeroSlider() {
         title: article.title,
         description: article.description,
         publishedAt: article.publishedAt,
-        image: "/news/hero/article-ai-review.jpeg",
+        image: "news/hero/article-ai-review.jpeg",
         imageAlt: "Programista pracujący z agentem AI podczas przeglądu kodu",
         articleSlug: article.slug,
       },
@@ -82,7 +87,7 @@ export function HeroSlider() {
         title: trend.title,
         description: trend.summary,
         publishedAt: AI_TREND_BRIEFING_DATE,
-        image: "/news/hero/trend-ai-infrastructure.jpeg",
+        image: "news/hero/trend-ai-infrastructure.jpeg",
         imageAlt: "Ilustracja infrastruktury AI i przepływu danych w centrum obliczeniowym",
         targetId: `trend-news-${trend.id}`,
       },
@@ -93,7 +98,7 @@ export function HeroSlider() {
         title: tech.title,
         description: tech.content,
         publishedAt: AI_NEWS_PUBLISHED_AT,
-        image: "/news/hero/tech-ai-assistant.jpeg",
+        image: "news/hero/tech-ai-assistant.jpeg",
         imageAlt: "Stanowisko pracy z asystentem AI wspierającym programowanie",
         targetId: `ai-news-${tech.id}`,
       },
@@ -114,13 +119,16 @@ export function HeroSlider() {
   return (
     <div
       id="hero-slider"
-      className={`relative min-h-[520px] overflow-hidden border bg-[#111111] text-white ${activeStyle.border}`}
+      className={`relative min-h-[520px] overflow-hidden border text-white ${activeStyle.border} ${activeStyle.gradient}`}
       aria-roledescription="carousel"
       aria-label="Najważniejsze materiały"
     >
       <img
-        src={activeSlide.image}
+        src={assetUrl(activeSlide.image)}
         alt={activeSlide.imageAlt}
+        onError={(event) => {
+          event.currentTarget.style.display = "none";
+        }}
         className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/78 to-black/20" />

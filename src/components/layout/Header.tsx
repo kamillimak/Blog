@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Github, Compass, Layers, Cloud } from "lucide-react";
+import { Menu, X, Github, Compass, Layers } from "lucide-react";
 import { KMSygnet } from "./KMSygnet";
 
 export function Header() {
@@ -17,7 +17,6 @@ export function Header() {
   const navLinks = [
     { to: "/", label: "Strona główna", icon: Compass },
     { to: "/articles", label: "Wszystkie artykuły", icon: Layers },
-    { to: "/workspace", label: "Strefa Twórcy", icon: Cloud },
   ];
 
   return (
