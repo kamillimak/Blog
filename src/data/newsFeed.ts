@@ -87,11 +87,14 @@ const extractField = (block: string, field: string) => {
   return stripMarkdown(match?.[1] ?? "");
 };
 
+const extractPublicationDate = (value: string, fallback: string) =>
+  value.match(/\d{4}-\d{2}-\d{2}/)?.[0] ?? fallback;
+
 const extractFirstSource = (markdown: string) => {
   const match = markdown.match(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/);
 
   return {
-    sourceLabel: stripMarkdown(match?.[1] ?? "Zrodlo"),
+    sourceLabel: stripMarkdown(match?.[1] ?? "Źródło"),
     sourceUrl: match?.[2] ?? "#",
   };
 };
@@ -119,7 +122,7 @@ const parseDailyBriefing = (): DailyTechBriefing => {
     const isPolish = category.toLowerCase().includes("polska");
     const sourceLabel = extractField(block, "Źródło") || extractField(block, "Zrodlo");
     const sourceUrl = extractField(block, "URL");
-    const publishedAt = extractField(block, "Data publikacji") || date;
+    const publishedAt = extractPublicationDate(extractField(block, "Data publikacji"), date);
 
     return {
       id: `tech-${date}-${index + 1}`,
@@ -156,9 +159,9 @@ const topThreeLabel = (kind: UnifiedNewsKind) => {
 };
 
 const topThreeGroupLabel = (kind: UnifiedNewsKind) => {
-  if (kind === "top3-crime") return "Kryminalne uzycia AI";
+  if (kind === "top3-crime") return "Kryminalne użycia AI";
   if (kind === "top3-business") return "Zarabianie z AI";
-  return "Newsy ze swiata AI";
+  return "Newsy ze świata AI";
 };
 
 const extractLead = (markdown: string) => {

@@ -173,20 +173,20 @@ export function DailyBriefing() {
               href={ticker.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex min-w-0 flex-1 items-center gap-3 text-xs font-bold text-zinc-200 transition-colors hover:text-orange-300 sm:text-sm"
+              className="flex min-w-0 flex-1 items-start gap-3 text-xs font-bold leading-relaxed text-zinc-200 transition-colors hover:text-orange-300 sm:text-sm md:items-center"
             >
               <span className={`shrink-0 border px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider ${kindStyles[ticker.kind].badge}`}>
                 {ticker.label}
               </span>
-              <span className="truncate">{ticker.title}</span>
+              <span className="min-w-0 whitespace-normal break-words">{ticker.title}</span>
               <ExternalLink size={12} className="shrink-0" />
             </a>
 
-            <div className="flex shrink-0 items-center justify-end gap-1 border-t border-white/10 pt-2 md:border-t-0 md:pt-0">
+            <div className="flex shrink-0 items-center justify-between gap-1 border-t border-white/10 pt-2 md:justify-end md:border-t-0 md:pt-0">
               <button
                 type="button"
                 onClick={() => setIsPlaying((value) => !value)}
-                aria-label={isPlaying ? "Wstrzymaj rotacje newsow" : "Wznow rotacje newsow"}
+                aria-label={isPlaying ? "Wstrzymaj rotację newsów" : "Wznów rotację newsów"}
                 className="p-1.5 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
               >
                 {isPlaying ? <Pause size={13} /> : <Play size={13} />}
@@ -205,7 +205,7 @@ export function DailyBriefing() {
               <button
                 type="button"
                 onClick={() => moveTicker(1)}
-                aria-label="Nastepny news"
+                aria-label="Następny news"
                 className="p-1.5 text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
               >
                 <ChevronRight size={14} />
@@ -220,7 +220,7 @@ export function DailyBriefing() {
               Newsroom
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-brand-muted">
-              Codzienny briefing z Polski i swiata oraz najnowszy pakiet TOP 3 sa polaczone w jeden skanowalny feed.
+              Codzienny briefing z Polski i świata oraz najnowszy pakiet TOP 3 są połączone w jeden skanowalny feed.
               Każdy materiał ma wyraźną etykietę, źródło oraz lokalne tło wideo uruchamiane dopiero po najechaniu.
             </p>
         </div>

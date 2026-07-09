@@ -223,7 +223,7 @@ export function HeroSlider() {
             <button type="button" onClick={() => move(-1)} aria-label="Poprzedni slajd" className="border border-white/20 p-2 text-white hover:border-white">
               <ChevronLeft size={16} />
             </button>
-            <button type="button" onClick={() => move(1)} aria-label="Nastepny slajd" className="border border-white/20 p-2 text-white hover:border-white">
+            <button type="button" onClick={() => move(1)} aria-label="Następny slajd" className="border border-white/20 p-2 text-white hover:border-white">
               <ChevronRight size={16} />
             </button>
           </div>

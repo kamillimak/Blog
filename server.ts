@@ -223,7 +223,7 @@ app.post("/api/subscribe", async (req, res) => {
       message: emailSent
         ? "Pomyślnie zapisano do newslettera! Potwierdzenie zostało wysłane."
         : isNew
-          ? "Adres został zapisany. Wiadomość powitalna jest obecnie wyłączona."
+          ? "Adres został zapisany. Od teraz będziesz otrzymywać dzienny digest z nowościami."
           : "Ten adres e-mail jest już zapisany w naszej bazie.",
     });
   } catch (error) {

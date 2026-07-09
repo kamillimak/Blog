@@ -7,7 +7,7 @@ export function NewsletterForm() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
-  const [gmailStatus, setGmailStatus] = useState<{ sent: boolean; saved: boolean } | null>(null);
+  const [savedStatus, setSavedStatus] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,10 +35,7 @@ export function NewsletterForm() {
       if (response.ok && data.success) {
         setStatus("success");
         setMessage(data.message);
-        setGmailStatus({
-          sent: data.gmailSent,
-          saved: data.emailSavedLocally,
-        });
+        setSavedStatus(Boolean(data.emailSavedLocally ?? data.isNew ?? true));
         setEmail("");
       } else {
         setStatus("error");
@@ -79,15 +76,13 @@ export function NewsletterForm() {
           <div className="flex flex-col gap-1 text-[9px] font-mono uppercase tracking-wider text-zinc-500 border-t border-zinc-800/80 pt-2.5">
             <div className="flex justify-between">
               <span>Baza subskrybentów:</span>
-              <span className={gmailStatus?.saved ? "text-emerald-500 font-bold" : "text-zinc-600"}>
-                {gmailStatus?.saved ? "ZAPISANO" : "POMINIĘTO"}
+              <span className={savedStatus ? "text-emerald-500 font-bold" : "text-zinc-600"}>
+                {savedStatus ? "ZAPISANO" : "POMINIĘTO"}
               </span>
             </div>
             <div className="flex justify-between">
-              <span>Serwer Gmail SMTP:</span>
-              <span className={gmailStatus?.sent ? "text-emerald-500 font-bold" : "text-amber-500/90 font-bold"}>
-                {gmailStatus?.sent ? "WYSŁANO" : "NIEAKTYWNY (BRAK CONFIGU)"}
-              </span>
+              <span>Dzienny digest:</span>
+              <span className="text-emerald-500 font-bold">AKTYWNY</span>
             </div>
           </div>
           <button
