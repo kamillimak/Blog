@@ -19,6 +19,7 @@ import {
   type UnifiedNewsKind,
 } from "../../data/newsFeed";
 import { formatPolishDate } from "../../utils/article";
+import { shouldReduceMotion } from "../../utils/motion";
 
 type FeedFilter = "all" | UnifiedNewsKind;
 
@@ -75,7 +76,6 @@ const kindStyles: Record<UnifiedNewsKind, { badge: string; border: string; divid
 };
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
-const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function DailyBriefing() {
   const [activeFilter, setActiveFilter] = useState<FeedFilter>("all");
@@ -84,7 +84,7 @@ export function DailyBriefing() {
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    const isReduced = prefersReducedMotion();
+    const isReduced = shouldReduceMotion();
     setReducedMotion(isReduced);
     if (isReduced) setIsPlaying(false);
   }, []);
@@ -268,7 +268,7 @@ function NewsCard({ item, featured }: { item: UnifiedNewsItem; featured: boolean
   const styles = kindStyles[item.kind];
   const Icon = kindStyles[item.kind].icon;
   const handleVideoEnter = (event: MouseEvent<HTMLElement>) => {
-    if (prefersReducedMotion()) return;
+    if (shouldReduceMotion()) return;
     const video = event.currentTarget.querySelector("video");
     if (!video) return;
     void video.play();

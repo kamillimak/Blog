@@ -15,6 +15,7 @@ import {
 import { ARTICLES } from "../../data/articles";
 import { NEWSROOM_VIDEOS, UNIFIED_NEWS_FEED, type UnifiedNewsItem, type UnifiedNewsKind } from "../../data/newsFeed";
 import { formatPolishDate } from "../../utils/article";
+import { shouldReduceMotion } from "../../utils/motion";
 
 type SlideTone = "article" | UnifiedNewsKind;
 
@@ -77,14 +78,13 @@ const slideStyles: Record<SlideTone, { badge: string; border: string; ring: stri
 
 const slideDurationMs = 7000;
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
-const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function HeroSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    setReducedMotion(prefersReducedMotion());
+    setReducedMotion(shouldReduceMotion());
   }, []);
 
   const slides = useMemo<HeroSlide[]>(() => {
