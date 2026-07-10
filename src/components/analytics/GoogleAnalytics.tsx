@@ -7,6 +7,7 @@ type GtagConsentParams = {
   ad_storage: ConsentValue;
   ad_user_data: ConsentValue;
   ad_personalization: ConsentValue;
+  wait_for_update?: number;
 };
 type GtagCommand =
   | [command: "js", value: Date]
@@ -22,6 +23,7 @@ declare global {
 
 const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
 const consentKey = "blog-analytics-consent";
+let hasConfiguredGoogleAnalytics = false;
 
 const isValidMeasurementId = (value: string | undefined) => Boolean(value && /^G-[A-Z0-9]+$/i.test(value));
 const getStoredConsent = (): ConsentValue => {
@@ -33,18 +35,24 @@ export function GoogleAnalytics() {
   const location = useLocation();
 
   useEffect(() => {
-    if (!isValidMeasurementId(measurementId) || window.gtag) return;
+    if (!isValidMeasurementId(measurementId) || hasConfiguredGoogleAnalytics) return;
 
-    const script = document.createElement("script");
-    script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-    document.head.appendChild(script);
+    const existingScript = document.querySelector<HTMLScriptElement>(`script[data-ga-measurement-id="${measurementId}"]`);
+    if (!existingScript) {
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
+      script.dataset.gaMeasurementId = measurementId;
+      document.head.appendChild(script);
+    }
 
     window.dataLayer = window.dataLayer ?? [];
-    window.gtag = (...args: GtagCommand) => {
-      window.dataLayer?.push(args);
-    };
-    window.gtag("consent", "default", {
+    window.gtag =
+      window.gtag ??
+      ((...args: GtagCommand) => {
+        window.dataLayer?.push(args);
+      });
+    window.gtag("consent", "update", {
       analytics_storage: getStoredConsent(),
       ad_storage: "denied",
       ad_user_data: "denied",
@@ -52,6 +60,7 @@ export function GoogleAnalytics() {
     });
     window.gtag("js", new Date());
     window.gtag("config", measurementId, { send_page_view: false });
+    hasConfiguredGoogleAnalytics = true;
   }, []);
 
   useEffect(() => {
