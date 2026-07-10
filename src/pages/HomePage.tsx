@@ -65,6 +65,9 @@ export function HomePage() {
                     <img
                       src={profileImage}
                       alt="Kamil Mikołajczyk"
+                      width={112}
+                      height={112}
+                      decoding="async"
                       className="h-full w-full rounded-full object-cover object-top grayscale-[15%]"
                     />
                   </div>
@@ -97,6 +100,9 @@ export function HomePage() {
                   <img
                     src={profileImage}
                     alt="Kamil Mikołajczyk"
+                    width={640}
+                    height={800}
+                    decoding="async"
                     className="aspect-[4/5] w-full object-cover object-top grayscale-[15%]"
                   />
                 </div>
@@ -268,7 +274,7 @@ export function HomePage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Szukaj artykułu, tagu..."
-                className="w-full pl-9 pr-4 py-2 border border-brand-border rounded-none text-xs bg-brand-featured-bg focus:bg-white focus:outline-none focus:border-brand-text transition-all font-sans text-brand-text"
+                className="w-full pl-9 pr-4 py-2 border border-brand-border rounded-none text-xs bg-brand-featured-bg focus:bg-white focus:outline-none focus:border-brand-text transition-colors font-sans text-brand-text"
                 aria-label="Wyszukaj artykuły"
               />
             </div>
@@ -278,7 +284,7 @@ export function HomePage() {
               <span className="text-[10px] text-brand-muted font-bold mr-1 uppercase tracking-wider">Narzędzie:</span>
               <button
                 onClick={() => setSelectedTool(null)}
-                className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-all cursor-pointer border ${
+                className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer border ${
                   selectedTool === null
                     ? "bg-brand-text text-brand-bg border-brand-text"
                     : "bg-brand-featured-bg text-brand-muted hover:bg-brand-border/30 hover:text-brand-text border-brand-border"
@@ -290,7 +296,7 @@ export function HomePage() {
                 <button
                   key={t}
                   onClick={() => setSelectedTool(t)}
-                  className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-all cursor-pointer border ${
+                  className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer border ${
                     selectedTool === t
                       ? "bg-brand-text text-brand-bg border-brand-text"
                       : "bg-brand-featured-bg text-brand-muted hover:bg-brand-border/30 hover:text-brand-text border-brand-border"
@@ -306,7 +312,7 @@ export function HomePage() {
               <span className="text-[10px] text-brand-muted font-bold mr-1 uppercase tracking-wider">Kategoria:</span>
               <button
                 onClick={() => setSelectedCategory(null)}
-                className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-all cursor-pointer border ${
+                className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer border ${
                   selectedCategory === null
                     ? "bg-brand-text text-brand-bg border-brand-text"
                     : "bg-brand-featured-bg text-brand-muted hover:bg-brand-border/30 hover:text-brand-text border-brand-border"
@@ -318,7 +324,7 @@ export function HomePage() {
                 <button
                   key={c}
                   onClick={() => setSelectedCategory(c)}
-                  className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-all cursor-pointer border ${
+                  className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer border ${
                     selectedCategory === c
                       ? "bg-brand-text text-brand-bg border-brand-text"
                       : "bg-brand-featured-bg text-brand-muted hover:bg-brand-border/30 hover:text-brand-text border-brand-border"

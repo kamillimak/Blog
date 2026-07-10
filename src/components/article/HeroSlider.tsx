@@ -77,9 +77,15 @@ const slideStyles: Record<SlideTone, { badge: string; border: string; ring: stri
 
 const slideDurationMs = 7000;
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function HeroSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    setReducedMotion(prefersReducedMotion());
+  }, []);
 
   const slides = useMemo<HeroSlide[]>(() => {
     const article = ARTICLES.find((item) => item.featured) ?? ARTICLES[0];
@@ -114,12 +120,14 @@ export function HeroSlider() {
   }, []);
 
   useEffect(() => {
+    if (reducedMotion) return;
+
     const slideTimer = window.setTimeout(() => {
       setActiveIndex((current) => (current + 1) % slides.length);
     }, slideDurationMs);
 
     return () => window.clearTimeout(slideTimer);
-  }, [activeIndex, slides.length]);
+  }, [activeIndex, reducedMotion, slides.length]);
 
   const activeSlide = slides[activeIndex];
   const activeStyle = slideStyles[activeSlide.tone];
@@ -138,7 +146,7 @@ export function HeroSlider() {
         key={activeSlide.video}
         className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
         src={assetUrl(activeSlide.video)}
-        autoPlay
+        autoPlay={!reducedMotion}
         muted
         loop
         playsInline
@@ -161,7 +169,7 @@ export function HeroSlider() {
                   type="button"
                   onClick={() => setActiveIndex(index)}
                   aria-current={index === activeIndex}
-                  className={`inline-flex items-center gap-2 border px-3 py-2 text-[10px] font-black uppercase tracking-widest transition-all ${
+                  className={`inline-flex items-center gap-2 border px-3 py-2 text-[10px] font-black uppercase tracking-widest transition-colors ${
                     index === activeIndex ? style.badge : "border-white/20 bg-black/35 text-white/70 hover:border-white/45 hover:text-white"
                   }`}
                 >
@@ -200,14 +208,14 @@ export function HeroSlider() {
               </Link>
             ) : (
               <button type="button" onClick={scrollToTarget} className={`inline-flex items-center gap-2 bg-white px-5 py-3 text-[10px] font-black uppercase tracking-widest text-black transition-colors ${activeStyle.hover}`}>
-                Przejdz do sekcji <ArrowRight size={14} />
+                Przejdź do sekcji <ArrowRight size={14} />
               </button>
             )}
           </div>
         </div>
 
         <div className="flex items-center justify-between gap-3 border-t border-white/15 pt-4">
-          <div className="flex min-w-0 flex-1 flex-wrap gap-1.5 sm:gap-2" aria-label="Wybor slajdu">
+          <div className="flex min-w-0 flex-1 flex-wrap gap-1.5 sm:gap-2" aria-label="Wybór slajdu">
             {slides.map((slide, index) => (
               <button
                 key={slide.id}

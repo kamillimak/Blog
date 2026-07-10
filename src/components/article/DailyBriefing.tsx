@@ -75,11 +75,19 @@ const kindStyles: Record<UnifiedNewsKind, { badge: string; border: string; divid
 };
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export function DailyBriefing() {
   const [activeFilter, setActiveFilter] = useState<FeedFilter>("all");
   const [isPlaying, setIsPlaying] = useState(true);
   const [tickerIndex, setTickerIndex] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const isReduced = prefersReducedMotion();
+    setReducedMotion(isReduced);
+    if (isReduced) setIsPlaying(false);
+  }, []);
 
   const filteredNews = useMemo(() => {
     if (activeFilter === "all") return UNIFIED_NEWS_FEED;
@@ -88,19 +96,21 @@ export function DailyBriefing() {
   }, [activeFilter]);
 
   useEffect(() => {
-    if (!isPlaying || UNIFIED_NEWS_FEED.length === 0) return;
+    if (reducedMotion || !isPlaying || UNIFIED_NEWS_FEED.length === 0) return;
     const interval = window.setInterval(() => {
       setTickerIndex((current) => (current + 1) % UNIFIED_NEWS_FEED.length);
     }, 6000);
 
     return () => window.clearInterval(interval);
-  }, [isPlaying]);
+  }, [isPlaying, reducedMotion]);
 
   useEffect(() => {
     setTickerIndex(0);
   }, [activeFilter]);
 
   useEffect(() => {
+    if (reducedMotion) return;
+
     let scrollTimer: number | undefined;
 
     const pauseVideo = (video: HTMLVideoElement) => {
@@ -146,7 +156,7 @@ export function DailyBriefing() {
       if (scrollTimer) window.clearTimeout(scrollTimer);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [filteredNews]);
+  }, [filteredNews, reducedMotion]);
 
   const ticker = UNIFIED_NEWS_FEED[tickerIndex] ?? UNIFIED_NEWS_FEED[0];
   const moveTicker = (direction: number) => {
@@ -258,6 +268,7 @@ function NewsCard({ item, featured }: { item: UnifiedNewsItem; featured: boolean
   const styles = kindStyles[item.kind];
   const Icon = kindStyles[item.kind].icon;
   const handleVideoEnter = (event: MouseEvent<HTMLElement>) => {
+    if (prefersReducedMotion()) return;
     const video = event.currentTarget.querySelector("video");
     if (!video) return;
     void video.play();
@@ -274,7 +285,7 @@ function NewsCard({ item, featured }: { item: UnifiedNewsItem; featured: boolean
       id={`news-feed-${item.id}`}
       onMouseEnter={handleVideoEnter}
       onMouseLeave={handleVideoLeave}
-      className={`group grid overflow-hidden border border-brand-border bg-brand-bg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-12 ${styles.border}`}
+      className={`group grid overflow-hidden border border-brand-border bg-brand-bg transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-12 ${styles.border}`}
     >
       <div className={`${featured ? "lg:col-span-5" : "lg:col-span-4"} relative min-h-64 overflow-hidden bg-brand-text`}>
         <video

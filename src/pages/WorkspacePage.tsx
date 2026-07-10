@@ -473,6 +473,10 @@ export function WorkspacePage() {
                 <img 
                   src={user.photoURL} 
                   alt={user.displayName || "Profil"} 
+                  width={48}
+                  height={48}
+                  loading="lazy"
+                  decoding="async"
                   className="w-12 h-12 rounded-full border border-brand-border"
                   referrerPolicy="no-referrer"
                 />
@@ -491,7 +495,7 @@ export function WorkspacePage() {
               {token ? (
                 <button 
                 onClick={() => void fetchFiles(token)}
-                className="flex items-center gap-2 border border-brand-border px-4 py-2 text-xs font-bold uppercase tracking-widest text-brand-text hover:bg-brand-border/20 transition-all"
+                className="flex items-center gap-2 border border-brand-border px-4 py-2 text-xs font-bold uppercase tracking-widest text-brand-text hover:bg-brand-border/20 transition-colors"
                 title="Odśwież pliki"
               >
                 <RefreshCw size={14} />
@@ -500,7 +504,7 @@ export function WorkspacePage() {
               ) : (
                 <button
                   onClick={handleLogin}
-                  className="flex items-center gap-2 border border-amber-500 bg-amber-500/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-amber-700 hover:bg-amber-500/20 transition-all"
+                  className="flex items-center gap-2 border border-amber-500 bg-amber-500/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-amber-700 hover:bg-amber-500/20 transition-colors"
                 >
                   <Cloud size={14} />
                   <span>Połącz Drive ponownie</span>
@@ -508,7 +512,7 @@ export function WorkspacePage() {
               )}
               <button 
                 onClick={handleLogout}
-                className="flex items-center gap-2 border border-brand-border hover:border-red-500 hover:text-red-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-brand-muted transition-all"
+                className="flex items-center gap-2 border border-brand-border hover:border-red-500 hover:text-red-500 px-4 py-2 text-xs font-bold uppercase tracking-widest text-brand-muted transition-colors"
               >
                 <LogOut size={14} />
                 <span>Odłącz</span>
@@ -732,7 +736,7 @@ export function WorkspacePage() {
                           setSelectedTemplateId(tmpl.id);
                           setCustomDocTitle(`Szkic: ${tmpl.title}`);
                         }}
-                        className={`text-left border p-3.5 transition-all duration-200 relative ${
+                        className={`text-left border p-3.5 transition-[border-color,background-color,color,box-shadow,transform,opacity] duration-200 relative ${
                           selectedTemplateId === tmpl.id 
                             ? "border-brand-text bg-brand-featured-bg shadow-sm" 
                             : "border-brand-border hover:border-brand-text/50 bg-brand-bg/50"
@@ -776,7 +780,7 @@ export function WorkspacePage() {
                 <button 
                   onClick={handleCreateDoc}
                   disabled={creatingDoc || !customDocTitle.trim()}
-                  className="w-full bg-brand-text text-brand-bg hover:bg-brand-muted px-5 py-3.5 border border-transparent font-sans text-xs uppercase font-extrabold tracking-widest flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-brand-text text-brand-bg hover:bg-brand-muted px-5 py-3.5 border border-transparent font-sans text-xs uppercase font-extrabold tracking-widest flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {creatingDoc ? (
                     <>
@@ -922,7 +926,7 @@ export function WorkspacePage() {
                               </div>
                               <button 
                                 onClick={() => handleStartEditingNotes(doc)}
-                                className="opacity-0 group-hover/notes:opacity-100 hover:text-orange-500 p-0.5 transition-all"
+                                className="opacity-0 group-hover/notes:opacity-100 hover:text-orange-500 p-0.5 transition-colors"
                                 title="Edytuj notatki"
                               >
                                 <Edit3 size={11} />

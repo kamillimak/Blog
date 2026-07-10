@@ -160,6 +160,8 @@ export function ArticleContent({ sections, textSizeClass = "text-lg" }: ArticleC
                 <img
                   src={`${import.meta.env.BASE_URL}${section.src}`}
                   alt={section.alt}
+                  width={1600}
+                  height={900}
                   className="w-full aspect-video object-cover border border-brand-border bg-brand-surface"
                   loading="lazy"
                   decoding="async"

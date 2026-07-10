@@ -330,7 +330,7 @@ Najważniejsze lokalizacje danych:
 
 ---
 
-## 📝 Jak Dodać Nowy Artykuł?
+## 📝 Jak Dodać Nowy Artykuł
 
 Treść bloga jest całkowicie oddzielona od kodu interfejsu i przechowywana w postaci ustrukturyzowanej bazy danych TypeScript w pliku `src/data/articles.ts`. 
 
@@ -448,8 +448,8 @@ Endpoint kontrolny backendu znajduje się pod `/api/health`. CORS dopuszcza GitH
 
 Backend ma dwa tryby pracy newslettera:
 
-1. `POST /api/subscribe` zapisuje adres e-mail do Firestore w produkcji albo do `subscriptions.json` lokalnie. Gmail SMTP moze wyslac wiadomosc powitalna, jesli ustawiono `GMAIL_USER` i `GMAIL_APP_PASSWORD`.
-2. `POST /api/newsletter/daily-digest` wysyla raz dziennie digest nowosci z ostatnich 24h. Endpoint pobiera subskrybentow, zbiera nowe artykuly oraz materialy z `content/daily-news` i `content/top-3`, a nastepnie wysyla mail przez Gmail SMTP.
+1. `POST /api/subscribe` zapisuje adres e-mail do Firestore w produkcji albo do `subscriptions.json` lokalnie. Gmail SMTP może wysłać wiadomość powitalną, jeśli ustawiono `GMAIL_USER` i `GMAIL_APP_PASSWORD`.
+2. `POST /api/newsletter/daily-digest` wysyła raz dziennie digest nowości z ostatnich 24h. Endpoint pobiera subskrybentów, zbiera nowe artykuły oraz materiały z `content/daily-news` i `content/top-3`, a następnie wysyła mail przez Gmail SMTP.
 
 Endpoint dziennego digestu w produkcji wymaga sekretu:
 
@@ -463,11 +463,11 @@ albo:
 x-cron-secret: <CRON_SECRET>
 ```
 
-Test bez wysylki:
+Test bez wysyłki:
 
 ```bash
-curl -X POST "https://<cloud-run-url>/api/newsletter/daily-digest?dryRun=1" \
+curl -X POST "https://<cloud-run-url>/api/newsletter/daily-digestdryRun=1" \
   -H "Authorization: Bearer <CRON_SECRET>"
 ```
 
-Docelowy harmonogram: Cloud Scheduler -> Cloud Run -> Firestore + Gmail SMTP. Cloud Scheduler wywoluje endpoint raz dziennie, Cloud Run wykonuje kod backendu, Firestore przechowuje subskrybentow, a Gmail SMTP odpowiada za sama wysylke.
+Docelowy harmonogram: Cloud Scheduler -> Cloud Run -> Firestore + Gmail SMTP. Cloud Scheduler wywołuje endpoint raz dziennie, Cloud Run wykonuje kod backendu, Firestore przechowuje subskrybentów, a Gmail SMTP odpowiada za samą wysyłkę.

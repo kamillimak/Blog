@@ -104,7 +104,7 @@ export function NewsletterForm() {
               onChange={(e) => setEmail(e.target.value)}
               disabled={status === "loading" || !backendConfigured}
               placeholder="Twój adres e-mail..."
-              className="w-full pl-9 pr-4 py-3 bg-[#222222] border border-zinc-800 hover:border-zinc-700 focus:border-white focus:outline-none transition-all text-xs text-white placeholder-zinc-500 rounded-none font-sans"
+              className="w-full pl-9 pr-4 py-3 bg-[#222222] border border-zinc-800 hover:border-zinc-700 focus:border-white focus:outline-none transition-colors text-xs text-white placeholder-zinc-500 rounded-none font-sans"
               required
               aria-label="Adres e-mail do newslettera"
             />

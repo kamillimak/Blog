@@ -26,7 +26,7 @@ export function Footer() {
         type="button"
         onClick={scrollToTop}
         aria-label="Wróć do góry"
-        className={`fixed bottom-5 right-4 z-50 flex h-11 w-11 items-center justify-center border border-brand-text bg-brand-text text-brand-bg shadow-xl transition-all sm:hidden ${
+        className={`fixed bottom-5 right-4 z-50 flex h-11 w-11 items-center justify-center border border-brand-text bg-brand-text text-brand-bg shadow-xl transition-[opacity,transform] sm:hidden ${
           showBackToTop ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
         }`}
       >

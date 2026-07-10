@@ -25,7 +25,7 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
     return (
       <div 
         id={`featured-card-${article.slug}`}
-        className="group relative bg-brand-featured-bg border border-brand-border rounded-none overflow-hidden hover:border-brand-text transition-all duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 lg:p-8"
+        className="group relative bg-brand-featured-bg border border-brand-border rounded-none overflow-hidden hover:border-brand-text transition-[border-color,box-shadow,transform] duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 p-6 lg:p-8"
       >
         {/* Visual Header / Illustration */}
         <div className="lg:col-span-7 w-full flex items-center justify-center border-b lg:border-b-0 lg:border-r border-brand-border pb-6 lg:pb-0 lg:pr-8">
@@ -54,7 +54,7 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
 
             {/* Title */}
             <Link to={`/articles/${article.slug}`}>
-              <h2 className="text-3xl font-sans font-bold tracking-tight text-brand-text group-hover:underline underline-offset-4 decoration-brand-sage transition-all mb-4 leading-tight">
+              <h2 className="text-3xl font-sans font-bold tracking-tight text-brand-text group-hover:underline underline-offset-4 decoration-brand-sage transition-colors mb-4 leading-tight">
                 {article.title}
               </h2>
             </Link>
@@ -92,7 +92,7 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
               
               <Link 
                 to={`/articles/${article.slug}`}
-                className="flex items-center gap-1 font-bold text-brand-text border-b border-brand-text hover:border-transparent transition-all"
+                className="flex items-center gap-1 font-bold text-brand-text border-b border-brand-text hover:border-transparent transition-colors"
               >
                 <span>Czytaj</span>
                 <ArrowRight size={12} />
@@ -107,7 +107,7 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
   return (
     <article 
       id={`article-card-${article.slug}`}
-      className="group bg-brand-card border border-brand-border rounded-none overflow-hidden hover:border-brand-text transition-all duration-300 flex flex-col h-full"
+      className="group bg-brand-card border border-brand-border rounded-none overflow-hidden hover:border-brand-text transition-[border-color,box-shadow,transform] duration-300 flex flex-col h-full"
     >
       {/* Card Image / Illustration */}
       <Link to={`/articles/${article.slug}`} className="block overflow-hidden relative border-b border-brand-border">
@@ -134,7 +134,7 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
 
           {/* Title */}
           <Link to={`/articles/${article.slug}`}>
-            <h3 className="text-xl font-sans font-bold tracking-tight text-brand-text group-hover:underline underline-offset-4 decoration-brand-sage transition-all mb-3 line-clamp-2 leading-snug">
+            <h3 className="text-xl font-sans font-bold tracking-tight text-brand-text group-hover:underline underline-offset-4 decoration-brand-sage transition-colors mb-3 line-clamp-2 leading-snug">
               {article.title}
             </h3>
           </Link>
@@ -168,7 +168,7 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
 
             <Link 
               to={`/articles/${article.slug}`}
-              className="flex items-center gap-1 text-[10px] font-extrabold text-brand-text border-b border-brand-text hover:border-transparent transition-all"
+              className="flex items-center gap-1 text-[10px] font-extrabold text-brand-text border-b border-brand-text hover:border-transparent transition-colors"
             >
               <span>Czytaj</span>
               <ArrowRight size={11} />

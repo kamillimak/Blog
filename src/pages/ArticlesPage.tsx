@@ -65,7 +65,7 @@ export function ArticlesPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Szukaj po tytule, opisie lub tagach..."
-                className="w-full pl-9 pr-4 py-2 border border-brand-border rounded-none text-xs bg-brand-featured-bg focus:bg-white focus:outline-none focus:border-brand-text transition-all font-sans text-brand-text"
+                className="w-full pl-9 pr-4 py-2 border border-brand-border rounded-none text-xs bg-brand-featured-bg focus:bg-white focus:outline-none focus:border-brand-text transition-colors font-sans text-brand-text"
                 aria-label="Wyszukaj artykuły"
               />
             </div>
@@ -89,7 +89,7 @@ export function ArticlesPage() {
               <div className="flex flex-wrap gap-1.5">
                 <button
                   onClick={() => setSelectedTool(null)}
-                  className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-all cursor-pointer border ${
+                  className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer border ${
                     selectedTool === null
                       ? "bg-brand-text text-brand-bg border-brand-text"
                       : "bg-brand-featured-bg text-brand-muted hover:bg-brand-border/30 hover:text-brand-text border-brand-border"
@@ -101,7 +101,7 @@ export function ArticlesPage() {
                   <button
                     key={t}
                     onClick={() => setSelectedTool(t)}
-                    className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-all cursor-pointer border ${
+                    className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer border ${
                       selectedTool === t
                         ? "bg-brand-text text-brand-bg border-brand-text"
                         : "bg-brand-featured-bg text-brand-muted hover:bg-brand-border/30 hover:text-brand-text border-brand-border"
@@ -119,7 +119,7 @@ export function ArticlesPage() {
               <div className="flex flex-wrap gap-1.5">
                 <button
                   onClick={() => setSelectedCategory(null)}
-                  className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-all cursor-pointer border ${
+                  className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer border ${
                     selectedCategory === null
                       ? "bg-brand-text text-brand-bg border-brand-text"
                       : "bg-brand-featured-bg text-brand-muted hover:bg-brand-border/30 hover:text-brand-text border-brand-border"
@@ -131,7 +131,7 @@ export function ArticlesPage() {
                   <button
                     key={c}
                     onClick={() => setSelectedCategory(c)}
-                    className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-all cursor-pointer border ${
+                    className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer border ${
                       selectedCategory === c
                         ? "bg-brand-text text-brand-bg border-brand-text"
                         : "bg-brand-featured-bg text-brand-muted hover:bg-brand-border/30 hover:text-brand-text border-brand-border"

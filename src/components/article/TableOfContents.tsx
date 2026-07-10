@@ -88,7 +88,7 @@ export function TableOfContents({ sections }: TableOfContentsProps) {
                       setActiveId(heading.id);
                     }
                   }}
-                  className={`block transition-all duration-200 border-l-2 pl-3 py-1 ${
+                  className={`block transition-[border-color,background-color,color,box-shadow,transform,opacity] duration-200 border-l-2 pl-3 py-1 ${
                     isActive
                       ? "text-brand-text font-extrabold border-brand-text bg-brand-featured-bg -ml-[2px]"
                       : "text-brand-muted hover:text-brand-text border-transparent hover:border-brand-border"

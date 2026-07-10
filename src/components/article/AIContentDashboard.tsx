@@ -54,7 +54,7 @@ export function AIContentDashboard() {
           return (
           <div 
             key={idx} 
-            className={`bg-brand-card border border-brand-border p-6 flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-xl ${styles.accentColor} transition-all duration-300 relative group overflow-hidden`}
+            className={`bg-brand-card border border-brand-border p-6 flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-xl ${styles.accentColor} transition-[border-color,box-shadow,transform] duration-300 relative group overflow-hidden`}
           >
             {/* Elegant Corner Accent Line */}
             <div className="absolute top-0 left-0 w-1.5 h-full bg-transparent group-hover:bg-orange-500 transition-colors duration-300" />

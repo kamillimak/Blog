@@ -40,14 +40,14 @@ export function ReadingProgress({ title, category, readTime, scrollProgress }: R
         aria-valuemax={100}
       >
         <div 
-          className="h-full bg-brand-text transition-all duration-100 ease-out"
+          className="h-full bg-brand-text transition-[width] duration-100 ease-out"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
       {/* 2. Premium Floating Progress Bar (Sticky just under the header, fades/slides in on scroll) */}
       <div 
-        className={`fixed top-20 left-0 w-full bg-brand-bg border-b border-brand-border py-2.5 z-40 transition-all duration-300 ease-in-out ${
+        className={`fixed top-20 left-0 w-full bg-brand-bg border-b border-brand-border py-2.5 z-40 transition-[opacity,transform] duration-300 ease-in-out ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
         }`}
       >
