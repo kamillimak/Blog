@@ -89,12 +89,48 @@ const extractField = (block: string, field: string) => {
 const extractPublicationDate = (value: string, fallback: string) =>
   value.match(/\d{4}-\d{2}-\d{2}/)?.[0] ?? fallback;
 
+const cleanUrl = (value: string) => {
+  const url = value.trim();
+  return /^https?:\/\//i.test(url) ? url : "";
+};
+
+const restrictedSourcePatterns = [
+  /https?:\/\/(www\.)?ft\.com\//i,
+  /https?:\/\/(www\.)?fbi\.gov\//i,
+  /https?:\/\/(www\.)?defense\.gov\/News\/Releases\/?/i,
+  /https?:\/\/(www\.)?mckinsey\.com\//i,
+  /https?:\/\/(www\.)?microsoft\.com\/en-us\/worklab\//i,
+  /https?:\/\/openai\.com\/business\//i,
+];
+
+const isRestrictedSourceUrl = (url: string) =>
+  restrictedSourcePatterns.some((pattern) => pattern.test(url));
+
+const extractSources = (markdown: string) =>
+  [...markdown.matchAll(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g)]
+    .map((match) => ({
+      sourceLabel: stripMarkdown(match[1] ?? "Źródło"),
+      sourceUrl: cleanUrl(match[2] ?? ""),
+    }))
+    .filter((source) => source.sourceUrl);
+
 const extractFirstSource = (markdown: string) => {
-  const match = markdown.match(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/);
+  const sources = extractSources(markdown);
+  const publicSource = sources.find((source) => !isRestrictedSourceUrl(source.sourceUrl));
+  const firstSource = sources[0];
+
+  if (publicSource) return publicSource;
+
+  if (firstSource) {
+    return {
+      sourceLabel: `${firstSource.sourceLabel} (dostęp ograniczony)`,
+      sourceUrl: "",
+    };
+  }
 
   return {
-    sourceLabel: stripMarkdown(match?.[1] ?? "Źródło"),
-    sourceUrl: match?.[2] ?? "#",
+    sourceLabel: "Źródło niedostępne",
+    sourceUrl: "",
   };
 };
 
@@ -120,7 +156,7 @@ const parseDailyBriefing = (): DailyTechBriefing => {
     const category = extractField(block, "Kategoria");
     const isPolish = category.toLowerCase().includes("polska");
     const sourceLabel = extractField(block, "Źródło") || extractField(block, "Zrodlo");
-    const sourceUrl = extractField(block, "URL");
+    const sourceUrl = cleanUrl(extractField(block, "URL"));
     const publishedAt = extractPublicationDate(extractField(block, "Data publikacji"), date);
 
     return {

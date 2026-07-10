@@ -24,5 +24,4 @@ W projektach B2B AI dopisz do umów i procedur: zakaz nieautoryzowanej destylacj
 ## Źródła
 
 - [Financial Times: OpenAI and Google sell AI models to blacklisted China groups](https://www.ft.com/content/5d6aafa1-5d47-4585-aa95-6ec06a6cd20f)
-- [Anthropic: More details on Fable 5’s cyber safeguards and jailbreak framework](https://www.anthropic.com/news/fable-5-cyber-safeguards)
 - [Anthropic: Redeploying Fable 5](https://www.anthropic.com/news/redeploying-fable-5)

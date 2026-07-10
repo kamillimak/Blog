@@ -77,6 +77,8 @@ const kindStyles: Record<UnifiedNewsKind, { badge: string; border: string; divid
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
+const isValidSourceUrl = (url: string) => /^https?:\/\//i.test(url);
+
 export function DailyBriefing() {
   const [activeFilter, setActiveFilter] = useState<FeedFilter>("all");
   const [isPlaying, setIsPlaying] = useState(true);
@@ -179,20 +181,39 @@ export function DailyBriefing() {
               </span>
             </div>
 
-            <a
-              href={ticker.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex min-w-0 flex-1 items-start gap-3 text-xs font-bold leading-relaxed text-zinc-200 transition-colors hover:text-orange-300 sm:text-sm md:items-center"
-            >
-              <span className={`shrink-0 border px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider ${kindStyles[ticker.kind].badge}`}>
-                {ticker.label}
-              </span>
-              <span className="min-w-0 whitespace-normal break-words">{ticker.title}</span>
-              <ExternalLink size={12} className="shrink-0" />
-            </a>
+            <div className="min-w-0 flex-1">
+              <div className="mb-1 flex flex-wrap items-center gap-2">
+                <span className={`shrink-0 border px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider ${kindStyles[ticker.kind].badge}`}>
+                  {ticker.label}
+                </span>
+                <time dateTime={ticker.publishedAt} className="font-mono text-[10px] font-bold uppercase tracking-wider text-white/70">
+                  {formatPolishDate(ticker.publishedAt)}
+                </time>
+                <span className="font-mono text-[10px] text-white/45">
+                  {tickerIndex + 1}/{UNIFIED_NEWS_FEED.length}
+                </span>
+              </div>
+              <h3 className="text-sm font-black uppercase leading-snug tracking-tight text-white sm:text-base">
+                {ticker.title}
+              </h3>
+              <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-zinc-300">
+                {ticker.summary}
+              </p>
+            </div>
 
             <div className="flex shrink-0 items-center justify-between gap-1 border-t border-white/10 pt-2 md:justify-end md:border-t-0 md:pt-0">
+              {isValidSourceUrl(ticker.sourceUrl) && (
+                <a
+                  href={ticker.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Otwórz źródło: ${ticker.sourceLabel}`}
+                  className="mr-1 inline-flex items-center gap-1.5 border border-white/20 px-2 py-1.5 text-[10px] font-black uppercase tracking-wider text-white transition-colors hover:border-orange-300 hover:text-orange-300"
+                >
+                  Źródło
+                  <ExternalLink size={12} />
+                </a>
+              )}
               <button
                 type="button"
                 onClick={() => setIsPlaying((value) => !value)}
@@ -209,7 +230,7 @@ export function DailyBriefing() {
               >
                 <ChevronLeft size={14} />
               </button>
-              <span className="px-1 font-mono text-[10px] text-zinc-500">
+              <span className="px-1 font-mono text-[10px] text-zinc-500 md:hidden">
                 {tickerIndex + 1}/{UNIFIED_NEWS_FEED.length}
               </span>
               <button
@@ -255,7 +276,7 @@ export function DailyBriefing() {
         <div className="mt-8 grid grid-cols-1 gap-6">
           {filteredNews.map((item, index) => (
             <div key={item.id}>
-              <NewsCard item={item} featured={index === 0} />
+              <NewsCard item={item} featured={index === 0} index={index} />
             </div>
           ))}
         </div>
@@ -264,9 +285,10 @@ export function DailyBriefing() {
   );
 }
 
-function NewsCard({ item, featured }: { item: UnifiedNewsItem; featured: boolean }) {
+function NewsCard({ item, featured, index }: { item: UnifiedNewsItem; featured: boolean; index: number }) {
   const styles = kindStyles[item.kind];
   const Icon = kindStyles[item.kind].icon;
+  const sourceUrl = isValidSourceUrl(item.sourceUrl) ? item.sourceUrl : "";
   const handleVideoEnter = (event: MouseEvent<HTMLElement>) => {
     if (shouldReduceMotion()) return;
     const video = event.currentTarget.querySelector("video");
@@ -302,8 +324,8 @@ function NewsCard({ item, featured }: { item: UnifiedNewsItem; featured: boolean
           <Icon size={12} />
           {item.label}
         </span>
-        <span className="absolute bottom-4 left-4 text-[10px] font-bold uppercase tracking-widest text-white/75">
-          {item.groupLabel}
+        <span className="absolute bottom-4 left-4 border border-white/25 bg-black/35 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white/85 backdrop-blur">
+          News {String(index + 1).padStart(2, "0")}
         </span>
       </div>
 
@@ -322,14 +344,21 @@ function NewsCard({ item, featured }: { item: UnifiedNewsItem; featured: boolean
         </div>
 
         <div className={`mt-6 flex flex-wrap items-center gap-3 border-t-2 pt-4 ${styles.divider}`}>
-          <a
-            href={item.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-brand-text transition-colors hover:text-orange-600"
-          >
-            {item.sourceLabel} <ExternalLink className="h-4 w-4 shrink-0 sm:h-3 sm:w-3" />
-          </a>
+          {sourceUrl ? (
+            <a
+              href={sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex max-w-full items-center gap-2 text-[10px] font-black uppercase tracking-widest text-brand-text transition-colors hover:text-orange-600"
+            >
+              <span className="min-w-0 break-words">Źródło: {item.sourceLabel || "materiał źródłowy"}</span>
+              <ExternalLink className="h-4 w-4 shrink-0 sm:h-3 sm:w-3" />
+            </a>
+          ) : (
+            <span className="text-[10px] font-black uppercase tracking-widest text-brand-muted">
+              Źródło: {item.sourceLabel || "dostęp ograniczony"}
+            </span>
+          )}
         </div>
       </div>
     </article>
