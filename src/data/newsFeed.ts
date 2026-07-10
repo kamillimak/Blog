@@ -60,7 +60,6 @@ export const NEWSROOM_VIDEOS = [
   "news/backgrounds/tech-news-07.mp4",
   "news/backgrounds/tech-news-08.mp4",
   "news/backgrounds/tech-news-09.mp4",
-  "news/backgrounds/tech-news-10.mp4",
 ];
 
 const stripMarkdown = (value: string) =>

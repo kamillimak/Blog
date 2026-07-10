@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Github, Compass, Layers, Mail, Moon, Sun } from "lucide-react";
+import { Menu, X, Github, Compass, Layers, Mail, Moon, Sun, BriefcaseBusiness } from "lucide-react";
 import { KMSygnet } from "./KMSygnet";
 
 export function Header() {
@@ -83,6 +83,16 @@ export function Header() {
             <span className="h-4 w-px bg-brand-border" />
 
             <a
+              href="https://kamillimak.github.io/Projects"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 py-2 border-b-2 border-transparent text-brand-muted hover:text-brand-text transition-colors"
+            >
+              <BriefcaseBusiness size={16} />
+              <span>Realizacje</span>
+            </a>
+
+            <a
               href="mailto:mikolajczykamil@gmail.com"
               className="flex items-center gap-2 px-4 py-2 border border-brand-text bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white hover:border-brand-sage transition-colors font-bold uppercase tracking-wider text-[10px]"
             >
@@ -152,6 +162,17 @@ export function Header() {
             })}
             
             <hr className="my-2 border-brand-border" />
+
+            <a
+              href="https://kamillimak.github.io/Projects"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-3 px-3 py-3 rounded-none text-base font-bold uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors"
+            >
+              <BriefcaseBusiness size={18} />
+              <span>Realizacje</span>
+            </a>
 
             <button
               type="button"
