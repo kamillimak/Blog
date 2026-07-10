@@ -14,6 +14,6 @@ To przesuwa agentów kodujących z modelu „narzędzie otwarte na biurku” do 
 
 Zacznij od repozytorium testowego i minimalnych uprawnień. Dostęp mobilny powinien służyć do kontroli, nie do bezrefleksyjnego akceptowania zmian.
 
-**Aktualność:** zweryfikowano 2 lipca 2026; komunikat opublikowano w czerwcu 2026.
+**Aktualność:** zweryfikowano 2 lipca 2026; komunikat opublikowano 14 maja 2026.
 
 **Źródła:** [OpenAI — Work with Codex from anywhere](https://openai.com/index/work-with-codex-from-anywhere/), [OpenAI — polska wersja komunikatu](https://openai.com/pl-PL/index/work-with-codex-from-anywhere/), [OpenAI Help — Using Codex with your ChatGPT plan](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan)
