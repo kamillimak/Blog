@@ -142,10 +142,9 @@ const parseStatus = (markdown: string): "DRAFT" | "APPROVED" =>
 
 const getVideo = (index: number) => NEWSROOM_VIDEOS[index % NEWSROOM_VIDEOS.length];
 
-const parseDailyBriefing = (): DailyTechBriefing => {
-  const latestPath = getLatestPath(Object.keys(dailyModules));
-  const markdown = dailyModules[latestPath] ?? "";
-  const date = latestPath?.replace(/\\/g, "/").match(/daily-news\/(\d{4}-\d{2}-\d{2})\//)?.[1] ?? "";
+const parseDailyBriefing = (path: string): DailyTechBriefing => {
+  const markdown = dailyModules[path] ?? "";
+  const date = path?.replace(/\\/g, "/").match(/daily-news\/(\d{4}-\d{2}-\d{2})\//)?.[1] ?? "";
   const status = parseStatus(markdown);
   const geoMatch = markdown.match(/Podzia[łl] geograficzny:\s+\*\*Polska\s+(\d+)\s+\/\s+[ŚS]wiat\s+(\d+)\*\*/i);
   const blocks = markdown.split(/^##\s+\d+\.\s+/gm).slice(1);
@@ -180,6 +179,11 @@ const parseDailyBriefing = (): DailyTechBriefing => {
 
   return { date, status, polishCount, worldCount, items, draftSlug };
 };
+
+const parseDailyBriefings = (): DailyTechBriefing[] =>
+  Object.keys(dailyModules)
+    .sort((left, right) => right.localeCompare(left))
+    .map((path) => parseDailyBriefing(path));
 
 const topThreeKind = (fileName: string): UnifiedNewsKind => {
   if (/crime/.test(fileName)) return "top3-crime";
@@ -250,9 +254,10 @@ const parseTopThreeBriefing = (): TopThreeBriefing => {
   return { runId, date, status, items };
 };
 
-export const DAILY_TECH_BRIEFING = parseDailyBriefing();
+export const DAILY_TECH_BRIEFINGS = parseDailyBriefings();
+export const DAILY_TECH_BRIEFING = DAILY_TECH_BRIEFINGS[0];
 export const TOP_THREE_BRIEFING = parseTopThreeBriefing();
 export const UNIFIED_NEWS_FEED: UnifiedNewsItem[] = [
-  ...DAILY_TECH_BRIEFING.items,
+  ...DAILY_TECH_BRIEFINGS.flatMap((briefing) => briefing.items),
   ...TOP_THREE_BRIEFING.items,
 ];
