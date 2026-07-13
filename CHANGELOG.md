@@ -2,6 +2,13 @@
 
 Wszystkie istotne zmiany w projekcie „AI w praktyce” są dokumentowane w tym pliku.
 
+## 2026-07-13 — Briefingi dzienne 10-13 lipca
+
+- Zweryfikowano istniejący briefing dzienny z 10 lipca 2026 r. w `content/daily-news/2026-07-10/`.
+- Dodano brakujące briefingi dzienne dla 11, 12 i 13 lipca 2026 r. w `content/daily-news/YYYY-MM-DD/YYYY-MM-DD.md`.
+- Dodano odpowiadające kopie redakcyjne `DRAFT` w `content/draft/YYYY-MM-DD-daily-news/YYYY-MM-DD.md`, aby aplikacja importowała je przez istniejący parser Markdown.
+- Zachowano status `DRAFT`, podział Polska/Świat, bezpośrednie URL-e źródeł oraz wymóg dwóch legalnych grafik przed ewentualnym zatwierdzeniem.
+
 ## 2026-07-09 — SEO, konwersja i zaufanie
 
 - Zmieniono główny tytuł SEO na: `Blog technologiczny — Codex · Trae · Claude · AI Studio`.
