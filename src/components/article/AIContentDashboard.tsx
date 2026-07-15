@@ -1,102 +1,119 @@
 import React from "react";
-import { Sparkles, AlertTriangle, Coins, ArrowRight, ExternalLink } from "lucide-react";
-import { AI_TREND_BRIEFING, AI_TREND_BRIEFING_DATE } from "../../data/aiTrendBriefing";
+import { AlertTriangle, ArrowRight, Coins, ExternalLink, Sparkles } from "lucide-react";
+import { TOP_THREE_BRIEFING, type UnifiedNewsKind } from "../../data/newsFeed";
+
+interface DashboardCategory {
+  id: UnifiedNewsKind;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  iconBg: string;
+  accentColor: string;
+  badgeColor: string;
+}
+
+const categoryStyles: DashboardCategory[] = [
+  {
+    id: "top3-news",
+    title: "Top 3 Newsy ze swiata AI",
+    description: "Najwazniejsze rewolucje i przelomy technologiczne.",
+    icon: <Sparkles size={18} />,
+    iconBg: "bg-brand-featured-bg border-brand-border text-brand-text",
+    accentColor: "border-brand-text hover:shadow-brand-text/5",
+    badgeColor: "text-brand-text border-brand-border bg-brand-featured-bg/30",
+  },
+  {
+    id: "top3-crime",
+    title: "Top 3 Kryminalne uzycia AI",
+    description: "Nowe zagrozenia i wektory cyberatakow z uzyciem maszyn.",
+    icon: <AlertTriangle size={18} />,
+    iconBg: "bg-rose-950/20 border-rose-900/40 text-rose-500",
+    accentColor: "hover:border-rose-500/50 hover:shadow-rose-500/5",
+    badgeColor: "text-rose-400 border-rose-900/30 bg-rose-950/10",
+  },
+  {
+    id: "top3-business",
+    title: "Top 3 Pomysly na zarabianie z AI",
+    description: "Praktyczne nisze rynkowe i pomysly na uslugi komercyjne.",
+    icon: <Coins size={18} />,
+    iconBg: "bg-emerald-950/20 border-emerald-900/40 text-emerald-500",
+    accentColor: "hover:border-emerald-500/50 hover:shadow-emerald-500/5",
+    badgeColor: "text-emerald-400 border-emerald-900/30 bg-emerald-950/10",
+  },
+];
 
 export function AIContentDashboard() {
-  const categoryStyles = [
-    {
-      title: "Top 3 Newsy ze świata AI",
-      description: "Najważniejsze rewolucje i przełomy technologiczne.",
-      icon: <Sparkles size={18} />,
-      iconBg: "bg-brand-featured-bg border-brand-border text-brand-text",
-      accentColor: "border-brand-text hover:shadow-brand-text/5",
-      badgeColor: "text-brand-text border-brand-border bg-brand-featured-bg/30",
-    },
-    {
-      title: "Top 3 Kryminalne użycia AI",
-      description: "Nowe zagrożenia i wektory cyberataków z użyciem maszyn.",
-      icon: <AlertTriangle size={18} />,
-      iconBg: "bg-rose-950/20 border-rose-900/40 text-rose-500",
-      accentColor: "hover:border-rose-500/50 hover:shadow-rose-500/5",
-      badgeColor: "text-rose-400 border-rose-900/30 bg-rose-950/10",
-    },
-    {
-      title: "Top 3 Pomysły na zarabianie z AI",
-      description: "Praktyczne nisze rynkowe i pomysły na usługi komercyjne.",
-      icon: <Coins size={18} />,
-      iconBg: "bg-emerald-950/20 border-emerald-900/40 text-emerald-500",
-      accentColor: "hover:border-emerald-500/50 hover:shadow-emerald-500/5",
-      badgeColor: "text-emerald-400 border-emerald-900/30 bg-emerald-950/10",
-    },
-  ];
+  const categories = categoryStyles.map((category) => ({
+    ...category,
+    items: TOP_THREE_BRIEFING.items.filter((item) => item.kind === category.id).slice(0, 3),
+  }));
 
   return (
-    <section id="ai-content-dashboard" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 font-sans">
-      
-      {/* Title */}
-      <div className="border-b border-brand-border pb-5 mb-10">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="text-orange-500 text-lg">📊</span>
-          <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight uppercase text-brand-text">
-            Skaner Trendów: AI Content Dashboard
+    <section id="ai-content-dashboard" className="mx-auto mt-16 max-w-7xl px-4 font-sans sm:px-6 lg:px-8">
+      <div className="mb-10 border-b border-brand-border pb-5">
+        <div className="mb-1 flex items-center gap-2">
+          <Sparkles size={18} className="text-orange-500" />
+          <h2 className="text-xl font-extrabold uppercase tracking-tight text-brand-text sm:text-2xl">
+            Skaner Trendow: AI Content Dashboard
           </h2>
         </div>
-        <p className="text-brand-muted text-xs">
-          Głęboka analiza rynku z perspektywy praktyka IT: przełomy technologiczne, wektory zagrożeń oraz realne możliwości komercjalizacji.
+        <p className="text-xs text-brand-muted">
+          Gleboka analiza rynku z perspektywy praktyka IT: przelomy technologiczne, wektory zagrozen oraz realne mozliwosci komercjalizacji.
         </p>
       </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {AI_TREND_BRIEFING.map((category, idx) => {
-          const styles = categoryStyles[idx];
-          const Icon = idx === 0 ? Sparkles : idx === 1 ? AlertTriangle : Coins;
-          return (
-          <div 
-            key={idx} 
-            className={`bg-brand-card border border-brand-border p-6 flex flex-col justify-between hover:-translate-y-1.5 hover:shadow-xl ${styles.accentColor} transition-[border-color,box-shadow,transform] duration-300 relative group overflow-hidden`}
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        {categories.map((category) => (
+          <div
+            key={category.id}
+            className={`group relative flex flex-col justify-between overflow-hidden border border-brand-border bg-brand-card p-6 transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1.5 hover:shadow-xl ${category.accentColor}`}
           >
-            {/* Elegant Corner Accent Line */}
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-transparent group-hover:bg-orange-500 transition-colors duration-300" />
+            <div className="absolute left-0 top-0 h-full w-1.5 bg-transparent transition-colors duration-300 group-hover:bg-orange-500" />
 
             <div>
-              {/* Header */}
-              <div className="flex items-center gap-2.5 mb-6">
-                <div className={`p-2 border ${styles.iconBg} shrink-0`}>
-                  <Icon size={18} />
-                </div>
+              <div className="mb-6 flex items-center gap-2.5">
+                <div className={`shrink-0 border p-2 ${category.iconBg}`}>{category.icon}</div>
                 <div>
-                  <h3 className="font-extrabold text-sm uppercase tracking-wider text-brand-text">
+                  <h3 className="text-sm font-extrabold uppercase tracking-wider text-brand-text">
                     {category.title}
                   </h3>
-                  <p className="text-[10px] text-brand-muted mt-0.5 leading-tight">
+                  <p className="mt-0.5 text-[10px] leading-tight text-brand-muted">
                     {category.description}
                   </p>
                 </div>
               </div>
 
-              {/* Items List */}
               <div className="space-y-6">
-                {category.items.map((item, itemIdx) => (
-                  <div 
-                    key={itemIdx} 
-                    id={category.id === "news" ? `trend-news-${item.id}` : undefined}
+                {category.items.map((item, itemIndex) => (
+                  <div
+                    key={item.id}
+                    id={category.id === "top3-news" ? `trend-news-${item.id}` : undefined}
                     className="group/item border-b border-brand-border/60 pb-5 last:border-b-0 last:pb-0"
                   >
                     <div className="flex gap-4">
-                      <span className={`font-mono text-xs font-black px-1.5 py-0.5 border h-fit shrink-0 ${styles.badgeColor}`}>
-                        {String(itemIdx + 1).padStart(2, "0")}
+                      <span className={`h-fit shrink-0 border px-1.5 py-0.5 font-mono text-xs font-black ${category.badgeColor}`}>
+                        {String(itemIndex + 1).padStart(2, "0")}
                       </span>
                       <div>
-                        <h4 className="font-extrabold text-xs sm:text-sm text-brand-text tracking-tight uppercase mb-1.5 leading-snug group-hover/item:text-orange-500 transition-colors">
+                        <h4 className="mb-1.5 text-xs font-extrabold uppercase leading-snug tracking-tight text-brand-text transition-colors group-hover/item:text-orange-500 sm:text-sm">
                           {item.title}
                         </h4>
-                        <p className="text-xs text-brand-muted leading-relaxed font-sans">
-                          {item.summary}
-                        </p>
-                        <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-brand-text hover:text-orange-500">
-                          {item.sourceLabel}<ExternalLink size={10} />
-                        </a>
+                        <p className="font-sans text-xs leading-relaxed text-brand-muted">{item.summary}</p>
+                        {item.sourceUrl ? (
+                          <a
+                            href={item.sourceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-brand-text hover:text-orange-500"
+                          >
+                            {item.sourceLabel}
+                            <ExternalLink size={10} />
+                          </a>
+                        ) : (
+                          <span className="mt-2 inline-flex text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+                            {item.sourceLabel}
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -104,16 +121,13 @@ export function AIContentDashboard() {
               </div>
             </div>
 
-            {/* Bottom micro footer for visual balance */}
-            <div className="mt-8 pt-4 border-t border-brand-border/50 flex justify-between items-center text-[10px] font-mono uppercase tracking-widest text-brand-muted group-hover:text-brand-text transition-colors">
-              <span>Zweryfikowano {AI_TREND_BRIEFING_DATE}</span>
-              <ArrowRight size={10} className="transform group-hover:translate-x-1 transition-transform" />
+            <div className="mt-8 flex items-center justify-between border-t border-brand-border/50 pt-4 font-mono text-[10px] uppercase tracking-widest text-brand-muted transition-colors group-hover:text-brand-text">
+              <span>Zweryfikowano {TOP_THREE_BRIEFING.date}</span>
+              <ArrowRight size={10} className="transition-transform group-hover:translate-x-1" />
             </div>
           </div>
-          );
-        })}
+        ))}
       </div>
-
     </section>
   );
 }
