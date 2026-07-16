@@ -7,8 +7,3 @@ coverage/
 .env*
 !.env.example
 subscriptions.json
-# gemini-cli settings
-.gemini/
-
-# GitHub App credentials
-gha-creds-*.json
