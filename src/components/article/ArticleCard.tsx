@@ -37,6 +37,11 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
         {/* Text Details */}
         <div className="lg:col-span-5 flex flex-col justify-between py-2">
           <div>
+            {article.tags.includes("New") && (
+              <span className="inline-flex mb-4 border border-emerald-500 bg-emerald-500/10 px-2 py-1 text-[10px] font-black tracking-widest text-emerald-600 uppercase mr-2">
+                NEW
+              </span>
+            )}
             {article.status === "DRAFT" && (
               <span className="inline-flex mb-4 border border-amber-500 bg-amber-500/10 px-2 py-1 text-[10px] font-black tracking-widest text-amber-600 uppercase">
                 DRAFT
@@ -117,6 +122,11 @@ export function ArticleCard({ article, featured = false }: ArticleCardProps) {
       {/* Card Body */}
       <div className="p-6 flex flex-col justify-between flex-grow bg-brand-card">
         <div>
+          {article.tags.includes("New") && (
+            <span className="inline-flex mb-3 border border-emerald-500 bg-emerald-500/10 px-2 py-1 text-[10px] font-black tracking-widest text-emerald-600 uppercase mr-2">
+              NEW
+            </span>
+          )}
           {article.status === "DRAFT" && (
             <span className="inline-flex mb-3 border border-amber-500 bg-amber-500/10 px-2 py-1 text-[10px] font-black tracking-widest text-amber-600 uppercase">
               DRAFT

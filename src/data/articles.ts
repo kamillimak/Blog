@@ -904,5 +904,92 @@ export interface FilterState {
         text: "Blog jest teraz lepiej przygotowany do publikacji, dystrybucji i pomiaru. Treść jest czytelniejsza dla crawlerów, linki mają własne grafiki, analityka szanuje decyzje użytkownika, a wydajność stała się widocznym elementem dashboardu."
       }
     ]
+  },
+  {
+    id: "9",
+    slug: "pierwsze-kroki-z-antygravity",
+    title: "Pierwsze kroki z Google Antigravity",
+    subtitle: "Jak oswoić agenta AI pracującego bezpośrednio w Twoim kodzie i orkiestrować workflow",
+    description: "Kompleksowy poradnik opisujący onboarding do nowego projektu z asystentem Antygravity. Dowiedz się, jak analizować kod systemowy, rozmawiać z modelami Vertex i dbać o bezpieczeństwo lokalnego repozytorium.",
+    category: "Workflow",
+    tool: "AI Studio",
+    author: {
+      name: "Kamil Mikołajczyk",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
+      avatar: "KM"
+    },
+    publishedAt: "2026-07-17",
+    readTime: 8,
+    wordCount: 1680,
+    heroImage: "antigravity_hero",
+    imageAlt: "Centralny schemat asystenta Antigravity łączący CLI, IDE oraz Auxiliary Pane",
+    imageCaption: "Rys. 9: Środowisko Google Antigravity i jego trzy główne powierzchnie operacyjne.",
+    accentColor: "indigo",
+    featured: false,
+    tags: ["Antigravity", "Onboarding", "AI Workflow", "Model Context Protocol", "New"],
+    pullQuote: "Prawdziwa praca z agentem w repozytorium nie polega na bezmyślnym zatwierdzaniu sugerowanych zmian, ale na rygorystycznym sprawdzaniu planów i automatycznej weryfikacji.",
+    keyTakeaways: [
+      "Antygravity (AGY) integruje interfejs CLI (agy), dedykowane IDE oraz aplikację Desktop 2.0 z panelem pomocniczym (Aux Pane).",
+      "Przed rozpoczęciem prac asystent musi przeczytać pliki kontekstowe projektu, takie jak PROJECT_CONTEXT.md i AGENTS.md.",
+      "Model Context Protocol (MCP) umożliwia bezpośrednie i bezpieczne łączenie modeli językowych z lokalnymi zasobami.",
+      "Weryfikacja automatyczna za pomocą npm run lint i npm run build gwarantuje stabilność zmian przy każdym zatwierdzeniu."
+    ],
+    sections: [
+      {
+        type: "heading",
+        level: 2,
+        text: "Poznaj Antygravity: Środowisko AI-first nowej generacji",
+        id: "poznaj-antygravity"
+      },
+      {
+        type: "paragraph",
+        text: "Google Antigravity to nie jest kolejna wtyczka do edytora kodu. To kompletny, nowoczesny ekosystem stworzony z myślą o programowaniu sterowanym przez sztuczną inteligencję (AI-first). W przeciwieństwie do tradycyjnych modeli opartych o interfejs czatu w przeglądarce, Antygravity działa w oparciu o głęboką integrację z repozytorium kodu, z pełnym dostępem do kontekstu plików, struktury katalogów i narzędzi systemowych.\n\nEkosystem ten składa się z trzech głównych powierzchni: interfejsu wiersza poleceń CLI (agy), dedykowanego, niezależnego środowiska IDE oraz interfejsu Desktop 2.0, w którym kluczową rolę odgrywa panel HTML (Auxiliary Pane) przeznaczony do zarządzania subagentami, zadaniami w tle i weryfikacją plików."
+      },
+      {
+        type: "illustration",
+        imageKey: "antigravity_hero",
+        caption: "Rys. 1: Trzy główne powierzchnie operacyjne Google Antigravity połączone z centralnym rdzeniem asystenta."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Krok 1: Jak zapoznaję się z dotychczasowym projektem",
+        id: "zapoznanie-z-projektem"
+      },
+      {
+        type: "paragraph",
+        text: "Wejście do istniejącego projektu (szczególnie tak zaawansowanego jak 'AI w praktyce') wymaga od agenta AI rygorystycznego przestrzegania procedur badawczych. Zamiast chaotycznego przeglądania kodu lub natychmiastowego dokonywania modyfikacji, Antygravity stosuje ustrukturyzowany onboarding oparty o czytanie dokumentów kontekstowych:\n\n1. Analiza manifestu migracyjnego: W pierwszej kolejności czytany jest plik PROJECT_CONTEXT.md. Zawiera on cel biznesowy, aktualny stan wdrożeń, listę integracji zewnętrznych oraz najważniejsze decyzje architektoniczne (takie jak użycie HashRoutera czy Firestore).\n2. Zapoznanie się z regułami agentów: Następnie asystent analizuje plik AGENTS.md, który definiuje rygorystyczne zasady typowania, wytyczne dotyczące dostępności, sposoby dodawania artykułów oraz strukturę katalogów.\n3. Weryfikacja spójności: Przed rozpoczęciem edycji uruchamiana jest analiza statyczna projektu, aby potwierdzić, że wchodzimy do działającego i stabilnego środowiska."
+      },
+      {
+        type: "illustration",
+        imageKey: "antigravity_onboarding",
+        caption: "Rys. 2: Trzyetapowy proces onboardingu asystenta AI do nowego repozytorium kodu."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Model Context Protocol (MCP) jako uniwersalny interfejs",
+        id: "mcp-interfejs"
+      },
+      {
+        type: "paragraph",
+        text: "Kluczym elementem architektury Antygravity jest obsługa standardu Model Context Protocol (MCP). Protokół ten definiuje otwarty i bezpieczny schemat komunikacji między modelami językowymi (np. Gemini 3.5 Flash w Vertex AI) a lokalnymi narzędziami oraz bazami danych.\n\nDzięki MCP model nie musi polegać na zewnętrznych serwerach pośredniczących. Może bezpośrednio wysyłać zapytania do systemu plików, uruchamiać precyzyjne polecenia w terminalu deweloperskim czy odpytywać lokalną bazę danych w celu walidacji schematów. Wszystko to odbywa się w kontrolowanym środowisku piaskownicy, w którym uprawnienia są granularnie przydzielane przez użytkownika."
+      },
+      {
+        type: "illustration",
+        imageKey: "antigravity_architecture",
+        caption: "Rys. 3: Diagram integracji Model Context Protocol (MCP) łączący asystenta z zasobami lokalnymi i chmurowymi."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Zasady BHP i kontynuacja prac",
+        id: "zasady-bhp-antigravity"
+      },
+      {
+        type: "paragraph",
+        text: "Praca w środowisku Antygravity wymaga zachowania odpowiedniej higieny deweloperskiej. Każda modyfikacja kodu dokonana przez agenta musi być zakończona weryfikacją techniczną:\n\n- npm run lint: Uruchamia kompilator TypeScript bez emisji plików, co pozwala natychmiast wykryć niedopasowania typów i błędy importów.\n- npm run build: Kompiluje produkcyjną wersję frontendu i backendu, gwarantując, że zmiany nie popsują procesu bundlowania.\n- Git jako punkt wyjścia: Każde zadanie powinno być realizowane na czystej gałęzi, co umożliwia szybkie wycofanie zmian w przypadku problemów.\n\nIntegracja człowieka i maszyny w tym modelu opiera się na zaufaniu wspieranym przez automatyczną kontrolę jakości. Pozwala to na stabilny rozwój i bezpieczną realizację nawet najbardziej złożonych wymagań biznesowych."
+      }
+    ]
   }
 ];

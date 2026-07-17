@@ -37,6 +37,11 @@ export type ArticleSection =
       src: string;
       alt: string;
       caption: string;
+    }
+  | {
+      type: "illustration";
+      imageKey: string;
+      caption: string;
     };
 
 export interface Author {

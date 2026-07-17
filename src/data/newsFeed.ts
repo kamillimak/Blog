@@ -210,54 +210,105 @@ const extractLead = (markdown: string) => {
   return stripMarkdown(paragraph);
 };
 
-const parseTopThreeBriefing = (): TopThreeBriefing => {
+const parseTopThreeBriefings = (): TopThreeBriefing[] => {
   const runIds = Array.from(
     new Set(
       Object.keys(topThreeModules)
         .map((path) => path.replace(/\\/g, "/").match(/top-3\/([^/]+)\//)?.[1])
         .filter((runId): runId is string => Boolean(runId)),
     ),
-  );
-  const runId = getLatestPath(runIds);
-  const runEntries = Object.entries(topThreeModules)
-    .filter(([path]) => path.replace(/\\/g, "/").includes(`/top-3/${runId}/`))
-    .filter(([path]) => !path.endsWith("/README.md"))
-    .sort(([left], [right]) => left.localeCompare(right));
-  const readme = topThreeModules[`../../content/top-3/${runId}/README.md`] ?? "";
-  const date = runId?.slice(0, 10) ?? "";
-  const status = parseStatus(readme || runEntries[0]?.[1] || "");
+  ).sort((left, right) => right.localeCompare(left));
 
-  const items = runEntries.map(([path, markdown], index): UnifiedNewsItem => {
-    const normalizedPath = path.replace(/\\/g, "/");
-    const fileName = normalizedPath.split("/").at(-1) ?? "";
-    const kind = topThreeKind(fileName);
-    const title = stripMarkdown(markdown.match(/^#\s+(.+)$/m)?.[1] ?? fileName.replace(/\.md$/, ""));
-    const { sourceLabel, sourceUrl } = extractFirstSource(markdown);
-    const draftSlug = findDraftSlug(`content/draft/${runId}/${fileName}`);
+  return runIds.map((runId) => {
+    const runEntries = Object.entries(topThreeModules)
+      .filter(([path]) => path.replace(/\\/g, "/").includes(`/top-3/${runId}/`))
+      .filter(([path]) => !path.endsWith("/README.md"))
+      .sort(([left], [right]) => left.localeCompare(right));
+    const readme = topThreeModules[`../../content/top-3/${runId}/README.md`] ?? "";
+    const date = runId?.slice(0, 10) ?? "";
+    const status = parseStatus(readme || runEntries[0]?.[1] || "");
 
-    return {
-      id: `top3-${runId}-${slugify(fileName)}`,
-      kind,
-      label: topThreeLabel(kind),
-      groupLabel: topThreeGroupLabel(kind),
-      title,
-      summary: extractLead(markdown),
-      sourceLabel,
-      sourceUrl,
-      publishedAt: markdown.match(/\*\*Data aktualno[śs]ci:\*\*\s+(\d{4}-\d{2}-\d{2})/)?.[1] ?? date,
-      status,
-      video: getVideo(index + 5),
-      draftSlug,
-    };
+    const items = runEntries.map(([path, markdown], index): UnifiedNewsItem => {
+      const normalizedPath = path.replace(/\\/g, "/");
+      const fileName = normalizedPath.split("/").at(-1) ?? "";
+      const kind = topThreeKind(fileName);
+      const title = stripMarkdown(markdown.match(/^#\s+(.+)$/m)?.[1] ?? fileName.replace(/\.md$/, ""));
+      const { sourceLabel, sourceUrl } = extractFirstSource(markdown);
+      const draftSlug = findDraftSlug(`content/draft/${runId}/${fileName}`);
+
+      return {
+        id: `top3-${runId}-${slugify(fileName)}`,
+        kind,
+        label: topThreeLabel(kind),
+        groupLabel: topThreeGroupLabel(kind),
+        title,
+        summary: extractLead(markdown),
+        sourceLabel,
+        sourceUrl,
+        publishedAt: markdown.match(/\*\*Data aktualno[śs]ci:\*\*\s+(\d{4}-\d{2}-\d{2})/)?.[1] ?? date,
+        status,
+        video: getVideo(index + 5),
+        draftSlug,
+      };
+    });
+
+    return { runId, date, status, items };
   });
-
-  return { runId, date, status, items };
 };
 
 export const DAILY_TECH_BRIEFINGS = parseDailyBriefings();
 export const DAILY_TECH_BRIEFING = DAILY_TECH_BRIEFINGS[0];
-export const TOP_THREE_BRIEFING = parseTopThreeBriefing();
-export const UNIFIED_NEWS_FEED: UnifiedNewsItem[] = [
+export const TOP_THREE_BRIEFINGS = parseTopThreeBriefings();
+export const TOP_THREE_BRIEFING = TOP_THREE_BRIEFINGS[0] || { runId: "", date: "", status: "DRAFT", items: [] };
+
+// Filter UNIFIED_NEWS_FEED to contain news only from the last 5 days (2026-07-13 to 2026-07-17)
+// and exactly 1 news item per category (kind) for each of these days.
+const allowedDates = new Set(["2026-07-17", "2026-07-16", "2026-07-15", "2026-07-14", "2026-07-13"]);
+
+const allParsedItems: UnifiedNewsItem[] = [
   ...DAILY_TECH_BRIEFINGS.flatMap((briefing) => briefing.items),
-  ...TOP_THREE_BRIEFING.items,
+  ...TOP_THREE_BRIEFINGS.flatMap((briefing) => briefing.items),
 ];
+
+const sortedAllItems = [...allParsedItems].sort((left, right) => {
+  const dateOrder = right.publishedAt.localeCompare(left.publishedAt);
+  return dateOrder || right.id.localeCompare(left.id);
+});
+
+const filteredItems: UnifiedNewsItem[] = [];
+const seenKeys = new Set<string>(); // "YYYY-MM-DD:kind"
+
+for (const item of sortedAllItems) {
+  if (allowedDates.has(item.publishedAt)) {
+    const key = `${item.publishedAt}:${item.kind}`;
+    if (!seenKeys.has(key)) {
+      seenKeys.add(key);
+      filteredItems.push(item);
+    }
+  }
+}
+
+export const UNIFIED_NEWS_FEED: UnifiedNewsItem[] = filteredItems.sort((left, right) => {
+  const dateOrder = right.publishedAt.localeCompare(left.publishedAt);
+  return dateOrder || right.id.localeCompare(left.id);
+});
+
+const dateAtMidnight = (value: string) => new Date(`${value}T00:00:00`);
+
+export const getLiveFeedItems = (today?: Date): UnifiedNewsItem[] => {
+  const refDate = today || (UNIFIED_NEWS_FEED.length > 0 ? dateAtMidnight(UNIFIED_NEWS_FEED[0].publishedAt) : new Date());
+  const endOfToday = new Date(refDate.getFullYear(), refDate.getMonth(), refDate.getDate());
+  const cutoff = new Date(endOfToday);
+  cutoff.setDate(cutoff.getDate() - 3);
+
+  const newestByKind = new Map<UnifiedNewsKind, UnifiedNewsItem>();
+
+  UNIFIED_NEWS_FEED.forEach((item) => {
+    const publishedAt = dateAtMidnight(item.publishedAt);
+    if (publishedAt < cutoff || publishedAt > endOfToday || newestByKind.has(item.kind)) return;
+
+    newestByKind.set(item.kind, item);
+  });
+
+  return [...newestByKind.values()].sort((left, right) => right.publishedAt.localeCompare(left.publishedAt));
+};

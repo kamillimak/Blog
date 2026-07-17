@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Copy, Check, Terminal, Image as ImageIcon } from "lucide-react";
 import { ArticleSection } from "../../types/article";
+import { ArticleIllustration } from "./ArticleIllustration";
 
 interface ArticleContentProps {
   sections: ArticleSection[];
@@ -167,6 +168,16 @@ export function ArticleContent({ sections, textSizeClass = "text-lg" }: ArticleC
                   decoding="async"
                 />
                 <figcaption className="mt-3 border-l-2 border-amber-500 pl-3 text-xs leading-relaxed text-brand-muted">
+                  {section.caption}
+                </figcaption>
+              </figure>
+            );
+
+          case "illustration":
+            return (
+              <figure key={idx} id={`article-illustration-${idx}`} className="my-8 sm:my-10">
+                <ArticleIllustration imageKey={section.imageKey} />
+                <figcaption className="mt-3 border-l-2 border-indigo-500 pl-3 text-xs leading-relaxed text-brand-muted">
                   {section.caption}
                 </figcaption>
               </figure>
