@@ -69,11 +69,22 @@ function LiveFeed({ items }: { items: UnifiedNewsItem[] }) {
   return <div className="mb-8 border border-orange-500 bg-[linear-gradient(135deg,#1c1917_0%,#111827_100%)] p-3 text-white">
     <div className="mb-2 flex items-center gap-2"><span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-500 opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-orange-600" /></span><span className="inline-flex items-center gap-1.5 bg-orange-600 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest"><Newspaper size={12} />Live feed</span></div>
     <div className="divide-y divide-white/10">
-      {items.map((item) => <a key={item.id} href={`#news-feed-${item.id}`} className="flex min-w-0 items-center gap-2 py-2 text-sm font-black uppercase leading-snug tracking-tight text-white transition-colors hover:text-orange-200 sm:flex-nowrap sm:py-1.5 sm:text-base">
-        <span className={`shrink-0 border px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider ${kindStyles[item.kind].badge}`}>{item.label}</span>
-        <span className="min-w-0 line-clamp-2 sm:truncate">{item.title}</span>
-        <time dateTime={item.publishedAt} className="ml-auto shrink-0 font-mono text-[10px] font-bold uppercase tracking-wider text-white/70">{formatPolishDate(item.publishedAt)}</time>
-      </a>)}
+      {items.map((item) => {
+        const handleAnchorClick = (e: MouseEvent<HTMLAnchorElement>) => {
+          e.preventDefault();
+          const targetEl = document.getElementById(`news-feed-${item.id}`);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: "smooth" });
+          }
+        };
+        return (
+          <a key={item.id} href={`#news-feed-${item.id}`} onClick={handleAnchorClick} className="flex min-w-0 items-center gap-2 py-2 text-sm font-black uppercase leading-snug tracking-tight text-white transition-colors hover:text-orange-200 sm:flex-nowrap sm:py-1.5 sm:text-base">
+            <span className={`shrink-0 border px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider ${kindStyles[item.kind].badge}`}>{item.label}</span>
+            <span className="min-w-0 line-clamp-2 sm:truncate">{item.title}</span>
+            <time dateTime={item.publishedAt} className="ml-auto shrink-0 font-mono text-[10px] font-bold uppercase tracking-wider text-white/70">{formatPolishDate(item.publishedAt)}</time>
+          </a>
+        );
+      })}
     </div>
   </div>;
 }

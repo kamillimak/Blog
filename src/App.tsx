@@ -22,6 +22,14 @@ export default function App() {
       <div className="min-h-screen flex flex-col justify-between bg-brand-bg text-brand-text antialiased selection:bg-brand-text selection:text-brand-bg">
         <a
           href="#main-content"
+          onClick={(e) => {
+            e.preventDefault();
+            const el = document.getElementById("main-content");
+            if (el) {
+              el.focus();
+              el.scrollIntoView();
+            }
+          }}
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-brand-text focus:px-4 focus:py-3 focus:text-xs focus:font-bold focus:uppercase focus:tracking-widest focus:text-brand-bg"
         >
           Przejdź do głównej treści

@@ -20,7 +20,11 @@ import {
   PinOff,
   Trash2,
   Edit3,
-  Link2
+  Link2,
+  Share2,
+  Mail,
+  Facebook,
+  Linkedin
 } from "lucide-react";
 import { initAuth, googleSignIn, logout } from "../utils/firebaseAuth";
 import { User } from "firebase/auth";
@@ -164,6 +168,30 @@ export function WorkspacePage() {
     localStorage.setItem("workspace_connected_docs", JSON.stringify(connectedDocs));
   }, [connectedDocs]);
 
+  // Social Media Tab States
+  interface SocialPostStatus {
+    slug: string;
+    title: string;
+    facebookApproved: boolean;
+    facebookSent: boolean;
+    facebookDraft: string;
+    facebookClicks: number;
+    linkedinApproved: boolean;
+    linkedinSent: boolean;
+    linkedinDraft: string;
+    linkedinClicks: number;
+    generatedAt?: string;
+  }
+  const [activeTab, setActiveTab] = useState<"drive" | "social">("drive");
+  const [socialPosts, setSocialPosts] = useState<SocialPostStatus[]>([]);
+  const [loadingSocial, setLoadingSocial] = useState(false);
+  const [generatingSlug, setGeneratingSlug] = useState<string | null>(null);
+  const [sendingEmailSlug, setSendingEmailSlug] = useState<string | null>(null);
+  const [selectedSocialPost, setSelectedSocialPost] = useState<SocialPostStatus | null>(null);
+  const [editedFbDraft, setEditedFbDraft] = useState("");
+  const [editedLiDraft, setEditedLiDraft] = useState("");
+  const [savingSocialPost, setSavingSocialPost] = useState(false);
+
   // Connect or disconnect doc helper
   const handleToggleConnectDoc = (file: GoogleFile) => {
     const isConnected = connectedDocs.some(d => d.id === file.id);
@@ -236,6 +264,95 @@ export function WorkspacePage() {
       setLoadingFiles(false);
     }
   };
+
+  // Fetch Social statuses from backend
+  const fetchSocialStatuses = async () => {
+    setLoadingSocial(true);
+    try {
+      const response = await fetch("/api/social/status");
+      const data = await response.json();
+      if (data.success) {
+        setSocialPosts(data.posts || []);
+      }
+    } catch (error) {
+      console.error("Error fetching social statuses:", error);
+    } finally {
+      setLoadingSocial(false);
+    }
+  };
+
+  const handleGenerateSocial = async (slug: string) => {
+    setGeneratingSlug(slug);
+    try {
+      const response = await fetch(`/api/social/generate/${slug}`, { method: "POST" });
+      const data = await response.json();
+      if (data.success) {
+        await fetchSocialStatuses();
+        alert("Wersje robocze zostały pomyślnie wygenerowane przez Gemini!");
+      } else {
+        alert(data.message || "Błąd podczas generowania.");
+      }
+    } catch (error) {
+      console.error("Error generating social drafts:", error);
+      alert("Wystąpił błąd komunikacji z serwerem.");
+    } finally {
+      setGeneratingSlug(null);
+    }
+  };
+
+  const handleSendEmail = async (slug: string) => {
+    setSendingEmailSlug(slug);
+    try {
+      const response = await fetch(`/api/social/send-email/${slug}`, { method: "POST" });
+      const data = await response.json();
+      if (data.success) {
+        await fetchSocialStatuses();
+        alert(data.message);
+      } else {
+        alert(data.message || "Błąd podczas wysyłania e-maila.");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Wystąpił błąd komunikacji z serwerem.");
+    } finally {
+      setSendingEmailSlug(null);
+    }
+  };
+
+  const handleSaveSocialDrafts = async () => {
+    if (!selectedSocialPost) return;
+    setSavingSocialPost(true);
+    try {
+      const response = await fetch(`/api/social/save/${selectedSocialPost.slug}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          facebookDraft: editedFbDraft,
+          linkedinDraft: editedLiDraft
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        await fetchSocialStatuses();
+        setSelectedSocialPost(null);
+        alert("Zmiany zostały zapisane!");
+      } else {
+        alert(data.message || "Błąd podczas zapisywania.");
+      }
+    } catch (error) {
+      console.error("Error saving drafts:", error);
+      alert("Wystąpił błąd komunikacji z serwerem.");
+    } finally {
+      setSavingSocialPost(false);
+    }
+  };
+
+  // Fetch social data when switching to the tab
+  useEffect(() => {
+    if (activeTab === "social") {
+      void fetchSocialStatuses();
+    }
+  }, [activeTab]);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -533,8 +650,35 @@ export function WorkspacePage() {
             </div>
           )}
 
-          {/* TWO COLUMN WORKSPACE GRID */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* TAB NAVIGATION */}
+          <div className="flex border-b border-brand-border bg-brand-card">
+            <button
+              onClick={() => setActiveTab("drive")}
+              className={`px-6 py-3.5 font-sans text-xs uppercase font-extrabold tracking-widest border-b-2 transition-colors flex items-center gap-2 ${
+                activeTab === "drive"
+                  ? "border-orange-500 text-brand-text bg-brand-featured-bg"
+                  : "border-transparent text-brand-muted hover:text-brand-text"
+              }`}
+            >
+              <Cloud size={14} />
+              <span>Dysk i Dokumenty</span>
+            </button>
+            <button
+              onClick={() => setActiveTab("social")}
+              className={`px-6 py-3.5 font-sans text-xs uppercase font-extrabold tracking-widest border-b-2 transition-colors flex items-center gap-2 ${
+                activeTab === "social"
+                  ? "border-orange-500 text-brand-text bg-brand-featured-bg"
+                  : "border-transparent text-brand-muted hover:text-brand-text"
+              }`}
+            >
+              <Share2 size={14} />
+              <span>Dystrybucja Social Media</span>
+            </button>
+          </div>
+
+          {activeTab === "drive" ? (
+            /* TWO COLUMN WORKSPACE GRID */
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* COLUMN LEFT: FILE EXPLORER (7 Cols) */}
             <div className="lg:col-span-7 space-y-6">
               <div className="border border-brand-border bg-brand-card p-6">
@@ -961,6 +1105,232 @@ export function WorkspacePage() {
               </div>
             </div>
           </div>
+          ) : (
+            /* SOCIAL MEDIA HUB VIEW */
+            <div className="space-y-8">
+              {/* SUMMARY STATS ROW */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
+                <div className="border border-brand-border bg-brand-card p-5">
+                  <span className="font-sans text-[10px] font-extrabold tracking-widest text-brand-muted uppercase block">Suma artykułów</span>
+                  <span className="font-sans text-3xl font-extrabold text-brand-text block mt-2">{socialPosts.length}</span>
+                </div>
+                <div className="border border-brand-border bg-brand-card p-5">
+                  <span className="font-sans text-[10px] font-extrabold tracking-widest text-brand-muted uppercase block">Kliknięcia Facebook</span>
+                  <span className="font-sans text-3xl font-extrabold text-blue-500 block mt-2">
+                    {socialPosts.reduce((acc, curr) => acc + (curr.facebookClicks || 0), 0)}
+                  </span>
+                </div>
+                <div className="border border-brand-border bg-brand-card p-5">
+                  <span className="font-sans text-[10px] font-extrabold tracking-widest text-brand-muted uppercase block">Kliknięcia LinkedIn</span>
+                  <span className="font-sans text-3xl font-extrabold text-indigo-500 block mt-2">
+                    {socialPosts.reduce((acc, curr) => acc + (curr.linkedinClicks || 0), 0)}
+                  </span>
+                </div>
+                <div className="border border-brand-border bg-brand-card p-5">
+                  <span className="font-sans text-[10px] font-extrabold tracking-widest text-brand-muted uppercase block">Wszystkie kliknięcia</span>
+                  <span className="font-sans text-3xl font-extrabold text-orange-500 block mt-2">
+                    {socialPosts.reduce((acc, curr) => acc + (curr.facebookClicks || 0) + (curr.linkedinClicks || 0), 0)}
+                  </span>
+                </div>
+              </div>
+
+              {/* MAIN CONTENT BLOCK */}
+              <div className="border border-brand-border bg-brand-card p-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                  <div>
+                    <h2 className="font-sans font-extrabold text-lg uppercase tracking-tight text-brand-text flex items-center gap-2">
+                      <Share2 size={18} className="text-orange-500" />
+                      Artykuły i Dystrybucja Social Media
+                    </h2>
+                    <p className="font-serif text-xs text-brand-muted mt-1">Generuj posty za pomocą Gemini, wysyłaj maile akceptacyjne do zatwierdzenia i monitoruj kliknięcia.</p>
+                  </div>
+                  <button 
+                    onClick={fetchSocialStatuses}
+                    disabled={loadingSocial}
+                    className="flex items-center gap-2 border border-brand-border px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-brand-text hover:bg-brand-border/20 transition-colors"
+                  >
+                    <RefreshCw size={12} className={loadingSocial ? "animate-spin" : ""} />
+                    <span>Odśwież dane</span>
+                  </button>
+                </div>
+
+                {loadingSocial ? (
+                  <div className="py-20 flex flex-col items-center">
+                    <Loader2 className="animate-spin text-orange-500 mb-2" size={24} />
+                    <span className="text-xs font-mono text-brand-muted uppercase">Ładowanie statusów dystrybucji...</span>
+                  </div>
+                ) : socialPosts.length === 0 ? (
+                  <div className="py-16 text-center border border-dashed border-brand-border bg-brand-featured-bg">
+                    <p className="font-sans text-sm font-bold text-brand-text uppercase tracking-tight mb-1">Brak artykułów</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {socialPosts.map((post) => {
+                      const hasDraft = Boolean(post.facebookDraft && post.linkedinDraft);
+                      return (
+                        <div key={post.slug} className="border border-brand-border bg-brand-featured-bg/40 p-5 space-y-4 transition-colors hover:bg-brand-featured-bg/80">
+                          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div>
+                              <h3 className="font-sans font-extrabold text-base text-brand-text uppercase tracking-tight">{post.title}</h3>
+                              <p className="font-mono text-[9px] text-brand-muted mt-0.5">Slug: {post.slug}</p>
+                            </div>
+                            <div className="flex flex-wrap gap-2.5">
+                              {/* FB Click and Status Badges */}
+                              <div className="flex items-center gap-2 border border-brand-border px-3 py-1.5 bg-brand-bg text-xs">
+                                <Facebook size={12} className="text-blue-500 fill-blue-500/10" />
+                                <span className="font-bold text-[10px] text-brand-muted uppercase">FB:</span>
+                                <span className={`text-[10px] font-bold uppercase ${post.facebookApproved ? "text-green-600" : "text-amber-600"}`}>
+                                  {post.facebookApproved ? "Zatwierdzono" : "Oczekuje"}
+                                </span>
+                                <span className="h-1.5 w-1.5 bg-brand-border rounded-full" />
+                                <span className="font-mono font-bold text-[10px] text-blue-500">{post.facebookClicks || 0} kliknięć</span>
+                              </div>
+
+                              {/* LI Click and Status Badges */}
+                              <div className="flex items-center gap-2 border border-brand-border px-3 py-1.5 bg-brand-bg text-xs">
+                                <Linkedin size={12} className="text-indigo-500 fill-indigo-500/10" />
+                                <span className="font-bold text-[10px] text-brand-muted uppercase">LI:</span>
+                                <span className={`text-[10px] font-bold uppercase ${post.linkedinApproved ? "text-green-600" : "text-amber-600"}`}>
+                                  {post.linkedinApproved ? "Zatwierdzono" : "Oczekuje"}
+                                </span>
+                                <span className="h-1.5 w-1.5 bg-brand-border rounded-full" />
+                                <span className="font-mono font-bold text-[10px] text-indigo-500">{post.linkedinClicks || 0} kliknięć</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-wrap gap-2 justify-end border-t border-brand-border/60 pt-3">
+                            <button
+                              onClick={() => void handleGenerateSocial(post.slug)}
+                              disabled={generatingSlug === post.slug}
+                              className="text-xs border border-brand-border hover:border-brand-text px-3 py-2 font-bold uppercase tracking-wider text-brand-text bg-brand-bg hover:bg-brand-featured-bg transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                            >
+                              {generatingSlug === post.slug ? (
+                                <>
+                                  <Loader2 size={12} className="animate-spin" />
+                                  <span>Generowanie...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Sparkles size={12} className="text-orange-500" />
+                                  <span>{hasDraft ? "Generuj ponownie" : "Generuj posty przez AI"}</span>
+                                </>
+                              )}
+                            </button>
+
+                            <button
+                              onClick={() => void handleSendEmail(post.slug)}
+                              disabled={!hasDraft || sendingEmailSlug === post.slug}
+                              className="text-xs border border-brand-border hover:border-brand-text px-3 py-2 font-bold uppercase tracking-wider text-brand-text bg-brand-bg hover:bg-brand-featured-bg transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+                              title={!hasDraft ? "Musisz najpierw wygenerować posty przez AI" : "Wyślij wersje robocze na e-mail akceptacyjny"}
+                            >
+                              {sendingEmailSlug === post.slug ? (
+                                <>
+                                  <Loader2 size={12} className="animate-spin" />
+                                  <span>Wysyłanie...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Mail size={12} className="text-blue-500" />
+                                  <span>Wyślij e-mail</span>
+                                </>
+                              )}
+                            </button>
+
+                            <button
+                              onClick={() => {
+                                setSelectedSocialPost(post);
+                                setEditedFbDraft(post.facebookDraft || "");
+                                setEditedLiDraft(post.linkedinDraft || "");
+                              }}
+                              disabled={!hasDraft}
+                              className="text-xs border border-brand-border hover:border-brand-text px-3 py-2 font-bold uppercase tracking-wider text-brand-text bg-brand-bg hover:bg-brand-featured-bg transition-colors flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                              <Edit3 size={12} />
+                              <span>Podgląd i Edycja</span>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* EDIT SOCIAL POSTS MODAL */}
+          {selectedSocialPost && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+              <div className="bg-brand-bg border border-brand-border p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto space-y-6">
+                <div className="flex justify-between items-center pb-4 border-b border-brand-border">
+                  <div>
+                    <span className="font-mono text-[9px] text-orange-500 font-bold uppercase tracking-widest">Edycja Wersji Roboczych</span>
+                    <h3 className="font-sans font-extrabold text-lg text-brand-text uppercase mt-0.5">{selectedSocialPost.title}</h3>
+                  </div>
+                  <button 
+                    onClick={() => setSelectedSocialPost(null)}
+                    className="text-brand-muted hover:text-brand-text font-bold text-xs uppercase tracking-wider"
+                  >
+                    Zamknij
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* FACEBOOK DRAFT EDITOR */}
+                  <div className="space-y-2">
+                    <label className="font-sans text-[10px] font-extrabold tracking-widest text-brand-muted uppercase flex items-center gap-1.5">
+                      <Facebook size={12} className="text-blue-500 fill-blue-500/10" />
+                      Facebook Post
+                    </label>
+                    <textarea
+                      value={editedFbDraft}
+                      onChange={(e) => setEditedFbDraft(e.target.value)}
+                      className="w-full p-4 border border-brand-border text-xs font-sans bg-brand-featured-bg focus:border-brand-text focus:outline-none h-96 resize-y leading-relaxed"
+                      placeholder="Treść postu na Facebook..."
+                    />
+                  </div>
+
+                  {/* LINKEDIN DRAFT EDITOR */}
+                  <div className="space-y-2">
+                    <label className="font-sans text-[10px] font-extrabold tracking-widest text-brand-muted uppercase flex items-center gap-1.5">
+                      <Linkedin size={12} className="text-indigo-500 fill-indigo-500/10" />
+                      LinkedIn Post
+                    </label>
+                    <textarea
+                      value={editedLiDraft}
+                      onChange={(e) => setEditedLiDraft(e.target.value)}
+                      className="w-full p-4 border border-brand-border text-xs font-sans bg-brand-featured-bg focus:border-brand-text focus:outline-none h-96 resize-y leading-relaxed"
+                      placeholder="Treść postu na LinkedIn..."
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-3 border-t border-brand-border/60 pt-4">
+                  <button
+                    onClick={() => setSelectedSocialPost(null)}
+                    className="border border-brand-border px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-brand-text hover:bg-brand-featured-bg transition-colors"
+                  >
+                    Anuluj
+                  </button>
+                  <button
+                    onClick={handleSaveSocialDrafts}
+                    disabled={savingSocialPost}
+                    className="bg-brand-text text-brand-bg hover:bg-brand-muted border border-transparent px-5 py-2.5 text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-colors disabled:opacity-50"
+                  >
+                    {savingSocialPost ? (
+                      <>
+                        <Loader2 size={12} className="animate-spin" />
+                        <span>Zapisywanie...</span>
+                      </>
+                    ) : (
+                      <span>Zapisz wersje robocze</span>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </main>
