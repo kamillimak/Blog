@@ -6,6 +6,7 @@ import { ArticleContent } from "../components/article/ArticleContent";
 import { TableOfContents } from "../components/article/TableOfContents";
 import { ArticleIllustration } from "../components/article/ArticleIllustration";
 import { ArticleCard } from "../components/article/ArticleCard";
+import { ShareButtons } from "../components/article/ShareButtons";
 import { formatPolishDate, getRelatedArticles, copyToClipboard } from "../utils/article";
 import { ReadingProgress } from "../components/article/ReadingProgress";
 
@@ -54,14 +55,15 @@ export function ArticlePage() {
     if (article) {
       const canonical = `${window.location.origin}${import.meta.env.BASE_URL}articles/${article.slug}/`;
       const ogImage = `${window.location.origin}${import.meta.env.BASE_URL}og/articles/${article.slug}.svg`;
+      const metaDescription = article.shareText || article.description;
 
       document.title = `${article.title} — Blog technologiczny`;
-      setMetaTag('meta[name="description"]', "content", article.description);
+      setMetaTag('meta[name="description"]', "content", metaDescription);
       setMetaTag('meta[property="og:title"]', "content", article.title);
-      setMetaTag('meta[property="og:description"]', "content", article.description);
+      setMetaTag('meta[property="og:description"]', "content", metaDescription);
       setMetaTag('meta[property="og:image"]', "content", ogImage);
       setMetaTag('meta[name="twitter:title"]', "content", article.title);
-      setMetaTag('meta[name="twitter:description"]', "content", article.description);
+      setMetaTag('meta[name="twitter:description"]', "content", metaDescription);
       setMetaTag('meta[name="twitter:image"]', "content", ogImage);
       setMetaTag('link[rel="canonical"]', "href", canonical);
     }
@@ -240,6 +242,15 @@ export function ArticlePage() {
                 ))}
               </ul>
             </section>
+
+            {/* Social Share Buttons Component */}
+            <ShareButtons
+              url={`${window.location.origin}${window.location.pathname}#/articles/${article.slug}`}
+              title={article.title}
+              shareText={article.shareText}
+              hashtags={article.hashtags}
+              description={article.description}
+            />
 
           </main>
 

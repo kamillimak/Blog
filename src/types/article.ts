@@ -71,6 +71,8 @@ export interface Article {
   pullQuote: string;
   sections: ArticleSection[];
   keyTakeaways: string[];
+  shareText?: string;
+  hashtags?: string[];
   status?: "DRAFT" | "APPROVED";
   sourcePath?: string;
   legacySlug?: string;

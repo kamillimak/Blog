@@ -30,6 +30,8 @@ export const ARTICLES: Article[] = [
       "Weryfikacja automatyczna (build, lint, testy) to jedyny sposób na upewnienie się, że agent nie popsuł istniejącego kodu.",
       "Traktuj agenta jak utalentowanego, ale nowego programistę w zespole – sprawdzaj jego pracę i dawaj precyzyjny feedback."
     ],
+    shareText: "Praca z agentami AI na poziomie całego repozytorium to zupełnie inny wymiar niż zwykły czat w przeglądarce. Zobacz, jak wyznaczać granice odpowiedzialności dla Codexa, planować zmiany w 3 krokach i wykorzystywać automatyczną weryfikację kodu, by uniknąć niekontrolowanego chaosu.",
+    hashtags: ["Codex", "AgenticAI", "AIEngineering", "Workflow", "DziennikBudowy"],
     sections: [
       {
         type: "heading",
@@ -154,6 +156,8 @@ Dodaj walidację po stronie klienta do komponentu ContactForm.tsx.
       "Nie zmuszaj lokalnego asystenta do wielkich zmian architektonicznych bez wcześniejszego rozbicia ich na mniejsze etapy.",
       "Trae najlepiej sprawdza się w połączeniu z uruchomionym obok dev serverem, dając natychmiastową wizualną informację zwrotną."
     ],
+    shareText: "Kiedy potrzebujesz chirurgicznej precyzji w edytorze kodu, a nie wielkiego architekta, Trae sprawdza się znakomicie. Sprawdź, jak pisać precyzyjne mikro-prompty, kontrolować zmiany linia po linii i budować natychmiastową pętlę feedbacku dla poprawek UI.",
+    hashtags: ["Trae", "DeveloperExperience", "React", "Frontend", "DziennikBudowy"],
     sections: [
       {
         type: "heading",
@@ -274,6 +278,8 @@ export function Button({ isLoading, onClick, children }: ButtonProps) {
       "Claude doskonale radzi sobie z tworzeniem ścisłych i wysoce elastycznych definicji typów TypeScript.",
       "Gotowy, zaakceptowany plan architektoniczny od Claude'a stanowi idealny materiał wsadowy (brief) dla Codexa."
     ],
+    shareText: "Dopuszczenie kolejnego warunku 'if' to nie refaktoryzacja. Zobacz, jak wykorzystać model Claude do wykrywania długu technicznego, projektowania czystych unii w TypeScript i tworzenia kompletnych planów migracji zanim ktokolwiek napisze chociaż linijkę kodu.",
+    hashtags: ["Claude", "TypeScript", "SoftwareArchitecture", "CleanCode", "DziennikBudowy"],
     sections: [
       {
         type: "heading",
@@ -385,6 +391,8 @@ export interface FilterState {
       "Używaj systemu do generowania map zależności, ułatwiających onboarding nowych programistów.",
       "Model potrafi przeanalizować całe standardy technologiczne firmy i sprawdzić zgodność repozytorium z tymi wytycznymi."
     ],
+    shareText: "Co się dzieje, gdy wrzucisz całe repozytorium z dokumentacją do okna kontekstu rzędu 2 milionów tokenów? Odkryj, jak używać AI Studio do błyskawicznego onboardingu w starym kodzie (legacy) oraz wykrywania nieoczywistych podatności bezpieczeństwa z lotu ptaka.",
+    hashtags: ["AIStudio", "Gemini", "CodeAudit", "SystemDesign", "DziennikBudowy"],
     sections: [
       {
         type: "heading",
@@ -477,6 +485,8 @@ export interface FilterState {
       "Nigdy nie pozwalaj dwóm agentom AI edytować tego samego kodu w tym samym czasie.",
       "Przekazuj precyzyjny kontekst (prompt chaining) – plany architektoniczne stworzone przez Claude'a są idealnymi briefami dla Codexa."
     ],
+    shareText: "Używasz kilku agentów AI i zaczynają nadpisywać swój kod? Poznaj moją sprawdzoną matrycę odpowiedzialności łączącą AI Studio, Claude, Codexa i Trae w jeden, przewidywalny łańcuch dostarczania oprogramowania bez konfliktów i straty czasu.",
+    hashtags: ["AIWorkflow", "DevProductivity", "Codex", "Claude", "DziennikBudowy"],
     sections: [
       {
         type: "heading",
@@ -594,6 +604,8 @@ export interface FilterState {
       "SEO, polityka prywatności, CTA i responsywność nie są dodatkami, tylko częścią wiarygodności.",
       "Changelog pomaga utrzymać ciągłość pracy między kolejnymi agentami AI i przyszłymi wdrożeniami."
     ],
+    shareText: "Kulisy ewolucji bloga 'AI w praktyce': od prostego statycznego SPA po newsroom z automatyzacją, integracje Google Workspace oraz pełne SEO. Przeczytaj, dlaczego prowadzenie czytelnego changelogu jest kluczowe w pracy z kolejnymi agentami AI.",
+    hashtags: ["ProductManagement", "React", "Vite", "Changelog", "DziennikBudowy"],
     sections: [
       {
         type: "heading",
@@ -710,6 +722,8 @@ export interface FilterState {
       "Dashboard Web Vitals zamienia wydajność z abstrakcyjnego tematu w codzienny wskaźnik produktu.",
       "Panel redakcyjny, bramka grafik i CI redukują ryzyko publikacji niedopracowanych materiałów."
     ],
+    shareText: "Jak przesunąć projekt z poziomu zwykłego bloga do dojrzałego produktu redakcyjnego? Przeanalizuj 10 kluczowych usprawnień: od dynamicznych kart OG, przez Consent Mode v2, po dashboard Core Web Vitals i automatyczne bramki jakości w CI.",
+    hashtags: ["ProductRoadmap", "SEO", "WebVitals", "WebDev", "DziennikBudowy"],
     sections: [
       {
         type: "heading",
@@ -842,6 +856,8 @@ export interface FilterState {
       "Consent Mode v2 porządkuje działanie Google Analytics i decyzje użytkownika.",
       "Web Vitals dashboard pokazuje jakość techniczną bez opuszczania strony."
     ],
+    shareText: "Raport z konkretnego sprintu: jak dodaliśmy statyczny pre-render SSG, automatyczne generowanie banerów Social Open Graph, baner zgód Consent Mode v2 i pomiar wydajności w czasie rzeczywistym. Zobacz szczegóły wdrożenia w React i Vite.",
+    hashtags: ["SSG", "OpenGraph", "GA4", "Performance", "DziennikBudowy"],
     sections: [
       {
         type: "heading",
@@ -934,6 +950,8 @@ export interface FilterState {
       "Model Context Protocol (MCP) umożliwia bezpośrednie i bezpieczne łączenie modeli językowych z lokalnymi zasobami.",
       "Weryfikacja automatyczna za pomocą npm run lint i npm run build gwarantuje stabilność zmian przy każdym zatwierdzeniu."
     ],
+    shareText: "Przewodnik po ekosystemie Google Antigravity (AGY): CLI, IDE oraz Auxiliary Pane. Dowiedz się, jak asystent prowadzi onboarding w repozytorium przez pliki AGENTS.md, jak działa Model Context Protocol (MCP) i dlaczego weryfikacja automatyczna jest kluczem do sukcesu.",
+    hashtags: ["GoogleAntigravity", "ModelContextProtocol", "AIAgents", "DeveloperTools", "DziennikBudowy"],
     sections: [
       {
         type: "heading",
