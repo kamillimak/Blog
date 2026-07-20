@@ -261,9 +261,9 @@ export const DAILY_TECH_BRIEFING = DAILY_TECH_BRIEFINGS[0];
 export const TOP_THREE_BRIEFINGS = parseTopThreeBriefings();
 export const TOP_THREE_BRIEFING = TOP_THREE_BRIEFINGS[0] || { runId: "", date: "", status: "DRAFT", items: [] };
 
-// Filter UNIFIED_NEWS_FEED to contain news only from the last 5 days (2026-07-13 to 2026-07-17)
+// Filter UNIFIED_NEWS_FEED to contain news only from the last 5 days (2026-07-16 to 2026-07-20)
 // and exactly 1 news item per category (kind) for each of these days.
-const allowedDates = new Set(["2026-07-17", "2026-07-16", "2026-07-15", "2026-07-14", "2026-07-13"]);
+const allowedDates = new Set(["2026-07-20", "2026-07-19", "2026-07-18", "2026-07-17", "2026-07-16"]);
 
 const allParsedItems: UnifiedNewsItem[] = [
   ...DAILY_TECH_BRIEFINGS.flatMap((briefing) => briefing.items),
