@@ -153,6 +153,96 @@ export function WorkspacePage() {
   const [createdDocTitle, setCreatedDocTitle] = useState<string | null>(null);
   const [workspaceError, setWorkspaceError] = useState<string | null>(null);
 
+  // Media Sync State
+  const [uploadingMedia, setUploadingMedia] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string | null>(null);
+
+  const handleUploadMediaToDrive = async () => {
+    if (!token) {
+      alert("Brak aktywnego tokenu dostępu Google Drive. Kliknij 'Połącz Drive ponownie', aby uwierzytelnić dostęp.");
+      return;
+    }
+
+    const confirm = window.confirm(
+      "Czy chcesz wysłać wszystkie 28 plików multimedialnych (10 grafik Google Flow + 18 animacji MP4) do wskazanego folderu Google Drive?\n\nFolder docelowy ID: 1TvG50XNx8E7hS_q-0qnsFE-xCPqxJrL0"
+    );
+    if (!confirm) return;
+
+    setUploadingMedia(true);
+    setUploadProgress("Przygotowywanie plików multimedialnych...");
+
+    const mediaList = [
+      { name: "codex-agent.jpeg", url: `${import.meta.env.BASE_URL}images/flow/codex-agent.jpeg`, mime: "image/jpeg" },
+      { name: "code-diff.jpeg", url: `${import.meta.env.BASE_URL}images/flow/code-diff.jpeg`, mime: "image/jpeg" },
+      { name: "code-transform.jpeg", url: `${import.meta.env.BASE_URL}images/flow/code-transform.jpeg`, mime: "image/jpeg" },
+      { name: "context-map.jpeg", url: `${import.meta.env.BASE_URL}images/flow/context-map.jpeg`, mime: "image/jpeg" },
+      { name: "gear-pipeline.jpeg", url: `${import.meta.env.BASE_URL}images/flow/gear-pipeline.jpeg`, mime: "image/jpeg" },
+      { name: "share-node.jpeg", url: `${import.meta.env.BASE_URL}images/flow/share-node.jpeg`, mime: "image/jpeg" },
+      { name: "social-cards.jpeg", url: `${import.meta.env.BASE_URL}images/flow/social-cards.jpeg`, mime: "image/jpeg" },
+      { name: "ten-pillars.jpeg", url: `${import.meta.env.BASE_URL}images/flow/ten-pillars.jpeg`, mime: "image/jpeg" },
+      { name: "timeline-roadmap.jpeg", url: `${import.meta.env.BASE_URL}images/flow/timeline-roadmap.jpeg`, mime: "image/jpeg" },
+      { name: "antigravity-core.jpeg", url: `${import.meta.env.BASE_URL}images/flow/antigravity-core.jpeg`, mime: "image/jpeg" },
+      { name: "kamil-mikolajczyk.png", url: `${import.meta.env.BASE_URL}images/kamil-mikolajczyk.png`, mime: "image/png" },
+      { name: "tech-news-01.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-01.mp4`, mime: "video/mp4" },
+      { name: "tech-news-02.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-02.mp4`, mime: "video/mp4" },
+      { name: "tech-news-03.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-03.mp4`, mime: "video/mp4" },
+      { name: "tech-news-04.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-04.mp4`, mime: "video/mp4" },
+      { name: "tech-news-05.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-05.mp4`, mime: "video/mp4" },
+      { name: "tech-news-06.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-06.mp4`, mime: "video/mp4" },
+      { name: "tech-news-07.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-07.mp4`, mime: "video/mp4" },
+      { name: "tech-news-08.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-08.mp4`, mime: "video/mp4" },
+      { name: "tech-news-09.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-09.mp4`, mime: "video/mp4" },
+      { name: "tech-news-10.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-10.mp4`, mime: "video/mp4" },
+      { name: "tech-news-11.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-11.mp4`, mime: "video/mp4" },
+      { name: "tech-news-12.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-12.mp4`, mime: "video/mp4" },
+      { name: "tech-news-13.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-13.mp4`, mime: "video/mp4" },
+      { name: "tech-news-14.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-14.mp4`, mime: "video/mp4" },
+      { name: "tech-news-15.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-15.mp4`, mime: "video/mp4" },
+      { name: "tech-news-16.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-16.mp4`, mime: "video/mp4" },
+      { name: "tech-news-17.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-17.mp4`, mime: "video/mp4" },
+      { name: "tech-news-18.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-18.mp4`, mime: "video/mp4" },
+    ];
+
+    const folderId = "1TvG50XNx8E7hS_q-0qnsFE-xCPqxJrL0";
+    let success = 0;
+
+    for (let i = 0; i < mediaList.length; i++) {
+      const item = mediaList[i];
+      setUploadProgress(`Wysyłanie pliku ${i + 1}/${mediaList.length}: ${item.name}...`);
+
+      try {
+        const fetchRes = await fetch(item.url);
+        if (!fetchRes.ok) continue;
+        const blob = await fetchRes.blob();
+
+        const metadata = {
+          name: item.name,
+          parents: [folderId],
+        };
+
+        const formData = new FormData();
+        formData.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }));
+        formData.append("file", blob);
+
+        const driveRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        });
+
+        if (driveRes.ok) {
+          success++;
+        }
+      } catch (err) {
+        console.error(`Błąd przy przesyłaniu pliku ${item.name}:`, err);
+      }
+    }
+
+    setUploadingMedia(false);
+    setUploadProgress(`Pomyślnie wysłano ${success}/${mediaList.length} plików na Google Drive!`);
+    alert(`Zakończono wysyłkę! Pomyślnie przekazano ${success} z ${mediaList.length} plików do folderu Google Drive.`);
+  };
+
   // Connected Documents State (Saved to localStorage)
   const [connectedDocs, setConnectedDocs] = useState<ConnectedDoc[]>(() => {
     const saved = localStorage.getItem("workspace_connected_docs");
@@ -649,6 +739,35 @@ export function WorkspacePage() {
               {workspaceError}
             </div>
           )}
+
+          {/* MEDIA SYNC ACTION CARD */}
+          <div className="border border-indigo-500/40 bg-indigo-500/5 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 text-indigo-400 font-mono text-[10px] uppercase tracking-widest mb-1">
+                <Cloud size={12} />
+                <span>Google Drive Media Sync</span>
+              </div>
+              <h4 className="font-sans font-bold text-sm text-brand-text uppercase">
+                Wysyłka 28 plików multimedialnych na Google Drive
+              </h4>
+              <p className="font-serif text-xs text-brand-muted mt-1">
+                Wyślij 10 grafik Google Flow oraz 18 teł wideo MP4 do folderu Google Drive ID: <code className="font-mono text-indigo-400">1TvG50XNx8E7hS_q-0qnsFE-xCPqxJrL0</code>
+              </p>
+              {uploadProgress && (
+                <p className="font-mono text-xs text-indigo-400 mt-2 font-bold animate-pulse">
+                  {uploadProgress}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={handleUploadMediaToDrive}
+              disabled={uploadingMedia || !token}
+              className="flex items-center justify-center gap-2 border border-indigo-500 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold uppercase tracking-widest px-5 py-3 transition-colors disabled:opacity-50 whitespace-nowrap"
+            >
+              {uploadingMedia ? <Loader2 size={14} className="animate-spin" /> : <Cloud size={14} />}
+              <span>{uploadingMedia ? "Wysyłanie..." : "Wyślij pliki na Google Drive"}</span>
+            </button>
+          </div>
 
           {/* TAB NAVIGATION */}
           <div className="flex border-b border-brand-border bg-brand-card">
