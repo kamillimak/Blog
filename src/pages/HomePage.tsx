@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, RotateCcw, Award, Clock, FileText, Settings, ArrowRight, BriefcaseBusiness, Mail, Newspaper, Users } from "lucide-react";
+import { Search, RotateCcw, Award, Clock, FileText, Settings, ArrowRight, BriefcaseBusiness, Mail, Newspaper, Users, Linkedin, Github, Sparkles, Star } from "lucide-react";
 import { ARTICLES } from "../data/articles";
 import { ArticleCard } from "../components/article/ArticleCard";
 import { getGlobalStats, filterArticles } from "../utils/article";
@@ -16,6 +16,11 @@ export function HomePage() {
 
   // Stats
   const stats = useMemo(() => getGlobalStats(ARTICLES), []);
+
+  // Hand-picked / Curated recommended articles
+  const curatedArticles = useMemo(() => {
+    return ARTICLES.filter((a) => a.featured || a.id === "1" || a.id === "2").slice(0, 3);
+  }, []);
 
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState("");
@@ -51,15 +56,16 @@ export function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-10">
             
-            {/* About author */}
+            {/* About author & Hero statement */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
               <div className="lg:col-span-7 space-y-6">
                 <span className="inline-block px-3 py-1 bg-brand-text text-brand-bg text-[10px] font-bold uppercase tracking-widest rounded-none mb-4">
                   Blog technologiczny Kamila Mikołajczyka
                 </span>
+                
                 <div className="flex items-center justify-between gap-4">
-                  <h1 className="text-[32px] sm:text-5xl lg:text-[64px] font-bold leading-[0.9] tracking-tighter text-brand-text uppercase min-w-0">
-                    Praktyczne podejście do AI
+                  <h1 className="text-[32px] sm:text-5xl lg:text-[56px] font-bold leading-[0.95] tracking-tighter text-brand-text uppercase min-w-0">
+                    Dziennik budowy AI – od strony Project Managera
                   </h1>
                   <div className="lg:hidden shrink-0 h-20 w-20 sm:h-28 sm:w-28 rounded-full border border-brand-border bg-brand-featured-bg p-1.5 overflow-hidden">
                     <img
@@ -72,10 +78,63 @@ export function HomePage() {
                     />
                   </div>
                 </div>
-                <p className="text-brand-muted text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Blog o pracy z Codex, Trae, Claude i AI Studio: od codziennych newsów technologicznych, przez automatyzacje, po konkretne workflow dla osób, które chcą szybciej projektować, wdrażać i opowiadać o produktach AI.
+
+                <p className="text-brand-muted text-base sm:text-lg leading-relaxed max-w-2xl font-sans">
+                  Testuję agentów AI, automatyzacje i AI coding w prawdziwej pracy. Pokazuję co działa, co jest przereklamowane i jak to wdrożyć bez chaosu.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3 pt-2">
+
+                {/* Micro CTA Badge */}
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-featured-bg border border-brand-border text-brand-text text-xs font-mono font-bold uppercase tracking-wider">
+                  <Sparkles size={14} className="text-amber-500 shrink-0" />
+                  <span>9+ lat w IT · Product Owner · buduję ten blog w 100% z pomocą AI</span>
+                </div>
+
+                {/* Author Bio Box */}
+                <div className="p-5 border border-brand-border bg-brand-card space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-brand-muted">
+                      O autorze
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-[10px] font-mono text-emerald-600 font-bold uppercase tracking-wider bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/30">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                      Otwarty na rozmowy o współpracy i nowych projektach
+                    </span>
+                  </div>
+                  
+                  <p className="text-xs sm:text-sm text-brand-text leading-relaxed font-sans">
+                    <strong>Kamil Mikołajczyk</strong> – Senior Project Manager / Product Owner, 9+ lat w IT. Na co dzień pracuję przy Seeplaces.com, po godzinach testuję granice tego, co AI potrafi zrobić w produkcji treści i kodzie.
+                  </p>
+
+                  <div className="flex flex-wrap items-center gap-4 pt-1 border-t border-brand-border/60">
+                    <a
+                      href="https://www.linkedin.com/in/kamilmikolajczyk/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-text hover:text-brand-sage uppercase tracking-wider transition-colors"
+                    >
+                      <Linkedin size={14} />
+                      <span>LinkedIn</span>
+                    </a>
+                    <a
+                      href="https://github.com/kamillimak"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-text hover:text-brand-sage uppercase tracking-wider transition-colors"
+                    >
+                      <Github size={14} />
+                      <span>GitHub</span>
+                    </a>
+                    <a
+                      href="mailto:mikolajczykamil@gmail.com"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-text hover:text-brand-sage uppercase tracking-wider transition-colors"
+                    >
+                      <Mail size={14} />
+                      <span>Email</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3 pt-1">
                   <Link
                     to="/articles"
                     className="inline-flex items-center justify-center px-8 py-4 bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white text-xs font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer"
@@ -91,10 +150,8 @@ export function HomePage() {
                     <span>Kontakt</span>
                   </a>
                 </div>
-                <p className="text-[10px] font-mono uppercase tracking-wider text-brand-muted">
-                  Autor: Kamil Mikołajczyk · Senior IT Project Manager · Product Owner · AI & Digital Transformation
-                </p>
               </div>
+              
               <div className="hidden lg:block lg:col-span-5">
                 <div className="border border-brand-border bg-brand-featured-bg p-3 max-w-sm lg:max-w-none">
                   <img
@@ -165,6 +222,32 @@ export function HomePage() {
               })}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* CURATED FEATURED ARTICLES SECTION */}
+      <section id="curated-articles-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="border-b border-brand-border pb-5 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-muted uppercase block mb-1">
+              Rekomendacje autora
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-sans font-extrabold tracking-tight uppercase text-brand-text flex items-center gap-2.5">
+              <Star size={22} className="text-amber-500 fill-amber-500/20" />
+              <span>Polecane artykuły</span>
+            </h2>
+          </div>
+          <p className="text-brand-muted text-xs max-w-md">
+            Wpisy kluczowe dla osób chcących zgłębić architekturę pracy z agentami AI oraz sprawdzone workflow.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {curatedArticles.map((article) => (
+            <div key={`curated-${article.id}`}>
+              <ArticleCard article={article} featured={false} />
+            </div>
+          ))}
         </div>
       </section>
 

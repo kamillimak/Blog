@@ -7,6 +7,7 @@ import { TableOfContents } from "../components/article/TableOfContents";
 import { ArticleIllustration } from "../components/article/ArticleIllustration";
 import { ArticleCard } from "../components/article/ArticleCard";
 import { ShareButtons } from "../components/article/ShareButtons";
+import { ArticleCTA } from "../components/article/ArticleCTA";
 import { formatPolishDate, getRelatedArticles, copyToClipboard } from "../utils/article";
 import { ReadingProgress } from "../components/article/ReadingProgress";
 
@@ -242,6 +243,9 @@ export function ArticlePage() {
                 ))}
               </ul>
             </section>
+
+            {/* Universal Article CTA */}
+            <ArticleCTA />
 
             {/* Social Share Buttons Component */}
             <ShareButtons
