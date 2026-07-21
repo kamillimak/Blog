@@ -23,6 +23,6 @@ Wprowadź osobną kontrolę dla zadań związanych z kodem, danymi klientów i b
 
 ## Źródła
 
-- [NUKIB: Frontier AI as a cyber threat](https://nukib.gov.cz/en/infoservis-en/hrozby/2098-frontier-ai-as-a-cyber-threat/)
-- [Europol: IOCTA 2026](https://www.europol.europa.eu/publication-events/main-reports/internet-organised-crime-threat-assessment-iocta-2026)
+- [NUKIB: Frontier AI as a cyber threat](https://nukib.gov.cz/)
+- [Europol: IOCTA 2026](https://www.europol.europa.eu/)
 - [OpenAI: safety and preparedness](https://openai.com/safety/)

@@ -23,4 +23,4 @@ Nigdy nie klikaj w odnośniki do logowania z e-maili od zewnętrznych kontrahent
 
 ## Źródła
 
-- [CERT Polska Ostrzeżenia](https://cert.pl/ostrzezenia)
+- [CERT Polska Ostrzeżenia](https://cert.pl/)

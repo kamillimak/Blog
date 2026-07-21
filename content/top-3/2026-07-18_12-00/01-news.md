@@ -23,4 +23,4 @@ Wykorzystuj asystentów z możliwością podglądu UI i automatycznego uruchamia
 
 ## Źródła
 
-- [TechCrunch AI Live Coding](https://techcrunch.com/ai-live-coding-breakthrough)
+- [TechCrunch AI Live Coding](https://techcrunch.com/)

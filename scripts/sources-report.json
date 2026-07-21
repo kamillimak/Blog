@@ -1,0 +1,382 @@
+{
+  "bad404": [
+    {
+      "status": 404,
+      "url": "https://nukib.gov.cz/en/infoservis-en/hrozby/2098-frontier-ai-as-a-cyber-threat/",
+      "locations": [
+        "content\\draft\\2026-07-09_20-17\\02-news-nukib-frontier-cyber-risk.md [NUKIB: Frontier AI as a cyber threat]",
+        "content\\draft\\2026-07-09_20-17\\06-crime-frontier-ai-cyber-abuse.md [NUKIB: Frontier AI as a cyber threat]",
+        "content\\draft\\2026-07-09_20-17\\09-business-ai-red-team-service.md [NUKIB: Frontier AI as a cyber threat]",
+        "content\\top-3\\2026-07-09_20-17\\02-news-nukib-frontier-cyber-risk.md [NUKIB: Frontier AI as a cyber threat]",
+        "content\\top-3\\2026-07-09_20-17\\06-crime-frontier-ai-cyber-abuse.md [NUKIB: Frontier AI as a cyber threat]",
+        "content\\top-3\\2026-07-09_20-17\\09-business-ai-red-team-service.md [NUKIB: Frontier AI as a cyber threat]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://www.europol.europa.eu/publication-events/main-reports/internet-organised-crime-threat-assessment-iocta-2026",
+      "locations": [
+        "content\\draft\\2026-07-09_20-17\\02-news-nukib-frontier-cyber-risk.md [Europol: IOCTA 2026]",
+        "content\\draft\\2026-07-09_20-17\\06-crime-frontier-ai-cyber-abuse.md [Europol: IOCTA 2026]",
+        "content\\top-3\\2026-07-09_20-17\\02-news-nukib-frontier-cyber-risk.md [Europol: IOCTA 2026]",
+        "content\\top-3\\2026-07-09_20-17\\06-crime-frontier-ai-cyber-abuse.md [Europol: IOCTA 2026]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://www.theguardian.com/technology/artificial-intelligence-ai",
+      "locations": [
+        "content\\draft\\2026-07-09_20-17\\03-news-ai-infrastructure-policy.md [The Guardian: Artificial intelligence]",
+        "content\\top-3\\2026-07-09_20-17\\03-news-ai-infrastructure-policy.md [The Guardian: Artificial intelligence]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://www.nationalacademies.org/our-work/artificial-intelligence-and-the-future-of-work",
+      "locations": [
+        "content\\draft\\2026-07-13_19-47\\03-news-economists-ai-impact-letter.md [National Academies: AI and the future of work]",
+        "content\\draft\\2026-07-13_19-47\\09-business-ai-work-impact-briefing.md [National Academies: AI and the future of work]",
+        "content\\top-3\\2026-07-13_19-47\\03-news-economists-ai-impact-letter.md [National Academies: AI and the future of work]",
+        "content\\top-3\\2026-07-13_19-47\\09-business-ai-work-impact-briefing.md [National Academies: AI and the future of work]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://www.ftc.gov/business-guidance/blog/2024/02/ftc-proposes-new-protections-combat-ai-impersonation",
+      "locations": [
+        "content\\draft\\2026-07-13_19-47\\04-crime-deepfake-domain-seizures.md [FTC: impersonation and AI-enabled fraud guidance]",
+        "content\\top-3\\2026-07-13_19-47\\04-crime-deepfake-domain-seizures.md [FTC: impersonation and AI-enabled fraud guidance]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://consumer.ftc.gov/articles/business-opportunity-scams",
+      "locations": [
+        "content\\draft\\2026-07-13_19-47\\06-crime-ai-economic-displacement-scams.md [FTC: business opportunity scams]",
+        "content\\top-3\\2026-07-13_19-47\\06-crime-ai-economic-displacement-scams.md [FTC: business opportunity scams]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://zbp.pl/dla-klientow/bezpieczny-bank",
+      "locations": [
+        "content\\top-3\\2026-07-14_12-00\\02-crime.md [Związek Banków Polskich: Bezpieczeństwo]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://blogs.microsoft.com/blog/2026/07/16/copilot-studio-autonomous-agents/",
+      "locations": [
+        "content\\top-3\\2026-07-16_12-00\\01-news.md [Microsoft Blog: Copilot Studio autonomous agents]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://learn.microsoft.com/en-us/copilot/studio/",
+      "locations": [
+        "content\\top-3\\2026-07-16_12-00\\01-news.md [Microsoft Learn: Agentic Workflows]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://techcrunch.com/ai-live-coding-breakthrough",
+      "locations": [
+        "content\\top-3\\2026-07-18_12-00\\01-news.md [TechCrunch AI Live Coding]"
+      ]
+    },
+    {
+      "status": 404,
+      "url": "https://cert.pl/ostrzezenia",
+      "locations": [
+        "content\\top-3\\2026-07-20_12-00\\02-crime.md [CERT Polska Ostrzeżenia]"
+      ]
+    }
+  ],
+  "otherErr": [
+    {
+      "status": 403,
+      "url": "https://www.axios.com/2026/05/13/anthropic-claude-small-business-smb",
+      "locations": [
+        "content\\draft\\2026-07-02_09-12\\03-news-claude-male-firmy.md [Axios — Anthropic wants small businesses to use Claude]",
+        "content\\draft\\2026-07-02_09-12\\07-zarabianie-automatyzacje.md [Axios — Claude for small business]",
+        "content\\top-3\\2026-07-02_09-12\\03-news-claude-male-firmy.md [Axios — Anthropic wants small businesses to use Claude]",
+        "content\\top-3\\2026-07-02_09-12\\07-zarabianie-automatyzacje.md [Axios — Claude for small business]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.bleepingcomputer.com/news/security/doj-seizes-cfake-socfake-deepfake-nude-sites-under-take-it-down-act/amp/",
+      "locations": [
+        "content\\draft\\2026-07-02_09-12\\05-kryminalne-deepfake-serwisy.md [BleepingComputer — DOJ seizes deepfake sites]",
+        "content\\top-3\\2026-07-02_09-12\\05-kryminalne-deepfake-serwisy.md [BleepingComputer — DOJ seizes deepfake sites]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.congress.gov/",
+      "locations": [
+        "content\\draft\\2026-07-02_09-12\\06-kryminalne-zarzuty-deepfake.md [Congress.gov — TAKE IT DOWN Act]",
+        "content\\top-3\\2026-07-02_09-12\\06-kryminalne-zarzuty-deepfake.md [Congress.gov — TAKE IT DOWN Act]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://rm.coe.int/cdpc-aicl-2026-02-discussion-paper-deepfakes-2775-1074-9970-v-1/48802ab5ea",
+      "locations": [
+        "content\\draft\\2026-07-02_09-12\\09-zarabianie-deepfake.md [Council of Europe — discussion paper on deepfakes]",
+        "content\\top-3\\2026-07-02_09-12\\09-zarabianie-deepfake.md [Council of Europe — discussion paper on deepfakes]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.investing.com/news/economy-news/unchecked-ai-progress-may-pose-catastrophic-risks-un-panel-warns-4769867",
+      "locations": [
+        "content\\draft\\2026-07-02_20-18\\01-news-panel-onz-o-ai.md [Reuters — omówienie ostrzeżeń panelu]",
+        "content\\top-3\\2026-07-02_20-18\\01-news-panel-onz-o-ai.md [Reuters — omówienie ostrzeżeń panelu]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.investing.com/news/economy-news/us-to-lift-export-controls-on-anthropics-fable-ai-model-on-tuesday-source-says-4769219",
+      "locations": [
+        "content\\draft\\2026-07-02_20-18\\02-news-claude-fable-5-wraca.md [Reuters — cofnięcie ograniczeń eksportowych]",
+        "content\\top-3\\2026-07-02_20-18\\02-news-claude-fable-5-wraca.md [Reuters — cofnięcie ograniczeń eksportowych]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.axios.com/2026/07/01/anthropic-fable-5-back-online-trump-export-controls-lifted",
+      "locations": [
+        "content\\draft\\2026-07-02_20-18\\02-news-claude-fable-5-wraca.md [Axios — przywrócenie Fable 5]",
+        "content\\top-3\\2026-07-02_20-18\\02-news-claude-fable-5-wraca.md [Axios — przywrócenie Fable 5]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.consilium.europa.eu/en/press/press-releases/2026/06/29/artificial-intelligence-council-gives-final-green-light-to-simplify-and-streamline-rules/pdf/",
+      "locations": [
+        "content\\draft\\2026-07-02_20-18\\03-news-ue-upraszcza-ai-act.md [Rada UE — komunikat prasowy z 29 czerwca 2026 r.]",
+        "content\\draft\\2026-07-02_20-18\\05-crime-deepfake-domains.md [Rada UE — nowe zakazy dotyczące niekonsensualnych treści intymnych]",
+        "content\\draft\\2026-07-02_20-18\\09-business-ai-transparency.md [Rada UE — ostateczne zatwierdzenie zmian z 29 czerwca 2026 r.]",
+        "content\\top-3\\2026-07-02_20-18\\03-news-ue-upraszcza-ai-act.md [Rada UE — komunikat prasowy z 29 czerwca 2026 r.]",
+        "content\\top-3\\2026-07-02_20-18\\05-crime-deepfake-domains.md [Rada UE — nowe zakazy dotyczące niekonsensualnych treści intymnych]",
+        "content\\top-3\\2026-07-02_20-18\\09-business-ai-transparency.md [Rada UE — ostateczne zatwierdzenie zmian z 29 czerwca 2026 r.]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.consilium.europa.eu/en/policies/artificial-intelligence-act/timeline-artificial-intelligence/",
+      "locations": [
+        "content\\draft\\2026-07-02_20-18\\03-news-ue-upraszcza-ai-act.md [Rada UE — oś czasu AI Act]",
+        "content\\top-3\\2026-07-02_20-18\\03-news-ue-upraszcza-ai-act.md [Rada UE — oś czasu AI Act]"
+      ]
+    },
+    {
+      "status": 401,
+      "url": "https://www.reuters.com/legal/government/google-targets-ai-powered-phishing-new-york-lawsuit-2026-06-12/",
+      "locations": [
+        "content\\draft\\2026-07-02_20-18\\04-crime-phishing-outsider.md [Reuters — pozew dotyczący phishingu wspieranego przez AI]",
+        "content\\top-3\\2026-07-02_20-18\\04-crime-phishing-outsider.md [Reuters — pozew dotyczący phishingu wspieranego przez AI]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.fbi.gov/investigate/cyber/alerts",
+      "locations": [
+        "content\\draft\\2026-07-02_20-18\\04-crime-phishing-outsider.md [FBI — bieżące alerty cybernetyczne i kanał zgłoszeń IC3]",
+        "content\\top-3\\2026-07-02_20-18\\04-crime-phishing-outsider.md [FBI — bieżące alerty cybernetyczne i kanał zgłoszeń IC3]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.fbi.gov/news/press-releases/cryptocurrency-and-ai-scams-bilk-americans-of-billions",
+      "locations": [
+        "content\\draft\\2026-07-02_20-18\\06-crime-ai-scam-losses.md [FBI — Cryptocurrency and AI Scams Bilk Americans of Billions]",
+        "content\\top-3\\2026-07-02_20-18\\06-crime-ai-scam-losses.md [FBI — Cryptocurrency and AI Scams Bilk Americans of Billions]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.oecd.org/en/publications/empowering-smes-in-the-age-of-ai_bf5a9816-en.html",
+      "locations": [
+        "content\\draft\\2026-07-02_20-18\\07-business-ai-workflow-audit.md [OECD — Empowering SMEs in the age of AI]",
+        "content\\top-3\\2026-07-02_20-18\\07-business-ai-workflow-audit.md [OECD — Empowering SMEs in the age of AI]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.fbi.gov/investigate/counterintelligence",
+      "locations": [
+        "content\\draft\\2026-07-03_11-17\\04-crime-ai-personas.md [FBI — komunikat o ochronie przed socjotechniką]",
+        "content\\top-3\\2026-07-03_11-17\\04-crime-ai-personas.md [FBI — komunikat o ochronie przed socjotechniką]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.axios.com/2026/07/08/openai-gpt-trump-ban-lifted",
+      "locations": [
+        "content\\draft\\2026-07-08_15-45\\01-news-openai-gpt-56-sol.md [Axios: Trump administration lifts restrictions on OpenAI's GPT 5.6]",
+        "content\\draft\\2026-07-09_11-17\\01-news-gpt-56-public-rollout.md [Axios: Trump administration lifts restrictions on OpenAI's GPT 5.6]",
+        "content\\draft\\2026-07-09_20-17\\01-news-gpt-56-sol-public-launch.md [Axios: OpenAI GPT-5.6 rollout]",
+        "content\\top-3\\2026-07-08_15-45\\01-news-openai-gpt-56-sol.md [Axios: Trump administration lifts restrictions on OpenAI's GPT 5.6]",
+        "content\\top-3\\2026-07-09_11-17\\01-news-gpt-56-public-rollout.md [Axios: Trump administration lifts restrictions on OpenAI's GPT 5.6]",
+        "content\\top-3\\2026-07-09_20-17\\01-news-gpt-56-sol-public-launch.md [Axios: OpenAI GPT-5.6 rollout]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.axios.com/2026/07/07/report-ai-safety-pledges",
+      "locations": [
+        "content\\draft\\2026-07-08_15-45\\03-news-ai-safety-index-2026.md [Axios: AI companies retreat from safety pledges]",
+        "content\\top-3\\2026-07-08_15-45\\03-news-ai-safety-index-2026.md [Axios: AI companies retreat from safety pledges]"
+      ]
+    },
+    {
+      "status": "ERR: fetch failed",
+      "url": "https://ai.google.dev/",
+      "locations": [
+        "content\\draft\\2026-07-09_10-23\\03-news-gemini-managed-agents.md [Google AI for Developers: Gemini API]",
+        "content\\top-3\\2026-07-09_10-23\\03-news-gemini-managed-agents.md [Google AI for Developers: Gemini API]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.coe.int/en/web/portal/-/creating-altering-and-distributing-ai-generated-child-sexual-abuse-material-is-criminalised-under-council-of-europe-conventions",
+      "locations": [
+        "content\\draft\\2026-07-09_10-23\\05-crime-ai-csam-guidance.md [Council of Europe: AI-generated child abuse material under conventions]",
+        "content\\top-3\\2026-07-09_10-23\\05-crime-ai-csam-guidance.md [Council of Europe: AI-generated child abuse material under conventions]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://cdt.org/",
+      "locations": [
+        "content\\draft\\2026-07-09_10-23\\06-crime-ai-school-deepfakes.md [Center for Democracy & Technology: research on student deepfakes]",
+        "content\\draft\\2026-07-09_11-17\\05-crime-school-ai-deepfake-policy.md [Center for Democracy & Technology]",
+        "content\\top-3\\2026-07-09_10-23\\06-crime-ai-school-deepfakes.md [Center for Democracy & Technology: research on student deepfakes]",
+        "content\\top-3\\2026-07-09_11-17\\05-crime-school-ai-deepfake-policy.md [Center for Democracy & Technology]"
+      ]
+    },
+    {
+      "status": "ERR: fetch failed",
+      "url": "https://www.ilga.gov/",
+      "locations": [
+        "content\\draft\\2026-07-09_10-23\\06-crime-ai-school-deepfakes.md [Illinois General Assembly]",
+        "content\\top-3\\2026-07-09_10-23\\06-crime-ai-school-deepfakes.md [Illinois General Assembly]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.investors.com/news/technology/ai-stocks-open-source-ai-models-meta-stock-nvidia/",
+      "locations": [
+        "content\\draft\\2026-07-09_11-17\\02-news-open-source-ai-cost-pressure.md [Investor's Business Daily: Sticker Shock Powers Open-Source AI Growth]",
+        "content\\draft\\2026-07-09_11-17\\07-business-model-routing-audit.md [Investor's Business Daily: Sticker Shock Powers Open-Source AI Growth]",
+        "content\\top-3\\2026-07-09_11-17\\02-news-open-source-ai-cost-pressure.md [Investor's Business Daily: Sticker Shock Powers Open-Source AI Growth]",
+        "content\\top-3\\2026-07-09_11-17\\07-business-model-routing-audit.md [Investor's Business Daily: Sticker Shock Powers Open-Source AI Growth]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.fbi.gov/ic3",
+      "locations": [
+        "content\\draft\\2026-07-09_11-17\\04-crime-deepfake-sitharaman-investment.md [FBI IC3]",
+        "content\\draft\\2026-07-09_11-17\\06-crime-ai-deepfake-takedown-context.md [FBI IC3]",
+        "content\\draft\\2026-07-10_11-18\\04-crime-ai-streaming-royalty-fraud.md [FBI IC3]",
+        "content\\top-3\\2026-07-09_11-17\\04-crime-deepfake-sitharaman-investment.md [FBI IC3]",
+        "content\\top-3\\2026-07-09_11-17\\06-crime-ai-deepfake-takedown-context.md [FBI IC3]",
+        "content\\top-3\\2026-07-10_11-18\\04-crime-ai-streaming-royalty-fraud.md [FBI IC3]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.fbi.gov/investigate/cyber/news",
+      "locations": [
+        "content\\draft\\2026-07-09_11-17\\06-crime-ai-deepfake-takedown-context.md [FBI Cyber News]",
+        "content\\draft\\2026-07-10_11-18\\04-crime-ai-streaming-royalty-fraud.md [FBI: Cyber Crime news and press releases]",
+        "content\\draft\\2026-07-10_11-18\\05-crime-ai-generated-harassment.md [FBI: Cyber Crime news and press releases]",
+        "content\\top-3\\2026-07-09_11-17\\06-crime-ai-deepfake-takedown-context.md [FBI Cyber News]",
+        "content\\top-3\\2026-07-10_11-18\\04-crime-ai-streaming-royalty-fraud.md [FBI: Cyber Crime news and press releases]",
+        "content\\top-3\\2026-07-10_11-18\\05-crime-ai-generated-harassment.md [FBI: Cyber Crime news and press releases]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.congress.gov/bill/119th-congress/senate-bill/146",
+      "locations": [
+        "content\\draft\\2026-07-09_20-17\\04-crime-take-it-down-first-charges.md [Congress.gov: TAKE IT DOWN Act]",
+        "content\\draft\\2026-07-13_19-47\\04-crime-deepfake-domain-seizures.md [Congress.gov: TAKE IT DOWN Act]",
+        "content\\top-3\\2026-07-09_20-17\\04-crime-take-it-down-first-charges.md [Congress.gov: TAKE IT DOWN Act]",
+        "content\\top-3\\2026-07-13_19-47\\04-crime-deepfake-domain-seizures.md [Congress.gov: TAKE IT DOWN Act]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.ft.com/content/5d6aafa1-5d47-4585-aa95-6ec06a6cd20f",
+      "locations": [
+        "content\\draft\\2026-07-10_11-18\\01-news-openai-google-china-access.md [Financial Times: OpenAI and Google sell AI models to blacklisted China groups]",
+        "content\\draft\\2026-07-10_11-18\\06-crime-ai-export-and-distillation-risk.md [Financial Times: OpenAI and Google sell AI models to blacklisted China groups]",
+        "content\\draft\\2026-07-10_11-18\\09-business-ai-compliance-briefing.md [Financial Times: OpenAI and Google sell AI models to blacklisted China groups]",
+        "content\\top-3\\2026-07-10_11-18\\01-news-openai-google-china-access.md [Financial Times: OpenAI and Google sell AI models to blacklisted China groups]",
+        "content\\top-3\\2026-07-10_11-18\\06-crime-ai-export-and-distillation-risk.md [Financial Times: OpenAI and Google sell AI models to blacklisted China groups]",
+        "content\\top-3\\2026-07-10_11-18\\09-business-ai-compliance-briefing.md [Financial Times: OpenAI and Google sell AI models to blacklisted China groups]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.ft.com/artificial-intelligence",
+      "locations": [
+        "content\\draft\\2026-07-10_11-18\\01-news-openai-google-china-access.md [Financial Times: Artificial intelligence section]",
+        "content\\top-3\\2026-07-10_11-18\\01-news-openai-google-china-access.md [Financial Times: Artificial intelligence section]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.axios.com/2026/07/08/openai-deployment-company-northslope-acquisition",
+      "locations": [
+        "content\\draft\\2026-07-13_19-47\\02-news-openai-deployment-northslope.md [Axios: OpenAI deployment arm to acquire Northslope]",
+        "content\\draft\\2026-07-13_19-47\\08-business-forward-deployed-ai-service.md [Axios: OpenAI deployment arm to acquire Northslope]",
+        "content\\top-3\\2026-07-13_19-47\\02-news-openai-deployment-northslope.md [Axios: OpenAI deployment arm to acquire Northslope]",
+        "content\\top-3\\2026-07-13_19-47\\08-business-forward-deployed-ai-service.md [Axios: OpenAI deployment arm to acquire Northslope]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.fbi.gov/how-we-can-help-you/scams-and-safety/common-frauds-and-scams",
+      "locations": [
+        "content\\draft\\2026-07-13_19-47\\05-crime-ai-voice-deepfake-fraud.md [FBI: Scammers use AI to enhance fraud schemes]",
+        "content\\top-3\\2026-07-13_19-47\\05-crime-ai-voice-deepfake-fraud.md [FBI: Scammers use AI to enhance fraud schemes]"
+      ]
+    },
+    {
+      "status": 403,
+      "url": "https://www.axios.com/2026/07/14/demis-hassabis-ai-regulation-google-deepmind",
+      "locations": [
+        "content\\draft\\2026-07-15_05-10\\01-news-hassabis-global-ai-watchdog.md [Axios: Google DeepMind's Demis Hassabis calls for U.S.-led global AI watchdog]",
+        "content\\top-3\\2026-07-15_05-10\\01-news-hassabis-global-ai-watchdog.md [Axios: Google DeepMind's Demis Hassabis calls for U.S.-led global AI watchdog]",
+        "src\\data\\aiTrendBriefing.ts"
+      ]
+    },
+    {
+      "status": 400,
+      "url": "https://ai.meta.com/resources/models-and-libraries/llama-downloads/",
+      "locations": [
+        "content\\top-3\\2026-07-16_12-00\\03-business.md [Llama Guard by Meta]"
+      ]
+    },
+    {
+      "status": "ERR: fetch failed",
+      "url": "https://www.cybersecurity-business.com/ai-auditing-growth",
+      "locations": [
+        "content\\top-3\\2026-07-18_12-00\\03-business.md [Cybersecurity Business Insights]"
+      ]
+    },
+    {
+      "status": "ERR: fetch failed",
+      "url": "https://www.ecommerce-ai-journal.com/no-code-agents-2026",
+      "locations": [
+        "content\\top-3\\2026-07-20_12-00\\03-business.md [E-commerce AI Integration Journal]"
+      ]
+    }
+  ],
+  "totalChecked": 190
+}

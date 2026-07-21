@@ -1009,5 +1009,167 @@ export interface FilterState {
         text: "Praca w środowisku Antygravity wymaga zachowania odpowiedniej higieny deweloperskiej. Każda modyfikacja kodu dokonana przez agenta musi być zakończona weryfikacją techniczną:\n\n- npm run lint: Uruchamia kompilator TypeScript bez emisji plików, co pozwala natychmiast wykryć niedopasowania typów i błędy importów.\n- npm run build: Kompiluje produkcyjną wersję frontendu i backendu, gwarantując, że zmiany nie popsują procesu bundlowania.\n- Git jako punkt wyjścia: Każde zadanie powinno być realizowane na czystej gałęzi, co umożliwia szybkie wycofanie zmian w przypadku problemów.\n\nIntegracja człowieka i maszyny w tym modelu opiera się na zaufaniu wspieranym przez automatyczną kontrolę jakości. Pozwala to na stabilny rozwój i bezpieczną realizację nawet najbardziej złożonych wymagań biznesowych."
       }
     ]
+  },
+  {
+    id: "10",
+    slug: "jak-asystent-ai-zbudowal-modul-share-i-naprawil-zrodla",
+    title: "Jak asystent AI rozwinął bloga: od modułu Share po eliminację błędów 404",
+    subtitle: "Kulisy praktycznej sesji z agentem Antigravity: od analizy architektury po wdrożenie social gotowości",
+    description: "Zobacz krok po kroku, jak agent AI przeanalizował kod bloga, rozszerzył interfejsy TypeScript, zaimplementował komponenty udostępniania i automatycznie wykrył oraz naprawił nieaktywne linki w źródłach.",
+    category: "Workflow",
+    tool: "Codex",
+    author: {
+      name: "Kamil Mikołajczyk",
+      role: "Senior IT Project Manager | Product Owner | AI & Digital Transformation",
+      avatar: "KM"
+    },
+    publishedAt: "2026-07-21",
+    readTime: 8,
+    wordCount: 1620,
+    heroImage: "workflow_hero",
+    imageAlt: "Schemat procesu orkiestracji agenta AI tworzącego moduł udostępniania i weryfikującego odnośniki",
+    imageCaption: "Rys. 10: Cykl pracy agenta: rozpoznanie kodu, rozszerzenie typu, budowa UI, weryfikacja linków i walidacja buildu.",
+    accentColor: "indigo",
+    featured: false,
+    tags: ["Agentic AI", "Antigravity", "Share Module", "Social Media", "TypeScript", "DziennikBudowy"],
+    pullQuote: "Skuteczna praca z agentem w repozytorium to nie bezmyślne akceptowanie sugerowanych zmian, ale precyzyjna orkiestracja: od analizy typów po automatyczny test kompilacji.",
+    keyTakeaways: [
+      "Zanim agent napisze pierwszą linię kodu, musi wykonać rozpoznanie struktury (Krok 1) i przedstawić plan do akceptacji.",
+      "Gotowość social media wymaga nie tylko samych przycisków, ale przygotowania sformatowanego tekstu z hashtagami do skopiowania jednym kliknięciem.",
+      "Modal udostępniania w Newsroomie pozwala na błyskawiczne dzielenie się krótkimi doniesieniami bez opuszczania osi czasu.",
+      "Automatyczna kontrola źródeł (link checker) eliminuje ryzyko odsyłania czytelników do stron z błędem 404."
+    ],
+    shareText: "Jak wygląda realna praca z agentem AI w repozytorium? Przeczytaj najnowsze studium przypadku: zobacz, jak asystent Antigravity przeanalizował kod bloga, dodał moduł udostępniania w social media i automatycznie naprawił uszkodzone odnośniki w bazie newsów.",
+    hashtags: ["AgenticAI", "Antigravity", "TypeScript", "React", "DziennikBudowy"],
+    sections: [
+      {
+        type: "heading",
+        level: 2,
+        text: "Krok 1: Rozpoznanie przed działaniem (Zero Zgadywania)",
+        id: "rozpoznanie-przed-dzialaniem"
+      },
+      {
+        type: "paragraph",
+        text: "Najczęstszym błędem podczas korzystania z modeli AI w programowaniu jest przechodzenie od razu do generowania kodu na podstawie ogólnego promptu. W repozytorium 'AI w praktyce' obowiązuje żelazna zasada: najpierw dokładna inspekcja istniejącej architektury, a dopiero potem planowanie i modyfikacja."
+      },
+      {
+        type: "paragraph",
+        text: "W pierwszej fazie prac agent Antigravity zbadał strukturę projektu: zidentyfikował interfejs Article w src/types/article.ts, przeanalizował tablicę artykułów w src/data/articles.ts, sprawdził obsługę meta tagów Open Graph w ArticlePage.tsx oraz zweryfikował istniejące zależności w package.json (w tym dostępność biblioteki lucide-react)."
+      },
+      {
+        type: "image",
+        src: "images/flow/codex-agent.jpeg",
+        alt: "Wektorowa wizualizacja agenta AI analizującego drzewo kodu repozytorium",
+        caption: "Ilustracja 1: Agent AI (Codex) wykonujący automatyczną analizę struktury kodu i zależności w repozytorium."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Krok 2: Rozszerzenie modelu i danych (Strict TypeScript)",
+        id: "rozszerzenie-modelu"
+      },
+      {
+        type: "paragraph",
+        text: "Kolejnym etapem było bezpieczne rozszerzenie modelu danych bez łamania wstecznej kompatybilności. Interfejs Article otrzymał dwa opcjonalne pola: shareText (dedykowany tekst pod social media) oraz hashtags (lista słów kluczowych bez znaków #)."
+      },
+      {
+        type: "bulletList",
+        items: [
+          "Wszystkie 9 istniejących artykułów w bazie otrzymało unikalne, naturalnie napisane opisy social media skrojone pod klikalność na Facebooku i LinkedInie.",
+          "Dla każdego posta wygenerowano 3-5 trafnych, specyficznych hashtagów branżowych.",
+          "Zaimplementowano bezpieczny mechanizm fallbacku: jeśli wpis nie posiada własnego shareText, system automatycznie buduje treść na bazie tytułu, opisu i domyślnych hashtagów bloga."
+        ]
+      },
+      {
+        type: "image",
+        src: "images/flow/code-diff.jpeg",
+        alt: "Wizualizacja edytora diff kodu z podświetleniami modyfikacji typów w TypeScript",
+        caption: "Ilustracja 2: Kontrola różnic kodu (diff) podczas bezpiecznego dodawania pól shareText i hashtags."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Krok 3: Budowa modułu ShareButtons i ShareModal",
+        id: "budowa-modulu-share"
+      },
+      {
+        type: "paragraph",
+        text: "Projekt interfejsu musiał realizować rygorystyczne zasady UX: najważniejszym i najbardziej widocznym elementem jest przycisk 'Kopiuj tekst posta'. Pozwala on użytkownikowi za pomocą jednego kliknięcia przenieść gotowy, sformatowany wpis wraz z hashtagami i linkiem do schowka."
+      },
+      {
+        type: "code",
+        language: "typescript",
+        code: `// Przykład formatowania tekstu trafiającego do schowka użytkownika:
+const formattedHashtags = activeHashtags
+  .map((tag) => (tag.startsWith("#") ? tag : \`#\${tag}\`))
+  .join(" ");
+
+const textToCopy = \`\${activeShareText}\\n\\n\${title}\\n\${url}\\n\\n\${formattedHashtags}\`;`
+      },
+      {
+        type: "paragraph",
+        text: "Równolegle stworzono komponent modalny <ShareModal />, dedykowany dla sekcji Newsroom. Po kliknięciu przycisku 'Udostępnij' na dowolnej karcie newsa z dziennego briefingu lub dashboardu trendów, na ekranie pojawia się elegancki modal z podglądem treści, bezpośrednim linkiem oraz przyciskami udostępniania w social media."
+      },
+      {
+        type: "image",
+        src: "images/flow/social-cards.jpeg",
+        alt: "Karty podglądu społecznościowego w generowanym module ShareButtons",
+        caption: "Ilustracja 3: Prezentacja generowania gotowych podglądów social media oraz przycisków udostępniania."
+      },
+      {
+        type: "image",
+        src: "images/flow/share-node.jpeg",
+        alt: "Wektorowa wizualizacja węzła sieci dystrybucji treści w social media",
+        caption: "Ilustracja 4: Przesyłanie treści z modułu ShareModal do zewnętrznych serwisów (Facebook i LinkedIn)."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Krok 4: Weryfikacja i eliminacja błędów 404 w źródłach",
+        id: "eliminacja-bledow-404"
+      },
+      {
+        type: "paragraph",
+        text: "Drugim kluczowym zadaniem była inspekcja zewnętrznych odnośników źródłowych. W automatycznie generowanych briefingach część ścieżek głębokich ulegała dezaktualizacji lub zwracała błąd HTTP 404 po stronie zewnętrznych serwisów."
+      },
+      {
+        type: "paragraph",
+        text: "Agent stworzył i uruchomił autonomiczny skrypt weryfikujący adresy URL. Wykryte uszkodzone linki głębokie (np. soda.org.pl, pw.edu.pl, blogs.microsoft.com) zostały w locie zsanityzowane w module src/data/newsFeed.ts i przekierowane na sprawne, oficjalne strony główne domen zwracające kod HTTP 200 OK."
+      },
+      {
+        type: "image",
+        src: "images/flow/gear-pipeline.jpeg",
+        alt: "Wektorowy schemat automatycznego skanera odnośników w pipeline",
+        caption: "Ilustracja 5: Automatyczny audyt domen źródłowych zapobiegający błędom 404 w bazie materiałów."
+      },
+      {
+        type: "quote",
+        text: "Żaden link w profesjonalnym serwisie redakcyjnym nie może prowadzić czytelnika do ślepej uliczki. Automatyczna weryfikacja i czyszczenie odnośników to fundament wiarygodności."
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: "Krok 5: Rygorystyczna walidacja przed wypuszczeniem",
+        id: "rygorystyczna-walidacja"
+      },
+      {
+        type: "paragraph",
+        text: "Każda sesja deweloperska kończy się bezwzględną walidacją automatyczną:"
+      },
+      {
+        type: "numberedList",
+        items: [
+          "Uruchomienie npm run lint (tsc --noEmit) — potwierdziło brak jakichkolwiek błędów w drzewie typów TypeScript.",
+          "Uruchomienie npm run build — zweryfikowało bezbłędne pakowanie aplikacji klienckiej Vite, serwera Express oraz wygenerowanie statycznych stron SSG i grafik Social Open Graph dla artykułów oraz newsów.",
+          "Wszystkie zmodyfikowane pliki zostały dokładnie udokumentowane w changelogu i instrukcji dla agentów."
+        ]
+      },
+      {
+        type: "image",
+        src: "images/flow/ten-pillars.jpeg",
+        alt: "Kolumny jakości oprogramowania reprezentujące testy lintera i kompilatora",
+        caption: "Ilustracja 6: Weryfikacja jakości (Quality Gates) z wykorzystaniem kompilatora TypeScript i generatora SSG."
+      }
+    ]
   }
 ];

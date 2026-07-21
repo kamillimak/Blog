@@ -25,4 +25,4 @@ Stwórz szablon raportu: 10 ról, 20 zadań, poziom automatyzowalności, ryzyko 
 
 - [Associated Press: economists warn on AI economic impact](https://apnews.com/article/783469467e0df1463df44518f33295ee)
 - [OECD AI Policy Observatory](https://oecd.ai/)
-- [National Academies: AI and the future of work](https://www.nationalacademies.org/our-work/artificial-intelligence-and-the-future-of-work)
+- [National Academies: AI and the future of work](https://www.nationalacademies.org/)

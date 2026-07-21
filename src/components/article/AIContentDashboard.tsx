@@ -1,6 +1,7 @@
-import React from "react";
-import { AlertTriangle, ArrowRight, Coins, ExternalLink, Sparkles } from "lucide-react";
-import { TOP_THREE_BRIEFING, type UnifiedNewsKind } from "../../data/newsFeed";
+import React, { useState } from "react";
+import { AlertTriangle, ArrowRight, Coins, ExternalLink, Share2, Sparkles } from "lucide-react";
+import { TOP_THREE_BRIEFING, type UnifiedNewsItem, type UnifiedNewsKind } from "../../data/newsFeed";
+import { ShareModal } from "./ShareModal";
 
 interface DashboardCategory {
   id: UnifiedNewsKind;
@@ -10,6 +11,7 @@ interface DashboardCategory {
   iconBg: string;
   accentColor: string;
   badgeColor: string;
+  items?: UnifiedNewsItem[];
 }
 
 const categoryStyles: DashboardCategory[] = [
@@ -85,38 +87,7 @@ export function AIContentDashboard() {
 
               <div className="space-y-6">
                 {category.items.map((item, itemIndex) => (
-                  <div
-                    key={item.id}
-                    id={category.id === "top3-news" ? `trend-news-${item.id}` : undefined}
-                    className="group/item border-b border-brand-border/60 pb-5 last:border-b-0 last:pb-0"
-                  >
-                    <div className="flex gap-4">
-                      <span className={`h-fit shrink-0 border px-1.5 py-0.5 font-mono text-xs font-black ${category.badgeColor}`}>
-                        {String(itemIndex + 1).padStart(2, "0")}
-                      </span>
-                      <div>
-                        <h4 className="mb-1.5 text-xs font-extrabold uppercase leading-snug tracking-tight text-brand-text transition-colors group-hover/item:text-orange-500 sm:text-sm">
-                          {item.title}
-                        </h4>
-                        <p className="font-sans text-xs leading-relaxed text-brand-muted">{item.summary}</p>
-                        {item.sourceUrl ? (
-                          <a
-                            href={item.sourceUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-brand-text hover:text-orange-500"
-                          >
-                            {item.sourceLabel}
-                            <ExternalLink size={10} />
-                          </a>
-                        ) : (
-                          <span className="mt-2 inline-flex text-[10px] font-bold uppercase tracking-wider text-brand-muted">
-                            {item.sourceLabel}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  <DashboardItem key={item.id} item={item} itemIndex={itemIndex} category={category} />
                 ))}
               </div>
             </div>
@@ -129,5 +100,73 @@ export function AIContentDashboard() {
         ))}
       </div>
     </section>
+  );
+}
+
+interface DashboardItemProps {
+  key?: React.Key;
+  item: UnifiedNewsItem;
+  itemIndex: number;
+  category: DashboardCategory;
+}
+
+function DashboardItem({ item, itemIndex, category }: DashboardItemProps) {
+  const [isShareOpen, setIsShareOpen] = useState(false);
+  const shareUrl = `${window.location.origin}${window.location.pathname}#news-feed-${item.id}`;
+
+  return (
+    <>
+      <div
+        id={category.id === "top3-news" ? `trend-news-${item.id}` : undefined}
+        className="group/item border-b border-brand-border/60 pb-5 last:border-b-0 last:pb-0"
+      >
+        <div className="flex gap-4">
+          <span className={`h-fit shrink-0 border px-1.5 py-0.5 font-mono text-xs font-black ${category.badgeColor}`}>
+            {String(itemIndex + 1).padStart(2, "0")}
+          </span>
+          <div className="flex-grow">
+            <h4 className="mb-1.5 text-xs font-extrabold uppercase leading-snug tracking-tight text-brand-text transition-colors group-hover/item:text-orange-500 sm:text-sm">
+              {item.title}
+            </h4>
+            <p className="font-sans text-xs leading-relaxed text-brand-muted">{item.summary}</p>
+            <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2">
+              {item.sourceUrl ? (
+                <a
+                  href={item.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-brand-text hover:text-orange-500"
+                >
+                  {item.sourceLabel}
+                  <ExternalLink size={10} />
+                </a>
+              ) : (
+                <span className="inline-flex text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+                  {item.sourceLabel}
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={() => setIsShareOpen(true)}
+                className="inline-flex items-center gap-1 border border-brand-border/80 bg-brand-featured-bg px-2 py-1 text-[9px] font-black uppercase tracking-wider text-brand-text hover:border-brand-text hover:bg-brand-text hover:text-brand-bg transition-colors cursor-pointer"
+                title="Udostępnij materiał w social media"
+              >
+                <Share2 size={10} className="text-orange-500" />
+                <span>Udostępnij</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        title={item.title}
+        summary={item.summary}
+        url={shareUrl}
+        categoryLabel={category.title}
+      />
+    </>
   );
 }

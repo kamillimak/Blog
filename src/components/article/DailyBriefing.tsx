@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import type { MouseEvent } from "react";
-import { AlertTriangle, BriefcaseBusiness, ExternalLink, Globe2, Newspaper, Radio, Sparkles } from "lucide-react";
+import { AlertTriangle, BriefcaseBusiness, ExternalLink, Globe2, Newspaper, Radio, Share2, Sparkles } from "lucide-react";
 import { getLiveFeedItems, UNIFIED_NEWS_FEED, type UnifiedNewsItem, type UnifiedNewsKind } from "../../data/newsFeed";
 import { formatPolishDate } from "../../utils/article";
 import { shouldReduceMotion } from "../../utils/motion";
+import { ShareModal } from "./ShareModal";
 
 type FeedFilter = "all" | UnifiedNewsKind;
 
@@ -90,13 +91,69 @@ function LiveFeed({ items }: { items: UnifiedNewsItem[] }) {
 }
 
 function NewsCard({ item, featured, index }: { item: UnifiedNewsItem; featured: boolean; index: number }) {
+  const [isShareOpen, setIsShareOpen] = useState(false);
   const styles = kindStyles[item.kind];
   const Icon = styles.icon;
   const sourceUrl = isValidSourceUrl(item.sourceUrl) ? item.sourceUrl : "";
+  const shareUrl = `${window.location.origin}${window.location.pathname}#news-feed-${item.id}`;
+
   const handleVideoEnter = (event: MouseEvent<HTMLElement>) => { if (shouldReduceMotion()) return; const video = event.currentTarget.querySelector("video"); if (video) void video.play(); };
   const handleVideoLeave = (event: MouseEvent<HTMLElement>) => { const video = event.currentTarget.querySelector("video"); if (video) { video.pause(); video.currentTime = 0; } };
-  return <article id={`news-feed-${item.id}`} onMouseEnter={handleVideoEnter} onMouseLeave={handleVideoLeave} className={`group grid overflow-hidden border border-brand-border bg-brand-bg transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-12 ${styles.border}`}>
-    <div className={`${featured ? "lg:col-span-5" : "lg:col-span-4"} relative min-h-64 overflow-hidden bg-brand-text`}><video src={assetUrl(item.video)} className="absolute inset-0 h-full w-full object-cover opacity-85 transition-transform duration-500 group-hover:scale-105" muted loop playsInline preload="metadata" aria-hidden="true" /><div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" /><span className={`absolute left-4 top-4 inline-flex items-center gap-1.5 border px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ${styles.badge}`}><Icon size={12} />{item.label}</span><span className="absolute bottom-4 left-4 border border-white/25 bg-black/35 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white/85 backdrop-blur">News {String(index + 1).padStart(2, "0")}</span></div>
-    <div className={`${featured ? "lg:col-span-7" : "lg:col-span-8"} flex flex-col justify-between p-5 sm:p-7`}><div><div className="mb-4 flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-wider"><time dateTime={item.publishedAt} className={`font-black ${styles.date}`}>{formatPolishDate(item.publishedAt)}</time><span className="text-brand-muted">{item.groupLabel}</span></div><h3 className="text-xl font-extrabold uppercase leading-tight tracking-tight text-brand-text transition-colors group-hover:text-orange-600 sm:text-2xl">{item.title}</h3><p className="mt-4 text-sm leading-relaxed text-brand-muted sm:text-base">{item.summary}</p></div><div className={`mt-6 flex flex-wrap items-center gap-3 border-t-2 pt-4 ${styles.divider}`}>{sourceUrl ? <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex max-w-full items-center gap-2 text-[10px] font-black uppercase tracking-widest text-brand-text transition-colors hover:text-orange-600"><span className="min-w-0 break-words">Źródło: {item.sourceLabel || "materiał źródłowy"}</span><ExternalLink className="h-4 w-4 shrink-0 sm:h-3 sm:w-3" /></a> : <span className="text-[10px] font-black uppercase tracking-widest text-brand-muted">Źródło: {item.sourceLabel || "dostęp ograniczony"}</span>}</div></div>
-  </article>;
+
+  return (
+    <>
+      <article id={`news-feed-${item.id}`} onMouseEnter={handleVideoEnter} onMouseLeave={handleVideoLeave} className={`group grid overflow-hidden border border-brand-border bg-brand-bg transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-xl lg:grid-cols-12 ${styles.border}`}>
+        <div className={`${featured ? "lg:col-span-5" : "lg:col-span-4"} relative min-h-64 overflow-hidden bg-brand-text`}>
+          <video src={assetUrl(item.video)} className="absolute inset-0 h-full w-full object-cover opacity-85 transition-transform duration-500 group-hover:scale-105" muted loop playsInline preload="metadata" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+          <span className={`absolute left-4 top-4 inline-flex items-center gap-1.5 border px-3 py-1.5 text-[10px] font-black uppercase tracking-widest ${styles.badge}`}>
+            <Icon size={12} />{item.label}
+          </span>
+          <span className="absolute bottom-4 left-4 border border-white/25 bg-black/35 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white/85 backdrop-blur">
+            News {String(index + 1).padStart(2, "0")}
+          </span>
+        </div>
+        <div className={`${featured ? "lg:col-span-7" : "lg:col-span-8"} flex flex-col justify-between p-5 sm:p-7`}>
+          <div>
+            <div className="mb-4 flex flex-wrap items-center gap-3 text-[10px] font-mono uppercase tracking-wider">
+              <time dateTime={item.publishedAt} className={`font-black ${styles.date}`}>{formatPolishDate(item.publishedAt)}</time>
+              <span className="text-brand-muted">{item.groupLabel}</span>
+            </div>
+            <h3 className="text-xl font-extrabold uppercase leading-tight tracking-tight text-brand-text transition-colors group-hover:text-orange-600 sm:text-2xl">{item.title}</h3>
+            <p className="mt-4 text-sm leading-relaxed text-brand-muted sm:text-base">{item.summary}</p>
+          </div>
+          <div className={`mt-6 flex flex-wrap items-center justify-between gap-3 border-t-2 pt-4 ${styles.divider}`}>
+            {sourceUrl ? (
+              <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex max-w-[70%] items-center gap-2 text-[10px] font-black uppercase tracking-widest text-brand-text transition-colors hover:text-orange-600">
+                <span className="min-w-0 break-words">Źródło: {item.sourceLabel || "materiał źródłowy"}</span>
+                <ExternalLink className="h-4 w-4 shrink-0 sm:h-3 sm:w-3" />
+              </a>
+            ) : (
+              <span className="text-[10px] font-black uppercase tracking-widest text-brand-muted">
+                Źródło: {item.sourceLabel || "dostęp ograniczony"}
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsShareOpen(true)}
+              className="inline-flex items-center gap-1.5 border border-brand-border bg-brand-featured-bg px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-brand-text transition-colors hover:border-brand-text hover:bg-brand-text hover:text-brand-bg cursor-pointer"
+              title="Udostępnij ten news w social media"
+            >
+              <Share2 size={12} className="text-orange-500" />
+              <span>Udostępnij</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        title={item.title}
+        summary={item.summary}
+        url={shareUrl}
+        categoryLabel={item.label}
+      />
+    </>
+  );
 }

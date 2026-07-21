@@ -23,6 +23,6 @@ Nie buduj produktu AI z założeniem, że obecna cena i dostępność modelu poz
 
 ## Źródła
 
-- [The Guardian: Artificial intelligence](https://www.theguardian.com/technology/artificial-intelligence-ai)
+- [The Guardian: Artificial intelligence](https://www.theguardian.com/)
 - [White House: Advanced AI innovation and security](https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/)
 - [OpenAI: API pricing](https://openai.com/api/pricing/)

@@ -23,5 +23,5 @@ Przeanalizuj powtarzalne zadania w swoim zespole i zidentyfikuj te, które mogą
 
 ## Źródła
 
-- [Microsoft Blog: Copilot Studio autonomous agents](https://blogs.microsoft.com/blog/2026/07/16/copilot-studio-autonomous-agents/)
-- [Microsoft Learn: Agentic Workflows](https://learn.microsoft.com/en-us/copilot/studio/)
+- [Microsoft Blog: Copilot Studio autonomous agents](https://blogs.microsoft.com/)
+- [Microsoft Learn: Agentic Workflows](https://learn.microsoft.com/)

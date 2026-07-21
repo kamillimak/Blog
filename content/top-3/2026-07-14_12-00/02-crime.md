@@ -24,4 +24,4 @@ Nigdy nie podawaj danych wrażliwych ani nie autoryzuj transakcji podczas rozmó
 ## Źródła
 
 - [CSIRT KNF Ostrzeżenia](https://www.knf.gov.pl/dla_konsumenta/ostrzezenia_KNF)
-- [Związek Banków Polskich: Bezpieczeństwo](https://zbp.pl/dla-klientow/bezpieczny-bank)
+- [Związek Banków Polskich: Bezpieczeństwo](https://zbp.pl/)

@@ -25,5 +25,5 @@ Dodaj do testów trzy klasy prób: nieszkodliwe polecenia graniczne, niedozwolon
 ## Źródła
 
 - [Anthropic — szczegóły zabezpieczeń i ram jailbreaków](https://www.anthropic.com/news/fable-safeguards-jailbreak-framework)
-- [Anthropic — kontekst ponownego wdrożenia Fable 5](https://www.anthropic.com/news/redeploying-fable-5)
+- [Anthropic — kontekst ponownego wdrożenia Fable 5](https://www.anthropic.com/)
 

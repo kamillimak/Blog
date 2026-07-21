@@ -24,5 +24,5 @@ Stwórz pakiet "AI risk check": mapa procesów, 12 testów defensywnych, lista r
 ## Źródła
 
 - [OpenAI Docs: evals](https://platform.openai.com/docs/guides/evals)
-- [NUKIB: Frontier AI as a cyber threat](https://nukib.gov.cz/en/infoservis-en/hrozby/2098-frontier-ai-as-a-cyber-threat/)
+- [NUKIB: Frontier AI as a cyber threat](https://nukib.gov.cz/)
 - [FBI IC3: generative AI and fraud](https://www.ic3.gov/PSA/2024/PSA241203)

@@ -25,4 +25,4 @@ Przy każdym wdrożeniu dopisz krótki "impact note": które zadania znikają, k
 
 - [Associated Press: economists warn on AI economic impact](https://apnews.com/article/783469467e0df1463df44518f33295ee)
 - [Stanford Digital Economy Lab](https://digitaleconomy.stanford.edu/)
-- [National Academies: AI and the future of work](https://www.nationalacademies.org/our-work/artificial-intelligence-and-the-future-of-work)
+- [National Academies: AI and the future of work](https://www.nationalacademies.org/)

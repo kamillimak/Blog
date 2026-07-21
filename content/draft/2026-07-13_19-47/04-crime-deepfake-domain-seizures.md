@@ -25,4 +25,4 @@ Nie publikuj poradników "jak wykryć lub tworzyć deepfake" w formie operacyjne
 
 - [National Law Review: Deepfake site taken down by DOJ and DHS](https://natlawreview.com/article/deepfake-site-taken-down-doj-dhs)
 - [Congress.gov: TAKE IT DOWN Act](https://www.congress.gov/bill/119th-congress/senate-bill/146)
-- [FTC: impersonation and AI-enabled fraud guidance](https://www.ftc.gov/business-guidance/blog/2024/02/ftc-proposes-new-protections-combat-ai-impersonation)
+- [FTC: impersonation and AI-enabled fraud guidance](https://www.ftc.gov/)

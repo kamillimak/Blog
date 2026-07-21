@@ -25,4 +25,4 @@ Przed zakupem szkolenia lub "systemu zarabiania z AI" sprawdź: kto prowadzi, ja
 
 - [Associated Press: AI economic impact letter](https://apnews.com/article/783469467e0df1463df44518f33295ee)
 - [FTC: job scams](https://consumer.ftc.gov/articles/job-scams)
-- [FTC: business opportunity scams](https://consumer.ftc.gov/articles/business-opportunity-scams)
+- [FTC: business opportunity scams](https://consumer.ftc.gov/)

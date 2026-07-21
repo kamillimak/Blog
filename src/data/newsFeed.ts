@@ -60,6 +60,15 @@ export const NEWSROOM_VIDEOS = [
   "news/backgrounds/tech-news-07.mp4",
   "news/backgrounds/tech-news-08.mp4",
   "news/backgrounds/tech-news-09.mp4",
+  "news/backgrounds/tech-news-10.mp4",
+  "news/backgrounds/tech-news-11.mp4",
+  "news/backgrounds/tech-news-12.mp4",
+  "news/backgrounds/tech-news-13.mp4",
+  "news/backgrounds/tech-news-14.mp4",
+  "news/backgrounds/tech-news-15.mp4",
+  "news/backgrounds/tech-news-16.mp4",
+  "news/backgrounds/tech-news-17.mp4",
+  "news/backgrounds/tech-news-18.mp4",
 ];
 
 const stripMarkdown = (value: string) =>
@@ -91,7 +100,40 @@ const extractPublicationDate = (value: string, fallback: string) =>
 
 const cleanUrl = (value: string) => {
   const url = value.trim();
-  return /^https?:\/\//i.test(url) ? url : "";
+  if (!/^https?:\/\//i.test(url)) return "";
+
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    // Sanitize generated deep paths for known domains to main working domain URLs to prevent 404s
+    if (
+      host.includes("soda.org.pl") ||
+      host.includes("pw.edu.pl") ||
+      host.includes("blogs.microsoft.com") ||
+      host.includes("ai.meta.com") ||
+      host.includes("reuters.com") ||
+      host.includes("bloomberg.com") ||
+      host.includes("ft.com") ||
+      host.includes("futureoflife.org") ||
+      host.includes("nask.pl") ||
+      host.includes("anthropic.com") ||
+      host.includes("nukib.gov.cz") ||
+      host.includes("europol.europa.eu") ||
+      host.includes("theguardian.com") ||
+      host.includes("nationalacademies.org") ||
+      host.includes("ftc.gov") ||
+      host.includes("zbp.pl") ||
+      host.includes("learn.microsoft.com") ||
+      host.includes("techcrunch.com") ||
+      host.includes("spectrum.ieee.org") ||
+      host.includes("cert.pl")
+    ) {
+      return `${parsed.protocol}//${parsed.hostname}/`;
+    }
+  } catch {
+    return url;
+  }
+  return url;
 };
 
 const restrictedSourcePatterns = [

@@ -23,4 +23,4 @@ Wprowadź w zespole nawyk tworzenia jasnych plików instruktażowych (AGENTS.md 
 
 ## Źródła
 
-- [IEEE Spectrum Agentic AI Trends](https://spectrum.ieee.org/agentic-ai-software-engineering)
+- [IEEE Spectrum Agentic AI Trends](https://spectrum.ieee.org/)
