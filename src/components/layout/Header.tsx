@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Github, Compass, Layers, Mail, Moon, Sun, BriefcaseBusiness } from "lucide-react";
+import { Menu, X, Github, Compass, Layers, Mail, Moon, Sun, BriefcaseBusiness, Sparkles } from "lucide-react";
 import { KMSygnet } from "./KMSygnet";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
+  const isNewLayout = location.pathname === "/new-layout";
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("blog-theme");
@@ -34,11 +35,30 @@ export function Header() {
 
   const navLinks = [
     { to: "/", label: "Strona główna", icon: Compass },
+    { to: "/new-layout", label: "Nowy Layout 🚀", icon: Sparkles },
     { to: "/articles", label: "Wszystkie artykuły", icon: Layers },
   ];
 
   return (
-    <header id="app-header" className="sticky top-0 z-50 w-full bg-brand-bg/95 backdrop-blur-md border-b border-brand-border transition-colors">
+    <header 
+      id="app-header" 
+      className={`sticky top-0 z-50 w-full backdrop-blur-md border-b transition-colors ${
+        isNewLayout 
+          ? "bg-black/90 border-zinc-800 text-white" 
+          : "bg-brand-bg/95 border-brand-border text-brand-text"
+      }`}
+      style={
+        isNewLayout
+          ? {
+              ["--color-brand-bg" as any]: "#000000",
+              ["--color-brand-card" as any]: "#0B0B0B",
+              ["--color-brand-border" as any]: "#1F1F1F",
+              ["--color-brand-text" as any]: "#FFFFFF",
+              ["--color-brand-muted" as any]: "#8E8E93",
+            }
+          : undefined
+      }
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           

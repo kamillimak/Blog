@@ -8,6 +8,7 @@ import { ArticlesPage } from "./pages/ArticlesPage";
 import { ArticlePage } from "./pages/ArticlePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
+import { NewHomePage } from "./pages/NewHomePage";
 import { ConsentBanner } from "./components/analytics/ConsentBanner";
 import { GoogleAnalytics } from "./components/analytics/GoogleAnalytics";
 
@@ -42,6 +43,7 @@ export default function App() {
           <div id="main-content" tabIndex={-1}>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/new-layout" element={<NewHomePage />} />
               <Route path="/articles" element={<ArticlesPage />} />
               <Route path="/articles/:period/:publication" element={<ArticlePage />} />
               <Route path="/articles/:slug" element={<ArticlePage />} />
