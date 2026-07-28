@@ -303,12 +303,7 @@ export const DAILY_TECH_BRIEFING = DAILY_TECH_BRIEFINGS[0];
 export const TOP_THREE_BRIEFINGS = parseTopThreeBriefings();
 export const TOP_THREE_BRIEFING = TOP_THREE_BRIEFINGS[0] || { runId: "", date: "", status: "DRAFT", items: [] };
 
-// Filter UNIFIED_NEWS_FEED to contain news only from the last 3 days (2026-07-25 to 2026-07-27)
-// and exactly 1 news item per category (kind) for each of these days.
-const allowedDates = new Set(["2026-07-27", "2026-07-26", "2026-07-25"]);
-
-
-
+// Restructure feed to get 2 newest news per category (kind)
 const allParsedItems: UnifiedNewsItem[] = [
   ...DAILY_TECH_BRIEFINGS.flatMap((briefing) => briefing.items),
   ...TOP_THREE_BRIEFINGS.flatMap((briefing) => briefing.items),
@@ -319,37 +314,37 @@ const sortedAllItems = [...allParsedItems].sort((left, right) => {
   return dateOrder || right.id.localeCompare(left.id);
 });
 
+// Group and take maximum 2 newest per category
+const kinds: UnifiedNewsKind[] = ["tech-pl", "tech-world", "top3-news", "top3-crime", "top3-business"];
 const filteredItems: UnifiedNewsItem[] = [];
-const seenKeys = new Set<string>(); // "YYYY-MM-DD:kind"
 
-for (const item of sortedAllItems) {
-  if (allowedDates.has(item.publishedAt)) {
-    const key = `${item.publishedAt}:${item.kind}`;
-    if (!seenKeys.has(key)) {
-      seenKeys.add(key);
-      filteredItems.push(item);
-    }
-  }
+for (const kind of kinds) {
+  const itemsOfKind = sortedAllItems.filter((item) => item.kind === kind).slice(0, 2);
+  filteredItems.push(...itemsOfKind);
 }
 
-export const UNIFIED_NEWS_FEED: UnifiedNewsItem[] = filteredItems.sort((left, right) => {
-  const dateOrder = right.publishedAt.localeCompare(left.publishedAt);
-  return dateOrder || right.id.localeCompare(left.id);
-});
+// Final sort and assign sequential video backgrounds to rotate without repeating
+export const UNIFIED_NEWS_FEED: UnifiedNewsItem[] = filteredItems
+  .sort((left, right) => {
+    const dateOrder = right.publishedAt.localeCompare(left.publishedAt);
+    return dateOrder || right.id.localeCompare(left.id);
+  })
+  .map((item, index) => ({
+    ...item,
+    video: NEWSROOM_VIDEOS[index % NEWSROOM_VIDEOS.length],
+  }));
 
 const dateAtMidnight = (value: string) => new Date(`${value}T00:00:00`);
 
 export const getLiveFeedItems = (today?: Date): UnifiedNewsItem[] => {
   const refDate = today || (UNIFIED_NEWS_FEED.length > 0 ? dateAtMidnight(UNIFIED_NEWS_FEED[0].publishedAt) : new Date());
   const endOfToday = new Date(refDate.getFullYear(), refDate.getMonth(), refDate.getDate());
-  const cutoff = new Date(endOfToday);
-  cutoff.setDate(cutoff.getDate() - 3);
 
   const newestByKind = new Map<UnifiedNewsKind, UnifiedNewsItem>();
 
   UNIFIED_NEWS_FEED.forEach((item) => {
     const publishedAt = dateAtMidnight(item.publishedAt);
-    if (publishedAt < cutoff || publishedAt > endOfToday || newestByKind.has(item.kind)) return;
+    if (publishedAt > endOfToday || newestByKind.has(item.kind)) return;
 
     newestByKind.set(item.kind, item);
   });
