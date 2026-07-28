@@ -27,7 +27,12 @@ const allowedOrigins = new Set([
 app.use(express.json({ limit: "16kb" }));
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.has(origin)) {
+    if (
+      !origin ||
+      allowedOrigins.has(origin) ||
+      origin.startsWith("http://localhost:") ||
+      origin.startsWith("http://127.0.0.1:")
+    ) {
       callback(null, true);
       return;
     }
