@@ -310,8 +310,10 @@ const allParsedItems: UnifiedNewsItem[] = [
 ];
 
 const sortedAllItems = [...allParsedItems].sort((left, right) => {
-  const dateOrder = right.publishedAt.localeCompare(left.publishedAt);
-  return dateOrder || right.id.localeCompare(left.id);
+  if (right.publishedAt !== left.publishedAt) {
+    return right.publishedAt > left.publishedAt ? 1 : -1;
+  }
+  return left.id.localeCompare(right.id);
 });
 
 // Group and take maximum 2 newest per category
@@ -326,28 +328,41 @@ for (const kind of kinds) {
 // Final sort and assign sequential video backgrounds to rotate without repeating
 export const UNIFIED_NEWS_FEED: UnifiedNewsItem[] = filteredItems
   .sort((left, right) => {
-    const dateOrder = right.publishedAt.localeCompare(left.publishedAt);
-    return dateOrder || right.id.localeCompare(left.id);
+    if (right.publishedAt !== left.publishedAt) {
+      return right.publishedAt > left.publishedAt ? 1 : -1;
+    }
+    // Same day: sort by ID ascending to preserve original order of news (News 01 first)
+    return left.id.localeCompare(right.id);
   })
   .map((item, index) => ({
     ...item,
     video: NEWSROOM_VIDEOS[index % NEWSROOM_VIDEOS.length],
   }));
 
-const dateAtMidnight = (value: string) => new Date(`${value}T00:00:00`);
+const formatISODateOnly = (date: Date) => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+};
 
 export const getLiveFeedItems = (today?: Date): UnifiedNewsItem[] => {
-  const refDate = today || (UNIFIED_NEWS_FEED.length > 0 ? dateAtMidnight(UNIFIED_NEWS_FEED[0].publishedAt) : new Date());
-  const endOfToday = new Date(refDate.getFullYear(), refDate.getMonth(), refDate.getDate());
+  const todayStr = today
+    ? formatISODateOnly(today)
+    : (UNIFIED_NEWS_FEED.length > 0 ? UNIFIED_NEWS_FEED[0].publishedAt : formatISODateOnly(new Date()));
 
   const newestByKind = new Map<UnifiedNewsKind, UnifiedNewsItem>();
 
   UNIFIED_NEWS_FEED.forEach((item) => {
-    const publishedAt = dateAtMidnight(item.publishedAt);
-    if (publishedAt > endOfToday || newestByKind.has(item.kind)) return;
+    if (item.publishedAt > todayStr || newestByKind.has(item.kind)) return;
 
     newestByKind.set(item.kind, item);
   });
 
-  return [...newestByKind.values()].sort((left, right) => right.publishedAt.localeCompare(left.publishedAt));
+  return [...newestByKind.values()].sort((left, right) => {
+    if (right.publishedAt !== left.publishedAt) {
+      return right.publishedAt > left.publishedAt ? 1 : -1;
+    }
+    return left.id.localeCompare(right.id);
+  });
 };

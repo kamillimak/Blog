@@ -106,11 +106,22 @@ export function formatPolishDate(dateStr: string): string {
     "stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca",
     "lipca", "sierpnia", "września", "października", "listopada", "grudnia"
   ];
-  const date = new Date(dateStr);
-  if (isNaN(date.getTime())) return dateStr;
-  const day = date.getDate();
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
-  return `${day} ${month} ${year}`;
+  // Parse YYYY-MM-DD format directly as string to prevent timezone day shifting
+  const match = dateStr.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  }
+  const year = parseInt(match[1], 10);
+  const monthIdx = parseInt(match[2], 10) - 1;
+  const day = parseInt(match[3], 10);
+  if (monthIdx >= 0 && monthIdx < 12) {
+    return `${day} ${months[monthIdx]} ${year}`;
+  }
+  return dateStr;
 }
 
