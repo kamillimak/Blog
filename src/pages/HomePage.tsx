@@ -1,11 +1,11 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Search, RotateCcw, Award, Clock, FileText, Settings, ArrowRight, BriefcaseBusiness, Mail, Newspaper, Users } from "lucide-react";
+import { Search, RotateCcw, Award, Clock, FileText, Settings, ArrowRight, BriefcaseBusiness, Mail, Newspaper, Users, Linkedin, Github, Sparkles, Star } from "lucide-react";
 import { ARTICLES } from "../data/articles";
 import { ArticleCard } from "../components/article/ArticleCard";
 import { getGlobalStats, filterArticles } from "../utils/article";
 import { DailyBriefing } from "../components/article/DailyBriefing";
-import { HeroSlider } from "../components/article/HeroSlider";
+import { CinematicHero } from "../components/article/CinematicHero";
 import { WebVitalsDashboard } from "../components/analytics/WebVitalsDashboard";
 
 export function HomePage() {
@@ -16,6 +16,11 @@ export function HomePage() {
 
   // Stats
   const stats = useMemo(() => getGlobalStats(ARTICLES), []);
+
+  // Hand-picked / Curated recommended articles
+  const curatedArticles = useMemo(() => {
+    return ARTICLES.filter((a) => a.featured || a.id === "1" || a.id === "2").slice(0, 3);
+  }, []);
 
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState("");
@@ -46,77 +51,8 @@ export function HomePage() {
   return (
     <div className="bg-brand-bg min-h-screen pb-20 font-sans text-brand-text">
       
-      {/* 1. HERO SECTION & INTRODUCTION */}
-      <section id="hero-section" className="bg-brand-bg border-b border-brand-border pt-10 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-10">
-            
-            {/* About author */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-6">
-                <span className="inline-block px-3 py-1 bg-brand-text text-brand-bg text-[10px] font-bold uppercase tracking-widest rounded-none mb-4">
-                  Blog technologiczny Kamila Mikołajczyka
-                </span>
-                <div className="flex items-center justify-between gap-4">
-                  <h1 className="text-[32px] sm:text-5xl lg:text-[64px] font-bold leading-[0.9] tracking-tighter text-brand-text uppercase min-w-0">
-                    Praktyczne podejście do AI
-                  </h1>
-                  <div className="lg:hidden shrink-0 h-20 w-20 sm:h-28 sm:w-28 rounded-full border border-brand-border bg-brand-featured-bg p-1.5 overflow-hidden">
-                    <img
-                      src={profileImage}
-                      alt="Kamil Mikołajczyk"
-                      width={112}
-                      height={112}
-                      decoding="async"
-                      className="h-full w-full rounded-full object-cover object-top grayscale-[15%]"
-                    />
-                  </div>
-                </div>
-                <p className="text-brand-muted text-base sm:text-lg leading-relaxed max-w-2xl">
-                  Blog o pracy z Codex, Trae, Claude i AI Studio: od codziennych newsów technologicznych, przez automatyzacje, po konkretne workflow dla osób, które chcą szybciej projektować, wdrażać i opowiadać o produktach AI.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                  <Link
-                    to="/articles"
-                    className="inline-flex items-center justify-center px-8 py-4 bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white text-xs font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer"
-                  >
-                    <span>Czytaj artykuły</span>
-                    <ArrowRight size={14} className="ml-2" />
-                  </Link>
-                  <a
-                    href="mailto:mikolajczykamil@gmail.com"
-                    className="inline-flex items-center justify-center px-8 py-4 border border-brand-text text-brand-text hover:bg-brand-text hover:text-brand-bg text-xs font-bold uppercase tracking-wider rounded-none transition-colors cursor-pointer"
-                  >
-                    <Mail size={14} className="mr-2" />
-                    <span>Kontakt</span>
-                  </a>
-                </div>
-                <p className="text-[10px] font-mono uppercase tracking-wider text-brand-muted">
-                  Autor: Kamil Mikołajczyk · Senior IT Project Manager · Product Owner · AI & Digital Transformation
-                </p>
-              </div>
-              <div className="hidden lg:block lg:col-span-5">
-                <div className="border border-brand-border bg-brand-featured-bg p-3 max-w-sm lg:max-w-none">
-                  <img
-                    src={profileImage}
-                    alt="Kamil Mikołajczyk"
-                    width={640}
-                    height={800}
-                    decoding="async"
-                    className="aspect-[4/5] w-full object-cover object-top grayscale-[15%]"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Featured content slider */}
-            <div className="w-full">
-              <HeroSlider />
-            </div>
-
-          </div>
-        </div>
-      </section>
+      {/* 1. CINEMATIC HERO SECTION */}
+      <CinematicHero />
 
       {/* AI News Section */}
       <DailyBriefing />
