@@ -1,4 +1,21 @@
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 User-agent: *
 Allow: /
 
 Sitemap: https://kamillimak.github.io/Blog/sitemap.xml
+Sitemap: https://kamillimak.github.io/Blog/llms.txt
+

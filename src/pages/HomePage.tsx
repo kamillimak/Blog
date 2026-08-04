@@ -7,6 +7,7 @@ import { getGlobalStats, filterArticles } from "../utils/article";
 import { DailyBriefing } from "../components/article/DailyBriefing";
 import { CinematicHero } from "../components/article/CinematicHero";
 import { WebVitalsDashboard } from "../components/analytics/WebVitalsDashboard";
+import { AIContentDashboard } from "../components/article/AIContentDashboard";
 
 export function HomePage() {
   // Set page title for SEO
@@ -14,8 +15,51 @@ export function HomePage() {
     document.title = "Blog technologiczny — Codex · Trae · Claude · AI Studio";
   }, []);
 
+  // Dynamic design switcher
+  const [concept, setConcept] = useState<"editorial" | "dashboard">(
+    (import.meta.env.VITE_CONCEPT as "editorial" | "dashboard") || "editorial"
+  );
+
   // Stats
   const stats = useMemo(() => getGlobalStats(ARTICLES), []);
+
+  const agentCards = useMemo(() => {
+    const isEditorial = concept === "editorial";
+    return [
+      {
+        step: "01",
+        tag: "01_studio",
+        title: "AI Studio",
+        desc: "Mapa i kontekst. Skanowanie całego repozytorium, analiza architektury, wykrywanie zależności i tworzenie globalnej strategii.",
+        color: isEditorial ? "text-brand-sage" : "text-sky-500",
+        glowColor: isEditorial ? "rgba(90, 90, 64, 0.06)" : "rgba(14, 165, 233, 0.12)"
+      },
+      {
+        step: "02",
+        tag: "02_claude",
+        title: "Claude",
+        desc: "Projekt architektury. Projektowanie struktur danych, ścisłe typowanie TypeScript, wybór bibliotek i planowanie refaktoryzacji.",
+        color: isEditorial ? "text-brand-sage" : "text-amber-500",
+        glowColor: isEditorial ? "rgba(90, 90, 64, 0.06)" : "rgba(245, 158, 11, 0.12)"
+      },
+      {
+        step: "03",
+        tag: "03_codex",
+        title: "Codex",
+        desc: "Praca w repozytorium. Autonomiczne generowanie modułów, łączenie plików, pisanie testów jednostkowych i linter-walidacja.",
+        color: isEditorial ? "text-brand-sage" : "text-indigo-500",
+        glowColor: isEditorial ? "rgba(90, 90, 64, 0.06)" : "rgba(99, 102, 241, 0.12)"
+      },
+      {
+        step: "04",
+        tag: "04_trae",
+        title: "Trae",
+        desc: "Wykończenie i UI. Szybkie, lokalne poprawki w edytorze, iterowanie stylów Tailwind CSS, obsługa zdarzeń i dopieszczanie mikro-detali.",
+        color: isEditorial ? "text-brand-sage" : "text-emerald-500",
+        glowColor: isEditorial ? "rgba(90, 90, 64, 0.06)" : "rgba(16, 185, 129, 0.12)"
+      }
+    ];
+  }, [concept]);
 
   // Hand-picked / Curated recommended articles
   const curatedArticles = useMemo(() => {
@@ -48,14 +92,24 @@ export function HomePage() {
 
   const profileImage = `${import.meta.env.BASE_URL}images/kamil-mikolajczyk.png`;
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    e.currentTarget.style.setProperty("--mouse-x", `${x}px`);
+    e.currentTarget.style.setProperty("--mouse-y", `${y}px`);
+  };
+
   return (
-    <div className="bg-brand-bg min-h-screen pb-20 font-sans text-brand-text">
+    <div className={`min-h-screen pb-20 font-sans transition-colors duration-500 ${
+      concept === "dashboard" ? "dashboard-concept bg-[#07080a] text-zinc-100 dark" : "bg-brand-bg text-brand-text"
+    }`}>
       
       {/* 1. CINEMATIC HERO SECTION */}
-      <CinematicHero />
+      <CinematicHero concept={concept} />
 
       {/* AI News Section */}
-      <DailyBriefing />
+      {concept === "editorial" ? <DailyBriefing /> : <AIContentDashboard />}
 
       {/* Audience Section */}
       <section id="audience-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
@@ -65,7 +119,7 @@ export function HomePage() {
               <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-muted uppercase block mb-3">
                 Dla kogo jest ten blog
               </span>
-              <h2 className="text-2xl sm:text-3xl font-sans font-extrabold tracking-tight uppercase text-brand-text">
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight uppercase text-brand-text">
                 Dla osób, które chcą rozumieć AI w praktyce, nie tylko w teorii
               </h2>
             </div>
@@ -106,74 +160,56 @@ export function HomePage() {
 
       {/* 3. SYNERGISTIC WORKFLOW SECTION */}
       <section id="workflow-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div className="bg-[#1A1A1A] rounded-none p-8 sm:p-12 border border-brand-border text-white relative overflow-hidden">
-          
-          <div className="max-w-3xl mb-12">
-            <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-sage uppercase block mb-3">
-              Koncepcja i synergia
-            </span>
-            <h2 className="text-3xl font-sans font-extrabold tracking-tight text-white uppercase mb-4">
-              Jeden proces, cztery wyspecjalizowane role
-            </h2>
-            <p className="text-zinc-400 text-sm sm:text-base leading-relaxed">
-              Nowoczesny twórca i orkiestrator AI nie polega na jednym asystencie. Skuteczność polega na rozdzielaniu zadań według mocnych stron poszczególnych modeli, tworząc zintegrowany łańcuch dostarczania kodu i aplikacji.
-            </p>
+        <div className="bg-brand-card border border-brand-border rounded-none overflow-hidden transition-all shadow-sm">
+          {/* Terminal Title Bar */}
+          <div className="flex items-center justify-between px-4 py-3 bg-brand-featured-bg border-b border-brand-border font-mono text-[10px] text-brand-muted">
+            <div className="flex gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 opacity-90"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 opacity-90"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 opacity-90"></span>
+            </div>
+            <span className="font-bold tracking-wider uppercase">agent_pipeline — zsh</span>
+            <span className="opacity-0 w-10"></span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            {/* Stage 1 */}
-            <div className="bg-black/50 border border-zinc-800 p-6 rounded-none hover:border-white transition-colors group">
-              <div className="w-9 h-9 bg-zinc-900 text-white border border-zinc-800 flex items-center justify-center rounded-none font-mono font-bold text-xs mb-4">
-                01
-              </div>
-              <h3 className="font-sans font-extrabold uppercase tracking-tight text-sm text-sky-400 mb-2">
-                AI Studio
-              </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                <strong>Mapa i kontekst.</strong> Skanowanie całego repozytorium, analiza architektury, wykrywanie zależności i tworzenie globalnej strategii.
+          <div className="p-8 sm:p-10 space-y-8">
+            <div className="max-w-3xl">
+              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-sage uppercase block mb-3">
+                Koncepcja i synergia
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-brand-text uppercase mb-4">
+                Jeden proces, cztery wyspecjalizowane role
+              </h2>
+              <p className="text-brand-muted text-sm leading-relaxed">
+                Nowoczesny twórca i orkiestrator AI nie polega na jednym asystencie. Skuteczność polega na rozdzielaniu zadań według mocnych stron poszczególnych modeli, tworząc zintegrowany łańcuch dostarczania kodu i aplikacji.
               </p>
             </div>
 
-            {/* Stage 2 */}
-            <div className="bg-black/50 border border-zinc-800 p-6 rounded-none hover:border-white transition-colors group">
-              <div className="w-9 h-9 bg-zinc-900 text-white border border-zinc-800 flex items-center justify-center rounded-none font-mono font-bold text-xs mb-4">
-                02
-              </div>
-              <h3 className="font-sans font-extrabold uppercase tracking-tight text-sm text-amber-400 mb-2">
-                Claude
-              </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                <strong>Projekt architektury.</strong> Projektowanie struktur danych, ścisłe typowanie TypeScript, wybór bibliotek i planowanie refaktoryzacji.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {agentCards.map((item) => (
+                <div 
+                  key={item.step} 
+                  onMouseMove={handleMouseMove}
+                  style={{ "--glow-color": item.glowColor } as React.CSSProperties}
+                  className="bg-brand-featured-bg border border-brand-border p-6 hover:border-brand-sage transition-all duration-300 flex flex-col justify-between group spotlight-card overflow-hidden hover:-translate-y-1.5 hover:shadow-md cursor-default"
+                >
+                  <div>
+                    <div className="w-8 h-8 bg-brand-bg text-brand-muted border border-brand-border flex items-center justify-center font-mono font-bold text-xs mb-4 group-hover:border-brand-text group-hover:text-brand-text transition-colors">
+                      {item.step}
+                    </div>
+                    <span className="font-mono text-[9px] text-brand-muted uppercase block tracking-widest mb-1.5">
+                      {item.tag}
+                    </span>
+                    <h3 className={`font-serif font-extrabold uppercase tracking-tight text-sm mb-3 ${item.color}`}>
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-brand-muted leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-
-            {/* Stage 3 */}
-            <div className="bg-black/50 border border-zinc-800 p-6 rounded-none hover:border-white transition-colors group">
-              <div className="w-9 h-9 bg-zinc-900 text-white border border-zinc-800 flex items-center justify-center rounded-none font-mono font-bold text-xs mb-4">
-                03
-              </div>
-              <h3 className="font-sans font-extrabold uppercase tracking-tight text-sm text-indigo-400 mb-2">
-                Codex
-              </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                <strong>Praca w repozytorium.</strong> Autonomiczne generowanie modułów, łączenie plików, pisanie testów jednostkowych i linter-walidacja.
-              </p>
-            </div>
-
-            {/* Stage 4 */}
-            <div className="bg-black/50 border border-zinc-800 p-6 rounded-none hover:border-white transition-colors group">
-              <div className="w-9 h-9 bg-zinc-900 text-white border border-zinc-800 flex items-center justify-center rounded-none font-mono font-bold text-xs mb-4">
-                04
-              </div>
-              <h3 className="font-sans font-extrabold uppercase tracking-tight text-sm text-emerald-400 mb-2">
-                Trae
-              </h3>
-              <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                <strong>Wykończenie i UI.</strong> Szybkie, lokalne poprawki w edytorze, iterowanie stylów Tailwind CSS, obsługa zdarzeń i dopieszczanie mikro-detali.
-              </p>
-            </div>
-
           </div>
         </div>
       </section>
@@ -183,7 +219,7 @@ export function HomePage() {
         
         <div className="border-b border-brand-border pb-5 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-sans font-extrabold tracking-tight uppercase text-brand-text">
+            <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight uppercase text-brand-text">
               Biblioteka artykułów
             </h2>
             <p className="text-brand-muted text-xs mt-1">
@@ -354,6 +390,65 @@ export function HomePage() {
 
       </section>
 
+      {/* Author Section - Combined Console/Magazine styling */}
+      <section id="author-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+        <div className="border-t border-brand-border pt-12">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
+            <div className="author-photo-frame shrink-0 shadow-lg shadow-black/25 relative group overflow-hidden">
+              <img src={profileImage} alt="Kamil Mikołajczyk" />
+              {concept === "dashboard" && <div className="scan-line" />}
+              {/* Editorial Labels Overlay (blog-preview-11 inspired) */}
+              <span className="absolute top-2 left-2 bg-black/75 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-wider text-white border border-white/10 select-none">
+                [PM/PO]
+              </span>
+              <span className="absolute top-2 right-2 bg-black/75 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-wider text-white border border-white/10 select-none">
+                [ORCHESTRATOR]
+              </span>
+              <span className="absolute bottom-2 left-2 bg-black/75 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-wider text-white border border-white/10 select-none">
+                [AI-NATIVE]
+              </span>
+              <span className="absolute bottom-2 right-2 bg-black/75 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-wider text-white border border-white/10 select-none">
+                [LOC: PL]
+              </span>
+            </div>
+            <div className="flex-grow space-y-4 text-center md:text-left">
+              <div className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-sage uppercase">
+                ./whoami.sh
+              </div>
+              <h3 className="text-2xl font-serif font-bold text-brand-text">
+                Kamil Mikołajczyk
+              </h3>
+              <p className="text-zinc-500 font-mono text-[11px] uppercase tracking-wider">
+                Senior IT Project Manager / Product Owner
+              </p>
+              <p className="text-sm text-brand-muted leading-relaxed max-w-2xl">
+                Orkiestruję zespół czterech agentów AI (Codex, Trae, Claude i AI Studio) tak samo, jak profesjonalne zespoły produktowe — definiując role, granice odpowiedzialności i dbając o precyzyjne przekazywanie kontekstu w środowiskach produkcyjnych.
+              </p>
+              <div className="flex justify-center md:justify-start gap-4 pt-2">
+                <a
+                  href="https://www.linkedin.com/in/kamil-mikolajczyk/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-xs text-brand-muted hover:text-brand-text transition-colors border border-brand-border bg-brand-card px-3 py-1.5 hover:border-brand-text"
+                >
+                  <Linkedin size={14} className="text-brand-sage" />
+                  <span>LinkedIn</span>
+                </a>
+                <a
+                  href="https://github.com/kamillimak"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 text-xs text-brand-muted hover:text-brand-text transition-colors border border-brand-border bg-brand-card px-3 py-1.5 hover:border-brand-text"
+                >
+                  <Github size={14} />
+                  <span>GitHub</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <WebVitalsDashboard />
 
       {/* 5. STATS SECTION (Bento grid style) */}
@@ -421,6 +516,33 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Dynamic Concept Preview Switcher - hidden in hardcoded static builds */}
+      {!import.meta.env.VITE_CONCEPT && (
+        <div className="fixed bottom-6 right-6 z-[100] bg-zinc-900 text-zinc-100 border border-zinc-800 p-2 shadow-2xl backdrop-blur-md flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-wider rounded-none">
+          <span className="text-zinc-500 font-bold px-2 select-none border-r border-zinc-800 pr-3">Podgląd:</span>
+          <button
+            onClick={() => setConcept("editorial")}
+            className={`px-3 py-1.5 transition-colors cursor-pointer rounded-none border ${
+              concept === "editorial"
+                ? "bg-white text-black border-white font-bold"
+                : "bg-transparent text-zinc-400 border-transparent hover:text-white"
+            }`}
+          >
+            Editorial Slate
+          </button>
+          <button
+            onClick={() => setConcept("dashboard")}
+            className={`px-3 py-1.5 transition-colors cursor-pointer rounded-none border ${
+              concept === "dashboard"
+                ? "bg-sky-500 text-black border-sky-500 font-bold"
+                : "bg-transparent text-zinc-400 border-transparent hover:text-white"
+            }`}
+          >
+            Cyber Dashboard
+          </button>
+        </div>
+      )}
 
     </div>
   );

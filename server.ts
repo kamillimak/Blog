@@ -891,12 +891,23 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", storage: shouldUseFirestore() ? "firestore" : "local" });
 });
 
+// Serve the operators console folder and route
+app.use("/ui-ux-pro-max", express.static(path.join(process.cwd(), "ui-ux-pro-max")));
+app.get("/console", (_req, res) => {
+  res.sendFile(path.join(process.cwd(), "ui-ux-pro-max", "dziennik_budowy_operators_console_v2_animated.html"));
+});
+
 async function setupApp() {
   if (!isProduction) {
     const vite = await createViteServer({ server: { middlewareMode: true }, appType: "spa" });
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
+    
+    // Explicit redirects to ensure version folders work without trailing slash
+    app.get("/version1", (_req, res) => res.redirect(301, "/version1/"));
+    app.get("/version2", (_req, res) => res.redirect(301, "/version2/"));
+
     app.use(express.static(distPath));
     app.get("*", (_req, res) => res.sendFile(path.join(distPath, "index.html")));
   }

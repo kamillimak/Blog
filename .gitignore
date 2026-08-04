@@ -7,3 +7,6 @@ coverage/
 .env*
 !.env.example
 subscriptions.json
+.agents/
+scratch/
+test-branch-worktree/

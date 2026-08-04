@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Github, Compass, Layers, Mail, Moon, Sun, BriefcaseBusiness } from "lucide-react";
+import { Menu, X, Github, Compass, Layers, Mail, Moon, Sun, BriefcaseBusiness, Newspaper, Cloud } from "lucide-react";
 import { KMSygnet } from "./KMSygnet";
 
 export function Header() {
@@ -33,8 +33,10 @@ export function Header() {
   };
 
   const navLinks = [
-    { to: "/", label: "Strona główna", icon: Compass },
-    { to: "/articles", label: "Wszystkie artykuły", icon: Layers },
+    { to: "/", label: "~/proces", icon: Compass },
+    { to: "/articles", label: "~/artykuły", icon: Layers },
+    { to: "/#daily-briefing-section", label: "~/newsroom", icon: Newspaper, isHash: true },
+    { to: "/workspace", label: "~/workspace", icon: Cloud },
   ];
 
   return (
@@ -60,21 +62,41 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav id="desktop-nav" className="hidden md:flex items-center gap-8 text-sm font-medium tracking-tight">
+          <nav id="desktop-nav" className="hidden md:flex items-center gap-6 text-sm font-medium tracking-tight">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const active = isLinkActive(link.to);
+
+              if (link.isHash) {
+                return (
+                  <a
+                    key={link.to}
+                    href="#/daily-briefing-section"
+                    onClick={(e) => {
+                      if (location.pathname === "/") {
+                        e.preventDefault();
+                        document.getElementById("daily-briefing-section")?.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className="flex items-center gap-1.5 py-2 border-b-2 border-transparent text-brand-muted hover:text-brand-text transition-colors font-mono console-nav-link text-xs uppercase"
+                  >
+                    <Icon size={14} className="text-brand-sage" />
+                    {link.label}
+                  </a>
+                );
+              }
+
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`flex items-center gap-2 py-2 border-b-2 transition-colors ${
+                  className={`flex items-center gap-1.5 py-2 border-b-2 transition-colors font-mono console-nav-link text-xs uppercase ${
                     active
                       ? "text-brand-text border-brand-text font-bold"
                       : "text-brand-muted border-transparent hover:text-brand-text"
                   }`}
                 >
-                  <Icon size={16} />
+                  <Icon size={14} className="text-brand-sage" />
                   {link.label}
                 </Link>
               );
@@ -86,17 +108,17 @@ export function Header() {
               href="https://kamillimak.github.io/Projects"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 py-2 border-b-2 border-transparent text-brand-muted hover:text-brand-text transition-colors"
+              className="flex items-center gap-1.5 py-2 border-b-2 border-transparent text-brand-muted hover:text-brand-text transition-colors font-mono console-nav-link text-xs uppercase"
             >
-              <BriefcaseBusiness size={16} />
-              <span>Realizacje</span>
+              <BriefcaseBusiness size={14} className="text-brand-sage" />
+              <span>~/realizacje</span>
             </a>
 
             <a
               href="mailto:mikolajczykamil@gmail.com"
-              className="flex items-center gap-2 px-4 py-2 border border-brand-text bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white hover:border-brand-sage transition-colors font-bold uppercase tracking-wider text-[10px]"
+              className="flex items-center gap-2 px-4 py-2 border border-brand-text bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white hover:border-brand-sage transition-colors font-bold uppercase tracking-wider text-[10px] btn-slide-fill"
             >
-              <Mail size={15} />
+              <Mail size={13} />
               <span>Kontakt</span>
             </a>
 
@@ -104,20 +126,20 @@ export function Header() {
               href="https://github.com/kamillimak/Blog"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-brand-muted hover:text-brand-text transition-colors"
+              className="flex items-center gap-1.5 text-brand-muted hover:text-brand-text transition-colors font-mono text-xs uppercase"
               aria-label="GitHub Repository"
             >
-              <Github size={18} />
+              <Github size={16} />
               <span>GitHub</span>
             </a>
 
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex h-9 w-9 items-center justify-center border border-brand-border text-brand-muted hover:text-brand-text hover:border-brand-text transition-colors"
+              className="flex h-9 w-9 items-center justify-center border border-brand-border text-brand-muted hover:text-brand-text hover:border-brand-text transition-colors cursor-pointer"
               aria-label={isDarkMode ? "Włącz jasny motyw" : "Włącz ciemny motyw"}
             >
-              {isDarkMode ? <Sun size={17} /> : <Moon size={17} />}
+              {isDarkMode ? <Sun size={15} /> : <Moon size={15} />}
             </button>
           </nav>
 
@@ -126,7 +148,7 @@ export function Header() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               type="button"
-              className="inline-flex items-center justify-center p-2 rounded-none text-brand-muted hover:text-brand-text hover:bg-brand-border/30 transition-colors"
+              className="inline-flex items-center justify-center p-2 rounded-none text-brand-muted hover:text-brand-text hover:bg-brand-border/30 transition-colors cursor-pointer"
               aria-controls="mobile-menu"
               aria-expanded={isOpen}
             >
@@ -144,18 +166,39 @@ export function Header() {
             {navLinks.map((link) => {
               const Icon = link.icon;
               const active = isLinkActive(link.to);
+
+              if (link.isHash) {
+                return (
+                  <a
+                    key={link.to}
+                    href="#/daily-briefing-section"
+                    onClick={(e) => {
+                      setIsOpen(false);
+                      if (location.pathname === "/") {
+                        e.preventDefault();
+                        document.getElementById("daily-briefing-section")?.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    className="flex items-center gap-3 px-3 py-3 rounded-none text-sm font-mono uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors"
+                  >
+                    <Icon size={18} className="text-brand-sage" />
+                    {link.label}
+                  </a>
+                );
+              }
+
               return (
                 <Link
                   key={link.to}
                   to={link.to}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-3 rounded-none text-base font-bold uppercase tracking-wide transition-colors ${
+                  className={`flex items-center gap-3 px-3 py-3 rounded-none text-sm font-mono uppercase tracking-wide transition-colors ${
                     active
                       ? "bg-brand-text text-brand-bg font-bold"
                       : "text-brand-muted hover:bg-brand-border/30 hover:text-brand-text"
                   }`}
                 >
-                  <Icon size={18} />
+                  <Icon size={18} className="text-brand-sage" />
                   {link.label}
                 </Link>
               );
@@ -168,29 +211,29 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-3 rounded-none text-base font-bold uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors"
+              className="flex items-center gap-3 px-3 py-3 rounded-none text-sm font-mono uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors"
             >
-              <BriefcaseBusiness size={18} />
-              <span>Realizacje</span>
+              <BriefcaseBusiness size={18} className="text-brand-sage" />
+              <span>~/realizacje</span>
             </a>
 
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex w-full items-center gap-3 px-3 py-3 rounded-none text-base font-bold uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors"
+              className="flex w-full items-center gap-3 px-3 py-3 rounded-none text-sm font-mono uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors cursor-pointer"
               aria-label={isDarkMode ? "Włącz jasny motyw" : "Włącz ciemny motyw"}
             >
               {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-              <span>{isDarkMode ? "Jasny motyw" : "Ciemny motyw"}</span>
+              <span>{isDarkMode ? "~/jasny-motyw" : "~/ciemny-motyw"}</span>
             </button>
 
             <a
               href="mailto:mikolajczykamil@gmail.com"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-3 rounded-none text-base font-bold uppercase tracking-wide bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white transition-colors"
+              className="flex items-center gap-3 px-3 py-3 rounded-none text-sm font-mono uppercase tracking-wide bg-brand-text text-brand-bg hover:bg-brand-sage hover:text-white transition-colors"
             >
               <Mail size={18} />
-              <span>Kontakt</span>
+              <span>~/kontakt</span>
             </a>
 
             <a
@@ -198,7 +241,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}
-              className="flex items-center gap-3 px-3 py-3 rounded-none text-base font-bold uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors"
+              className="flex items-center gap-3 px-3 py-3 rounded-none text-sm font-mono uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors"
             >
               <Github size={18} />
               <span>GitHub</span>

@@ -48,7 +48,11 @@ const REELS: VideoReel[] = [
 
 const assetUrl = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
-export function CinematicHero() {
+interface CinematicHeroProps {
+  concept?: "editorial" | "dashboard";
+}
+
+export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
   const [activeReelIndex, setActiveReelIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
@@ -176,49 +180,51 @@ export function CinematicHero() {
       <div className="relative z-10 max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-between py-8">
         
         {/* TOP ROW: Live Telemetry HUD */}
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          
-          {/* Telemetry Widgets */}
-          <div className="flex items-center gap-4 bg-zinc-950/80 border border-zinc-800/80 p-3 backdrop-blur-md rounded-none">
-            <div className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-            </div>
+        {concept === "dashboard" && (
+          <div className="flex flex-wrap items-start justify-between gap-4">
             
-            <div className="flex gap-4 font-mono text-[9px] text-zinc-400 uppercase tracking-widest divide-x divide-zinc-800">
-              <div className="flex items-center gap-1.5 pl-2 first:pl-0">
-                <Cpu size={12} className="text-orange-500" />
-                <span>CPU: <strong className="text-white">{telemetry.cpuLoad}%</strong></span>
+            {/* Telemetry Widgets */}
+            <div className="flex items-center gap-4 bg-zinc-950/80 border border-zinc-800/80 p-3 backdrop-blur-md rounded-none">
+              <div className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
               </div>
-              <div className="flex items-center gap-1.5 pl-4">
-                <Activity size={12} className="text-orange-500" />
-                <span>LATENCY: <strong className="text-white">{telemetry.pingMs}ms</strong></span>
-              </div>
-              <div className="flex items-center gap-1.5 pl-4">
-                <Layers size={12} className="text-orange-500" />
-                <span>MEM: <strong className="text-white">{telemetry.memoryUsage}GB</strong></span>
+              
+              <div className="flex gap-4 font-mono text-[9px] text-zinc-400 uppercase tracking-widest divide-x divide-zinc-800">
+                <div className="flex items-center gap-1.5 pl-2 first:pl-0">
+                  <Cpu size={12} className="text-orange-500" />
+                  <span>CPU: <strong className="text-white">{telemetry.cpuLoad}%</strong></span>
+                </div>
+                <div className="flex items-center gap-1.5 pl-4">
+                  <Activity size={12} className="text-orange-500" />
+                  <span>LATENCY: <strong className="text-white">{telemetry.pingMs}ms</strong></span>
+                </div>
+                <div className="flex items-center gap-1.5 pl-4">
+                  <Layers size={12} className="text-orange-500" />
+                  <span>MEM: <strong className="text-white">{telemetry.memoryUsage}GB</strong></span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Node Status widgets */}
-          <div className="hidden sm:flex items-center gap-2 bg-zinc-950/80 border border-zinc-800/80 p-2 backdrop-blur-md font-mono text-[9px]">
-            <span className="text-zinc-500 uppercase mr-1">Nodes:</span>
-            <div className="flex items-center gap-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 px-1.5 py-0.5">
-              <span className="w-1 h-1 rounded-full bg-amber-500 animate-pulse"></span>
-              <span>CODEX</span>
+            {/* Node Status widgets */}
+            <div className="hidden sm:flex items-center gap-2 bg-zinc-950/80 border border-zinc-800/80 p-2 backdrop-blur-md font-mono text-[9px]">
+              <span className="text-zinc-500 uppercase mr-1">Nodes:</span>
+              <div className="flex items-center gap-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 px-1.5 py-0.5">
+                <span className="w-1 h-1 rounded-full bg-amber-500 animate-pulse"></span>
+                <span>CODEX</span>
+              </div>
+              <div className="flex items-center gap-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5">
+                <span className="w-1 h-1 rounded-full bg-blue-500"></span>
+                <span>TRAE</span>
+              </div>
+              <div className="flex items-center gap-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5">
+                <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span>CLAUDE</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5">
-              <span className="w-1 h-1 rounded-full bg-blue-500"></span>
-              <span>TRAE</span>
-            </div>
-            <div className="flex items-center gap-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5">
-              <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>CLAUDE</span>
-            </div>
-          </div>
 
-        </div>
+          </div>
+        )}
 
         {/* MIDDLE ROW: Editorial Title (Left aligned) */}
         <div className="max-w-xl space-y-5 mt-auto mb-6">
@@ -226,13 +232,19 @@ export function CinematicHero() {
             AI-NATIVE ORCHESTRATION & CODE CONTEXT
           </span>
 
-          <div className="space-y-3">
-            <h1 className="text-4xl sm:text-5xl lg:text-[68px] font-black leading-[0.85] tracking-tighter text-white uppercase font-sans">
-              Dziennik <br />
-              budowy <span className="text-orange-500">AI</span>
-            </h1>
+          <div className="space-y-4">
+            {concept === "editorial" ? (
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-serif font-bold leading-tight text-white tracking-tight normal-case">
+                Dziennik <span className="italic font-normal text-orange-500">budowy AI</span>
+              </h1>
+            ) : (
+              <h1 className="text-4xl sm:text-5xl lg:text-[60px] font-black leading-[0.9] tracking-tighter text-white uppercase font-sans">
+                Dziennik <br />
+                budowy <span className="text-orange-500">AI</span>
+              </h1>
+            )}
             <p className="text-zinc-500 text-xs font-mono uppercase tracking-[0.2em] leading-none">
-              Od strony Project Managera
+              {concept === "editorial" ? "./proces · od strony project managera" : "Od strony Project Managera"}
             </p>
           </div>
 
@@ -244,7 +256,7 @@ export function CinematicHero() {
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <Link
               to="/articles"
-              className="inline-flex items-center justify-center px-6 py-3.5 bg-orange-600 hover:bg-orange-700 text-black hover:text-black text-[10px] font-black uppercase tracking-widest transition-colors cursor-pointer"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-white bg-transparent text-white hover:text-black text-[10px] font-bold uppercase tracking-widest cursor-pointer btn-slide-fill"
             >
               <span>Biblioteka artykułów</span>
               <ArrowRight size={13} className="ml-2" />
@@ -255,7 +267,7 @@ export function CinematicHero() {
               onClick={() => {
                 document.getElementById("daily-briefing-section")?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="inline-flex items-center justify-center px-6 py-3.5 border border-zinc-700 bg-zinc-950/40 text-zinc-300 hover:text-white hover:border-zinc-500 text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer"
+              className="inline-flex items-center justify-center px-6 py-3.5 border border-zinc-700 bg-zinc-950/40 text-zinc-300 hover:text-white hover:border-zinc-500 text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer btn-slide-fill"
             >
               <span>Przejdź do newsroomu</span>
             </button>

@@ -10,6 +10,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { PrivacyPage } from "./pages/PrivacyPage";
 import { ConsentBanner } from "./components/analytics/ConsentBanner";
 import { GoogleAnalytics } from "./components/analytics/GoogleAnalytics";
+import { SignalCanvas } from "./components/layout/SignalCanvas";
 
 const WorkspacePage = lazy(() =>
   import("./pages/WorkspacePage").then((module) => ({ default: module.WorkspacePage })),
@@ -19,7 +20,8 @@ export default function App() {
   return (
     <Router>
       <GoogleAnalytics />
-      <div className="min-h-screen flex flex-col justify-between bg-brand-bg text-brand-text antialiased selection:bg-brand-text selection:text-brand-bg">
+      <div className="min-h-screen flex flex-col justify-between bg-brand-bg text-brand-text antialiased selection:bg-brand-text selection:text-brand-bg relative z-10">
+        <SignalCanvas />
         <a
           href="#main-content"
           onClick={(e) => {
