@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, Github, Compass, Layers, Mail, Moon, Sun, BriefcaseBusiness, Newspaper, Cloud } from "lucide-react";
 import { KMSygnet } from "./KMSygnet";
 
@@ -7,6 +7,7 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("blog-theme");
@@ -33,11 +34,11 @@ export function Header() {
   };
 
   const navLinks = [
-    { to: "/", label: "~/proces", icon: Compass },
+    { to: "/", label: "~/blog", icon: Compass },
     { to: "/articles", label: "~/artykuły", icon: Layers },
     { to: "/#daily-briefing-section", label: "~/newsroom", icon: Newspaper, isHash: true },
-    { to: "/workspace", label: "~/workspace", icon: Cloud },
   ];
+
 
   return (
     <header id="app-header" className="sticky top-0 z-50 w-full bg-brand-bg/95 backdrop-blur-md border-b border-brand-border transition-colors">
@@ -69,20 +70,23 @@ export function Header() {
 
               if (link.isHash) {
                 return (
-                  <a
+                  <Link
                     key={link.to}
-                    href="#/daily-briefing-section"
+                    to="/"
                     onClick={(e) => {
                       if (location.pathname === "/") {
                         e.preventDefault();
                         document.getElementById("daily-briefing-section")?.scrollIntoView({ behavior: "smooth" });
+                      } else {
+                        e.preventDefault();
+                        navigate("/", { state: { scrollTo: "daily-briefing-section" } });
                       }
                     }}
                     className="flex items-center gap-1.5 py-2 border-b-2 border-transparent text-brand-muted hover:text-brand-text transition-colors font-mono console-nav-link text-xs uppercase"
                   >
                     <Icon size={14} className="text-brand-sage" />
                     {link.label}
-                  </a>
+                  </Link>
                 );
               }
 
@@ -169,21 +173,24 @@ export function Header() {
 
               if (link.isHash) {
                 return (
-                  <a
+                  <Link
                     key={link.to}
-                    href="#/daily-briefing-section"
+                    to="/"
                     onClick={(e) => {
                       setIsOpen(false);
                       if (location.pathname === "/") {
                         e.preventDefault();
                         document.getElementById("daily-briefing-section")?.scrollIntoView({ behavior: "smooth" });
+                      } else {
+                        e.preventDefault();
+                        navigate("/", { state: { scrollTo: "daily-briefing-section" } });
                       }
                     }}
                     className="flex items-center gap-3 px-3 py-3 rounded-none text-sm font-mono uppercase tracking-wide text-brand-muted hover:bg-brand-border/30 hover:text-brand-text transition-colors"
                   >
                     <Icon size={18} className="text-brand-sage" />
                     {link.label}
-                  </a>
+                  </Link>
                 );
               }
 

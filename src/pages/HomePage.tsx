@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Search, RotateCcw, Award, Clock, FileText, Settings, ArrowRight, BriefcaseBusiness, Mail, Newspaper, Users, Linkedin, Github, Sparkles, Star } from "lucide-react";
 import { ARTICLES } from "../data/articles";
 import { ArticleCard } from "../components/article/ArticleCard";
@@ -10,10 +10,24 @@ import { WebVitalsDashboard } from "../components/analytics/WebVitalsDashboard";
 import { AIContentDashboard } from "../components/article/AIContentDashboard";
 
 export function HomePage() {
+  const location = useLocation();
+
   // Set page title for SEO
   useEffect(() => {
     document.title = "Blog technologiczny — Codex · Trae · Claude · AI Studio";
   }, []);
+
+  // Programmatic scroll helper for cross-page hash navigations
+  useEffect(() => {
+    if (location.state && (location.state as any).scrollTo === "daily-briefing-section") {
+      setTimeout(() => {
+        const el = document.getElementById("daily-briefing-section");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 200);
+    }
+  }, [location]);
 
   // Dynamic design switcher
   const [concept, setConcept] = useState<"editorial" | "dashboard">(
@@ -110,109 +124,6 @@ export function HomePage() {
 
       {/* AI News Section */}
       {concept === "editorial" ? <DailyBriefing /> : <AIContentDashboard />}
-
-      {/* Audience Section */}
-      <section id="audience-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div className="border-y border-brand-border py-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-4">
-              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-muted uppercase block mb-3">
-                Dla kogo jest ten blog
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight uppercase text-brand-text">
-                Dla osób, które chcą rozumieć AI w praktyce, nie tylko w teorii
-              </h2>
-            </div>
-            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[
-                {
-                  icon: BriefcaseBusiness,
-                  title: "Liderzy i PM/PO",
-                  text: "Scenariusze użycia AI w procesach, backlogach, analizie i komunikacji z zespołem."
-                },
-                {
-                  icon: Users,
-                  title: "Twórcy AI-native",
-                  text: "Workflow, automatyzacje i narzędzia, które pomagają zamieniać pomysły w prototypy."
-                },
-                {
-                  icon: Newspaper,
-                  title: "Osoby śledzące tech",
-                  text: "Newsroom AI, TOP 3 i briefing trendów z podziałem na Polskę i świat."
-                }
-              ].map((item) => {
-                const Icon = item.icon;
-
-                return (
-                  <div key={item.title} className="border border-brand-border bg-brand-card p-5">
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center border border-brand-border bg-brand-featured-bg text-brand-text">
-                      <Icon size={18} />
-                    </div>
-                    <h3 className="mb-2 text-sm font-extrabold uppercase tracking-tight text-brand-text">{item.title}</h3>
-                    <p className="text-sm leading-relaxed text-brand-muted">{item.text}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. SYNERGISTIC WORKFLOW SECTION */}
-      <section id="workflow-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-        <div className="bg-brand-card border border-brand-border rounded-none overflow-hidden transition-all shadow-sm">
-          {/* Terminal Title Bar */}
-          <div className="flex items-center justify-between px-4 py-3 bg-brand-featured-bg border-b border-brand-border font-mono text-[10px] text-brand-muted">
-            <div className="flex gap-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 opacity-90"></span>
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 opacity-90"></span>
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 opacity-90"></span>
-            </div>
-            <span className="font-bold tracking-wider uppercase">agent_pipeline — zsh</span>
-            <span className="opacity-0 w-10"></span>
-          </div>
-
-          <div className="p-8 sm:p-10 space-y-8">
-            <div className="max-w-3xl">
-              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-sage uppercase block mb-3">
-                Koncepcja i synergia
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-brand-text uppercase mb-4">
-                Jeden proces, cztery wyspecjalizowane role
-              </h2>
-              <p className="text-brand-muted text-sm leading-relaxed">
-                Nowoczesny twórca i orkiestrator AI nie polega na jednym asystencie. Skuteczność polega na rozdzielaniu zadań według mocnych stron poszczególnych modeli, tworząc zintegrowany łańcuch dostarczania kodu i aplikacji.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {agentCards.map((item) => (
-                <div 
-                  key={item.step} 
-                  onMouseMove={handleMouseMove}
-                  style={{ "--glow-color": item.glowColor } as React.CSSProperties}
-                  className="bg-brand-featured-bg border border-brand-border p-6 hover:border-brand-sage transition-all duration-300 flex flex-col justify-between group spotlight-card overflow-hidden hover:-translate-y-1.5 hover:shadow-md cursor-default"
-                >
-                  <div>
-                    <div className="w-8 h-8 bg-brand-bg text-brand-muted border border-brand-border flex items-center justify-center font-mono font-bold text-xs mb-4 group-hover:border-brand-text group-hover:text-brand-text transition-colors">
-                      {item.step}
-                    </div>
-                    <span className="font-mono text-[9px] text-brand-muted uppercase block tracking-widest mb-1.5">
-                      {item.tag}
-                    </span>
-                    <h3 className={`font-serif font-extrabold uppercase tracking-tight text-sm mb-3 ${item.color}`}>
-                      {item.title}
-                    </h3>
-                    <p className="text-xs text-brand-muted leading-relaxed">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 4. LIBRARY ARTICLES SECTION (Filters + Grid) */}
       <section id="library-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 scroll-mt-24">
@@ -388,6 +299,109 @@ export function HomePage() {
           </div>
         )}
 
+      </section>
+
+      {/* Audience Section */}
+      <section id="audience-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="border-y border-brand-border py-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-4">
+              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-muted uppercase block mb-3">
+                Dla kogo jest ten blog
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold tracking-tight uppercase text-brand-text">
+                Dla osób, które chcą rozumieć AI w praktyce, nie tylko w teorii
+              </h2>
+            </div>
+            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                {
+                  icon: BriefcaseBusiness,
+                  title: "Liderzy i PM/PO",
+                  text: "Scenariusze użycia AI w procesach, backlogach, analizie i komunikacji z zespołem."
+                },
+                {
+                  icon: Users,
+                  title: "Twórcy AI-native",
+                  text: "Workflow, automatyzacje i narzędzia, które pomagają zamieniać pomysły w prototypy."
+                },
+                {
+                  icon: Newspaper,
+                  title: "Osoby śledzące tech",
+                  text: "Newsroom AI, TOP 3 i briefing trendów z podziałem na Polskę i świat."
+                }
+              ].map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <div key={item.title} className="border border-brand-border bg-brand-card p-5">
+                    <div className="mb-5 flex h-10 w-10 items-center justify-center border border-brand-border bg-brand-featured-bg text-brand-text">
+                      <Icon size={18} />
+                    </div>
+                    <h3 className="mb-2 text-sm font-extrabold uppercase tracking-tight text-brand-text">{item.title}</h3>
+                    <p className="text-sm leading-relaxed text-brand-muted">{item.text}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. SYNERGISTIC WORKFLOW SECTION */}
+      <section id="workflow-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+        <div className="bg-brand-card border border-brand-border rounded-none overflow-hidden transition-all shadow-sm">
+          {/* Terminal Title Bar */}
+          <div className="flex items-center justify-between px-4 py-3 bg-brand-featured-bg border-b border-brand-border font-mono text-[10px] text-brand-muted">
+            <div className="flex gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80 opacity-90"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80 opacity-90"></span>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80 opacity-90"></span>
+            </div>
+            <span className="font-bold tracking-wider uppercase">agent_pipeline — zsh</span>
+            <span className="opacity-0 w-10"></span>
+          </div>
+
+          <div className="p-8 sm:p-10 space-y-8">
+            <div className="max-w-3xl">
+              <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-brand-sage uppercase block mb-3">
+                Koncepcja i synergia
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-serif font-bold text-brand-text uppercase mb-4">
+                Jeden proces, cztery wyspecjalizowane role
+              </h2>
+              <p className="text-brand-muted text-sm leading-relaxed">
+                Nowoczesny twórca i orkiestrator AI nie polega na jednym asystencie. Skuteczność polega na rozdzielaniu zadań według mocnych stron poszczególnych modeli, tworząc zintegrowany łańcuch dostarczania kodu i aplikacji.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {agentCards.map((item) => (
+                <div 
+                  key={item.step} 
+                  onMouseMove={handleMouseMove}
+                  style={{ "--glow-color": item.glowColor } as React.CSSProperties}
+                  className="bg-brand-featured-bg border border-brand-border p-6 hover:border-brand-sage transition-all duration-300 flex flex-col justify-between group spotlight-card overflow-hidden hover:-translate-y-1.5 hover:shadow-md cursor-default"
+                >
+                  <div>
+                    <div className="w-8 h-8 bg-brand-bg text-brand-muted border border-brand-border flex items-center justify-center font-mono font-bold text-xs mb-4 group-hover:border-brand-text group-hover:text-brand-text transition-colors">
+                      {item.step}
+                    </div>
+                    <span className="font-mono text-[9px] text-brand-muted uppercase block tracking-widest mb-1.5">
+                      {item.tag}
+                    </span>
+                    <h3 className={`font-serif font-extrabold uppercase tracking-tight text-sm mb-3 ${item.color}`}>
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-brand-muted leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Author Section - Combined Console/Magazine styling */}

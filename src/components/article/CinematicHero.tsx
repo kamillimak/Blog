@@ -11,11 +11,19 @@ interface VideoReel {
   id: string;
   title: string;
   subtitle: string;
-  videoPath: string;
+  videoPath?: string;
+  imagePath?: string;
   tag: string;
 }
 
 const REELS: VideoReel[] = [
+  {
+    id: "reel-0",
+    title: "Kamil Mikołajczyk",
+    subtitle: "Senior IT Project Manager & AI Creator",
+    imagePath: "images/kamil-portrait.jpg",
+    tag: "AUTOR"
+  },
   {
     id: "reel-1",
     title: "Agentic Orchestration",
@@ -115,6 +123,22 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
     }
   };
 
+  // Simulated progress bar for image slides
+  useEffect(() => {
+    if (!activeReel.imagePath || !isPlaying || reducedMotion) return;
+    
+    const startTime = Date.now();
+    const duration = 7000; // 7 seconds
+    
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(100, (elapsed / duration) * 100);
+      setProgress(pct);
+    }, 50);
+    
+    return () => clearInterval(interval);
+  }, [activeReelIndex, isPlaying, reducedMotion, activeReel.imagePath]);
+
   const handleReelChange = (index: number) => {
     if (index === activeReelIndex) return;
     setFade(true);
@@ -126,6 +150,10 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
   };
 
   const togglePlay = () => {
+    if (!activeReel.videoPath) {
+      setIsPlaying(!isPlaying);
+      return;
+    }
     if (!videoRef.current) return;
     if (isPlaying) {
       videoRef.current.pause();
@@ -136,6 +164,7 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
   };
 
   const toggleMute = () => {
+    if (!activeReel.videoPath) return;
     if (!videoRef.current) return;
     videoRef.current.muted = !isMuted;
     setIsMuted(!isMuted);
@@ -144,19 +173,32 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
   return (
     <div className="relative w-full h-[650px] sm:h-[700px] bg-black overflow-hidden border-b border-zinc-900 select-none">
       
-      {/* 1. CINEMATIC VIDEO CANVAS (spans 100% of the widescreen container) */}
+      {/* 1. CINEMATIC VIDEO/IMAGE CANVAS (spans 100% of the widescreen container) */}
       <div className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${fade ? "opacity-20" : "opacity-75"}`}>
-        <video
-          ref={videoRef}
-          key={activeReel.id}
-          src={assetUrl(activeReel.videoPath)}
-          autoPlay={!reducedMotion}
-          muted={isMuted}
-          loop
-          playsInline
-          onTimeUpdate={handleTimeUpdate}
-          className="absolute inset-0 w-full h-full object-cover filter contrast-[1.1] brightness-[0.75]"
-        />
+        {activeReel.imagePath ? (
+          <div className="absolute inset-0 w-full h-full bg-[#07080a] flex items-center justify-center overflow-hidden">
+            {/* Cut-out portrait image centered vertically next to the content */}
+            <div className="absolute right-[5%] sm:right-[10%] top-1/2 -translate-y-1/2 h-[55%] sm:h-[65%] max-h-[420px] aspect-square flex items-center justify-center select-none pointer-events-none z-10">
+              <img 
+                src={assetUrl(activeReel.imagePath)} 
+                alt={activeReel.title} 
+                className="h-full w-auto object-contain object-center select-none pointer-events-none"
+              />
+            </div>
+          </div>
+        ) : (
+          <video
+            ref={videoRef}
+            key={activeReel.id}
+            src={assetUrl(activeReel.videoPath ?? "")}
+            autoPlay={!reducedMotion}
+            muted={isMuted}
+            loop
+            playsInline
+            onTimeUpdate={handleTimeUpdate}
+            className="absolute inset-0 w-full h-full object-cover filter contrast-[1.1] brightness-[0.75]"
+          />
+        )}
       </div>
 
       {/* 2. GRADIENT OVERLAYS (Cinematic Frame) */}
@@ -254,23 +296,46 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <Link
-              to="/articles"
-              className="inline-flex items-center justify-center px-6 py-3.5 border border-white bg-transparent text-white hover:text-black text-[10px] font-bold uppercase tracking-widest cursor-pointer btn-slide-fill"
-            >
-              <span>Biblioteka artykułów</span>
-              <ArrowRight size={13} className="ml-2" />
-            </Link>
-            
-            <button
-              type="button"
-              onClick={() => {
-                document.getElementById("daily-briefing-section")?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="inline-flex items-center justify-center px-6 py-3.5 border border-zinc-700 bg-zinc-950/40 text-zinc-300 hover:text-white hover:border-zinc-500 text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer btn-slide-fill"
-            >
-              <span>Przejdź do newsroomu</span>
-            </button>
+            {activeReel.id === "reel-0" ? (
+              <>
+                <a
+                  href="https://kamillimak.github.io/Projects"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center px-6 py-3.5 border border-white bg-transparent text-white hover:text-black text-[10px] font-bold uppercase tracking-widest cursor-pointer btn-slide-fill"
+                >
+                  <span>Realizacje</span>
+                  <ArrowRight size={13} className="ml-2" />
+                </a>
+                
+                <a
+                  href="mailto:mikolajczykamil@gmail.com"
+                  className="inline-flex items-center justify-center px-6 py-3.5 border border-zinc-700 bg-zinc-950/40 text-zinc-300 hover:text-white hover:border-zinc-500 text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer btn-slide-fill"
+                >
+                  <span>Kontakt</span>
+                </a>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/articles"
+                  className="inline-flex items-center justify-center px-6 py-3.5 border border-white bg-transparent text-white hover:text-black text-[10px] font-bold uppercase tracking-widest cursor-pointer btn-slide-fill"
+                >
+                  <span>Biblioteka artykułów</span>
+                  <ArrowRight size={13} className="ml-2" />
+                </Link>
+                
+                <button
+                  type="button"
+                  onClick={() => {
+                    document.getElementById("daily-briefing-section")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                  className="inline-flex items-center justify-center px-6 py-3.5 border border-zinc-700 bg-zinc-950/40 text-zinc-300 hover:text-white hover:border-zinc-500 text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer btn-slide-fill"
+                >
+                  <span>Przejdź do newsroomu</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -278,7 +343,7 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
         <div className="w-full space-y-5">
           
           {/* Horizontal Reel Switcher Bar (TBD Widescreen style) */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-zinc-950/60 p-2 border border-zinc-900/60 backdrop-blur-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 bg-zinc-950/60 p-2 border border-zinc-900/60 backdrop-blur-sm">
             {REELS.map((reel, index) => {
               const isActive = index === activeReelIndex;
               return (
@@ -297,7 +362,7 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
                     }`}>
                       {reel.tag}
                     </span>
-                    <span className="text-[8px] font-mono text-zinc-500">0{index + 1}</span>
+                    <span className="text-[8px] font-mono text-zinc-500">0{index}</span>
                   </div>
                   <div>
                     <h3 className={`text-[11px] font-black uppercase tracking-tight transition-colors ${
@@ -347,7 +412,7 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
               </button>
 
               <span className="hidden sm:inline font-mono text-[9px] text-zinc-500 uppercase tracking-widest pl-1.5">
-                VIDEO AUDIO IS {isMuted ? "MUTED BY DEFAULT" : "PLAYING"}
+                {activeReel.imagePath ? "STATIC SLIDE WITHOUT AUDIO" : `VIDEO AUDIO IS ${isMuted ? "MUTED BY DEFAULT" : "PLAYING"}`}
               </span>
 
             </div>

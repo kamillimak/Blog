@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Clock, Calendar, FileText, CheckCircle, Share2, ZoomIn, ZoomOut, ArrowRight, User } from "lucide-react";
 import { ARTICLES } from "../data/articles";
+import { DRAFT_ARTICLES } from "../data/draftArticles";
 import { ArticleContent } from "../components/article/ArticleContent";
 import { TableOfContents } from "../components/article/TableOfContents";
 import { ArticleIllustration } from "../components/article/ArticleIllustration";
@@ -26,7 +27,7 @@ export function ArticlePage() {
 
   // Find article
   const article = useMemo(() => {
-    return ARTICLES.find((candidate) =>
+    return [...ARTICLES, ...DRAFT_ARTICLES].find((candidate) =>
       candidate.slug === routeSlug || candidate.legacySlug === routeSlug
     );
   }, [routeSlug]);

@@ -267,7 +267,7 @@ function LiveFeed({ items }: { items: UnifiedNewsItem[] }) {
               <span className={`w-fit border px-1.5 py-0.2 text-[8px] font-mono uppercase tracking-wider ${kindStyles[item.kind].badge}`}>
                 {item.label}
               </span>
-              <span className="min-w-0 truncate">{item.title}</span>
+              <span className="min-w-0 whitespace-normal">{item.title}</span>
               <time dateTime={item.publishedAt} className="sm:ml-auto shrink-0 font-mono text-[9px] text-brand-muted uppercase">
                 {formatPolishDate(item.publishedAt)}
               </time>

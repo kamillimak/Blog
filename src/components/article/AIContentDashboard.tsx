@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { AlertTriangle, ArrowRight, Coins, ExternalLink, Share2, Sparkles } from "lucide-react";
-import { TOP_THREE_BRIEFING, type UnifiedNewsItem, type UnifiedNewsKind } from "../../data/newsFeed";
+import { AlertTriangle, ArrowRight, Coins, ExternalLink, Share2, Sparkles, Newspaper } from "lucide-react";
+import { TOP_THREE_BRIEFING, getLiveFeedItems, type UnifiedNewsItem, type UnifiedNewsKind } from "../../data/newsFeed";
 import { ShareModal } from "./ShareModal";
 
 interface DashboardCategory {
@@ -45,6 +45,8 @@ const categoryStyles: DashboardCategory[] = [
 ];
 
 export function AIContentDashboard() {
+  const liveFeedItems = React.useMemo(() => getLiveFeedItems(), []);
+
   const categories = categoryStyles.map((category) => ({
     ...category,
     items: TOP_THREE_BRIEFING.items.filter((item) => item.kind === category.id).slice(0, 3),
@@ -63,6 +65,8 @@ export function AIContentDashboard() {
           Gleboka analiza rynku z perspektywy praktyka IT: przelomy technologiczne, wektory zagrozen oraz realne mozliwosci komercjalizacji.
         </p>
       </div>
+
+      {liveFeedItems.length > 0 && <LiveFeed items={liveFeedItems} />}
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         {categories.map((category) => (
@@ -141,7 +145,7 @@ function DashboardItem({ item, itemIndex, category }: DashboardItemProps) {
                   <ExternalLink size={10} />
                 </a>
               ) : (
-                <span className="inline-flex text-[10px] font-bold uppercase tracking-wider text-brand-muted">
+                <span className="inline-flex text-[10px] font-bold uppercase tracking-wider text-zinc-500">
                   {item.sourceLabel}
                 </span>
               )}
@@ -168,5 +172,66 @@ function DashboardItem({ item, itemIndex, category }: DashboardItemProps) {
         categoryLabel={category.title}
       />
     </>
+  );
+}
+
+function LiveFeed({ items }: { items: UnifiedNewsItem[] }) {
+  const kindStyles: Record<UnifiedNewsKind, { badge: string }> = {
+    "tech-pl": { badge: "border-emerald-500/30 bg-emerald-500/10 text-emerald-400" },
+    "tech-world": { badge: "border-sky-500/30 bg-sky-500/10 text-sky-400" },
+    "top3-news": { badge: "border-violet-500/30 bg-violet-500/10 text-violet-400" },
+    "top3-crime": { badge: "border-rose-500/30 bg-rose-500/10 text-rose-400" },
+    "top3-business": { badge: "border-amber-500/30 bg-amber-500/10 text-amber-400" },
+  };
+
+  const formatPolishDate = (dateStr: string) => {
+    try {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString("pl-PL", { day: "numeric", month: "long", year: "numeric" });
+    } catch {
+      return dateStr;
+    }
+  };
+
+  return (
+    <div className="mb-10 border border-brand-border bg-[#090b10] p-5 rounded-none shadow-lg">
+      <div className="mb-4 flex items-center gap-2">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-500 opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-orange-500" />
+        </span>
+        <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-widest text-zinc-300">
+          <Newspaper size={11} className="text-orange-500" /> Live Feed (Najnowsze wydarzenia)
+        </span>
+      </div>
+      <div className="divide-y divide-brand-border/40">
+        {items.map((item) => {
+          const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.preventDefault();
+            const targetEl = document.getElementById(`news-feed-${item.id}`) || document.getElementById(`trend-news-${item.id}`);
+            if (targetEl) {
+              targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          };
+
+          return (
+            <a 
+              key={item.id} 
+              href={`#news-feed-${item.id}`}
+              onClick={handleAnchorClick}
+              className="flex min-w-0 flex-col sm:flex-row sm:items-center gap-3 py-3 text-xs tracking-tight text-zinc-300 transition-colors hover:text-orange-500 font-medium"
+            >
+              <span className={`w-fit border px-1.5 py-0.5 text-[8px] font-mono uppercase tracking-wider ${kindStyles[item.kind].badge}`}>
+                {item.label}
+              </span>
+              <span className="min-w-0 whitespace-normal">{item.title}</span>
+              <time dateTime={item.publishedAt} className="sm:ml-auto shrink-0 font-mono text-[9px] text-zinc-500 uppercase">
+                {formatPolishDate(item.publishedAt)}
+              </time>
+            </a>
+          );
+        })}
+      </div>
+    </div>
   );
 }
