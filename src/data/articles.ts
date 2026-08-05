@@ -1058,7 +1058,7 @@ export interface FilterState {
       },
       {
         type: "image",
-        src: "images/flow/codex-agent.jpeg",
+        src: "images/flow/codex-agent.webp",
         alt: "Wektorowa wizualizacja agenta AI analizującego drzewo kodu repozytorium",
         caption: "Ilustracja 1: Agent AI (Codex) wykonujący automatyczną analizę struktury kodu i zależności w repozytorium."
       },
@@ -1082,7 +1082,7 @@ export interface FilterState {
       },
       {
         type: "image",
-        src: "images/flow/code-diff.jpeg",
+        src: "images/flow/code-diff.webp",
         alt: "Wizualizacja edytora diff kodu z podświetleniami modyfikacji typów w TypeScript",
         caption: "Ilustracja 2: Kontrola różnic kodu (diff) podczas bezpiecznego dodawania pól shareText i hashtags."
       },
@@ -1112,13 +1112,13 @@ const textToCopy = \`\${activeShareText}\\n\\n\${title}\\n\${url}\\n\\n\${format
       },
       {
         type: "image",
-        src: "images/flow/social-cards.jpeg",
+        src: "images/flow/social-cards.webp",
         alt: "Karty podglądu społecznościowego w generowanym module ShareButtons",
         caption: "Ilustracja 3: Prezentacja generowania gotowych podglądów social media oraz przycisków udostępniania."
       },
       {
         type: "image",
-        src: "images/flow/share-node.jpeg",
+        src: "images/flow/share-node.webp",
         alt: "Wektorowa wizualizacja węzła sieci dystrybucji treści w social media",
         caption: "Ilustracja 4: Przesyłanie treści z modułu ShareModal do zewnętrznych serwisów (Facebook i LinkedIn)."
       },
@@ -1138,7 +1138,7 @@ const textToCopy = \`\${activeShareText}\\n\\n\${title}\\n\${url}\\n\\n\${format
       },
       {
         type: "image",
-        src: "images/flow/gear-pipeline.jpeg",
+        src: "images/flow/gear-pipeline.webp",
         alt: "Wektorowy schemat automatycznego skanera odnośników w pipeline",
         caption: "Ilustracja 5: Automatyczny audyt domen źródłowych zapobiegający błędom 404 w bazie materiałów."
       },
@@ -1166,7 +1166,7 @@ const textToCopy = \`\${activeShareText}\\n\\n\${title}\\n\${url}\\n\\n\${format
       },
       {
         type: "image",
-        src: "images/flow/ten-pillars.jpeg",
+        src: "images/flow/ten-pillars.webp",
         alt: "Kolumny jakości oprogramowania reprezentujące testy lintera i kompilatora",
         caption: "Ilustracja 6: Weryfikacja jakości (Quality Gates) z wykorzystaniem kompilatora TypeScript i generatora SSG."
       }

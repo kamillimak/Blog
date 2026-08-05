@@ -1,8 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Compass } from "lucide-react";
+import { useDocumentMeta } from "../utils/useDocumentMeta";
 
 export function NotFoundPage() {
+  useDocumentMeta({
+    title: "404 - Nie znaleziono strony — AI w praktyce",
+    description: "Nie znaleziono strony o podanym adresie URL w serwisie AI w praktyce.",
+  });
   return (
     <div className="bg-brand-bg min-h-[70vh] flex items-center justify-center py-20 px-4 text-brand-text">
       <div

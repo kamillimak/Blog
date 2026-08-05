@@ -11,10 +11,7 @@ import { ShareButtons } from "../components/article/ShareButtons";
 import { formatPolishDate, getRelatedArticles, copyToClipboard } from "../utils/article";
 import { ReadingProgress } from "../components/article/ReadingProgress";
 
-const setMetaTag = (selector: string, attribute: "content" | "href", value: string) => {
-  const element = document.head.querySelector(selector);
-  if (element) element.setAttribute(attribute, value);
-};
+import { useDocumentMeta } from "../utils/useDocumentMeta";
 
 export function ArticlePage() {
   const { slug, period, publication } = useParams<{
@@ -52,23 +49,18 @@ export function ArticlePage() {
     }
   }, [article, navigate, routeSlug]);
 
-  useEffect(() => {
-    if (article) {
-      const canonical = `${window.location.origin}${import.meta.env.BASE_URL}articles/${article.slug}/`;
-      const ogImage = `${window.location.origin}${import.meta.env.BASE_URL}og/articles/${article.slug}.svg`;
-      const metaDescription = article.shareText || article.description;
-
-      document.title = `${article.title} — Blog technologiczny`;
-      setMetaTag('meta[name="description"]', "content", metaDescription);
-      setMetaTag('meta[property="og:title"]', "content", article.title);
-      setMetaTag('meta[property="og:description"]', "content", metaDescription);
-      setMetaTag('meta[property="og:image"]', "content", ogImage);
-      setMetaTag('meta[name="twitter:title"]', "content", article.title);
-      setMetaTag('meta[name="twitter:description"]', "content", metaDescription);
-      setMetaTag('meta[name="twitter:image"]', "content", ogImage);
-      setMetaTag('link[rel="canonical"]', "href", canonical);
-    }
+  const metaConfig = useMemo(() => {
+    if (!article) return {};
+    return {
+      title: `${article.title} — Blog technologiczny`,
+      description: article.shareText || article.description,
+      canonical: `${window.location.origin}${import.meta.env.BASE_URL}articles/${article.slug}/`,
+      ogImage: `${window.location.origin}${import.meta.env.BASE_URL}og/articles/${article.slug}.png`,
+      ogType: "article" as const,
+    };
   }, [article]);
+
+  useDocumentMeta(metaConfig);
 
   useEffect(() => {
     const handleScroll = () => {

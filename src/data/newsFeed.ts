@@ -182,7 +182,15 @@ const findDraftSlug = (sourcePath: string) =>
 const parseStatus = (markdown: string): "DRAFT" | "APPROVED" =>
   /\bAPPROVED\b/i.test(markdown) ? "APPROVED" : "DRAFT";
 
-const getVideo = (index: number) => NEWSROOM_VIDEOS[index % NEWSROOM_VIDEOS.length];
+const getVideo = (id: string) => {
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    hash = id.charCodeAt(i) + ((hash << 5) - hash);
+    hash |= 0;
+  }
+  const index = Math.abs(hash) % NEWSROOM_VIDEOS.length;
+  return NEWSROOM_VIDEOS[index];
+};
 
 const parseDailyBriefing = (path: string): DailyTechBriefing => {
   const markdown = dailyModules[path] ?? "";
@@ -211,7 +219,7 @@ const parseDailyBriefing = (path: string): DailyTechBriefing => {
       sourceUrl,
       publishedAt,
       status,
-      video: getVideo(index),
+      video: getVideo(`tech-${date}-${index + 1}`),
       draftSlug,
     };
   });
@@ -290,7 +298,7 @@ const parseTopThreeBriefings = (): TopThreeBriefing[] => {
         sourceUrl,
         publishedAt: markdown.match(/\*\*Data aktualno[śs]ci:\*\*\s+(\d{4}-\d{2}-\d{2})/)?.[1] ?? date,
         status,
-        video: getVideo(index + 5),
+        video: getVideo(`top3-${runId}-${slugify(fileName)}`),
         draftSlug,
       };
     });
@@ -335,9 +343,9 @@ export const UNIFIED_NEWS_FEED: UnifiedNewsItem[] = filteredItems
     // Same day: sort by ID ascending to preserve original order of news (News 01 first)
     return left.id.localeCompare(right.id);
   })
-  .map((item, index) => ({
+  .map((item) => ({
     ...item,
-    video: NEWSROOM_VIDEOS[index % NEWSROOM_VIDEOS.length],
+    video: getVideo(item.id),
   }));
 
 const formatISODateOnly = (date: Date) => {

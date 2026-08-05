@@ -27,16 +27,16 @@ interface MediaItem {
 
 const mediaFiles: MediaItem[] = [
   // Google Flow Images
-  { name: "codex-agent.jpeg", relativePath: "images/flow/codex-agent.jpeg", mimeType: "image/jpeg" },
-  { name: "code-diff.jpeg", relativePath: "images/flow/code-diff.jpeg", mimeType: "image/jpeg" },
-  { name: "code-transform.jpeg", relativePath: "images/flow/code-transform.jpeg", mimeType: "image/jpeg" },
-  { name: "context-map.jpeg", relativePath: "images/flow/context-map.jpeg", mimeType: "image/jpeg" },
-  { name: "gear-pipeline.jpeg", relativePath: "images/flow/gear-pipeline.jpeg", mimeType: "image/jpeg" },
-  { name: "share-node.jpeg", relativePath: "images/flow/share-node.jpeg", mimeType: "image/jpeg" },
-  { name: "social-cards.jpeg", relativePath: "images/flow/social-cards.jpeg", mimeType: "image/jpeg" },
-  { name: "ten-pillars.jpeg", relativePath: "images/flow/ten-pillars.jpeg", mimeType: "image/jpeg" },
-  { name: "timeline-roadmap.jpeg", relativePath: "images/flow/timeline-roadmap.jpeg", mimeType: "image/jpeg" },
-  { name: "antigravity-core.jpeg", relativePath: "images/flow/antigravity-core.jpeg", mimeType: "image/jpeg" },
+  { name: "codex-agent.webp", relativePath: "images/flow/codex-agent.webp", mimeType: "image/webp" },
+  { name: "code-diff.webp", relativePath: "images/flow/code-diff.webp", mimeType: "image/webp" },
+  { name: "code-transform.webp", relativePath: "images/flow/code-transform.webp", mimeType: "image/webp" },
+  { name: "context-map.webp", relativePath: "images/flow/context-map.webp", mimeType: "image/webp" },
+  { name: "gear-pipeline.webp", relativePath: "images/flow/gear-pipeline.webp", mimeType: "image/webp" },
+  { name: "share-node.webp", relativePath: "images/flow/share-node.webp", mimeType: "image/webp" },
+  { name: "social-cards.webp", relativePath: "images/flow/social-cards.webp", mimeType: "image/webp" },
+  { name: "ten-pillars.webp", relativePath: "images/flow/ten-pillars.webp", mimeType: "image/webp" },
+  { name: "timeline-roadmap.webp", relativePath: "images/flow/timeline-roadmap.webp", mimeType: "image/webp" },
+  { name: "antigravity-core.webp", relativePath: "images/flow/antigravity-core.webp", mimeType: "image/webp" },
   { name: "kamil-mikolajczyk.png", relativePath: "images/kamil-mikolajczyk.png", mimeType: "image/png" },
   // Newsroom background videos
   { name: "tech-news-01.mp4", relativePath: "news/backgrounds/tech-news-01.mp4", mimeType: "video/mp4" },

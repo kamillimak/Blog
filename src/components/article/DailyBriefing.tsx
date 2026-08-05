@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import { 
   AlertTriangle, BriefcaseBusiness, ExternalLink, Globe2, 
@@ -50,54 +50,7 @@ export function DailyBriefing() {
 
   const liveFeedItems = useMemo(() => getLiveFeedItems(), []);
 
-  // Play focused video on scroll (for mobile / viewport center)
-  useEffect(() => {
-    if (reducedMotion) return;
-    let scrollTimer: number | undefined;
 
-    const pauseVideo = (video: HTMLVideoElement) => {
-      if (!video.paused) {
-        video.pause();
-      }
-    };
-
-    const playFocusedVideo = () => {
-      const cards = Array.from(document.querySelectorAll<HTMLElement>("#daily-briefing-section [id^='news-feed-']"));
-      const viewportCenter = window.innerHeight / 2;
-
-      const focusedCard = cards.map((card) => {
-        const rect = card.getBoundingClientRect();
-        return {
-          card,
-          visible: rect.bottom > 96 && rect.top < window.innerHeight - 96,
-          distance: Math.abs(rect.top + rect.height / 2 - viewportCenter)
-        };
-      }).filter((item) => item.visible).sort((left, right) => left.distance - right.distance)[0]?.card;
-
-      cards.forEach((card) => {
-        const video = card.querySelector("video");
-        if (!video) return;
-        if (card === focusedCard) {
-          void video.play();
-        } else {
-          pauseVideo(video);
-        }
-      });
-    };
-
-    const handleScroll = () => {
-      if (scrollTimer) window.clearTimeout(scrollTimer);
-      scrollTimer = window.setTimeout(playFocusedVideo, 180);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    playFocusedVideo();
-
-    return () => {
-      if (scrollTimer) window.clearTimeout(scrollTimer);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [filteredBriefings, reducedMotion]);
 
   return (
     <section id="daily-briefing-section" className="relative mt-16 border-y border-brand-border bg-brand-bg py-16 font-sans">
@@ -288,43 +241,90 @@ interface NewsItemRowProps {
 
 function NewsItemRow({ item, index, totalItems }: NewsItemRowProps) {
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const styles = kindStyles[item.kind];
   const Icon = styles.icon;
   const sourceUrl = isValidSourceUrl(item.sourceUrl) ? item.sourceUrl : "";
   const shareUrl = `${window.location.origin}${window.location.pathname}#news-feed-${item.id}`;
+  const reducedMotion = shouldReduceMotion();
 
-  const handleVideoEnter = (event: MouseEvent<HTMLElement>) => {
-    if (shouldReduceMotion()) return;
-    const video = event.currentTarget.querySelector("video");
-    if (video) void video.play();
-  };
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
 
-  const handleVideoLeave = (event: MouseEvent<HTMLElement>) => {
-    const video = event.currentTarget.querySelector("video");
-    if (video && !video.paused) {
-      video.pause();
+    // 1. Observer for lazy mounting the video element (preloading)
+    const mountObserver = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsMounted(true);
+          mountObserver.disconnect();
+        }
+      },
+      { rootMargin: "300px" }
+    );
+    mountObserver.observe(el);
+
+    // 2. Observer for auto-playing when the card is majorly in view
+    const playObserver = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      { threshold: 0.5 }
+    );
+    playObserver.observe(el);
+
+    return () => {
+      mountObserver.disconnect();
+      playObserver.disconnect();
+    };
+  }, []);
+
+  const shouldPlay = (isIntersecting || isHovered) && !reducedMotion;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (shouldPlay) {
+      video.play().catch(() => {});
+    } else {
+      if (!video.paused) {
+        video.pause();
+      }
     }
-  };
+  }, [shouldPlay]);
 
   return (
     <>
       <article 
+        ref={containerRef}
         id={`news-feed-${item.id}`} 
-        onMouseEnter={handleVideoEnter} 
-        onMouseLeave={handleVideoLeave}
+        onMouseEnter={() => setIsHovered(true)} 
+        onMouseLeave={() => setIsHovered(false)}
         className="group grid grid-cols-1 md:grid-cols-12 gap-6 bg-brand-card border border-brand-border p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-brand-sage"
       >
         {/* Left column: Video thumbnail */}
-        <div className="md:col-span-3 relative h-36 md:h-full min-h-28 bg-brand-text overflow-hidden border border-brand-border/40 select-none">
-          <video 
-            src={assetUrl(item.video)} 
-            className="absolute inset-0 h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" 
-            muted 
-            loop 
-            playsInline 
-            preload="metadata" 
-            aria-hidden="true" 
-          />
+        <div className="md:col-span-3 relative h-36 md:h-full min-h-28 bg-zinc-950 overflow-hidden border border-brand-border/40 select-none">
+          {isMounted ? (
+            <video 
+              ref={videoRef}
+              src={assetUrl(item.video)} 
+              className="absolute inset-0 h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-105" 
+              muted 
+              loop 
+              playsInline 
+              preload="auto" 
+              aria-hidden="true" 
+            />
+          ) : (
+            <div className="absolute inset-0 bg-zinc-950" />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
           
           <span className={`absolute left-2 top-2 inline-flex items-center gap-1.5 border px-2 py-0.5 text-[8px] font-mono uppercase tracking-wider ${styles.badge}`}>

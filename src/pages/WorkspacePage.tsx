@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { initAuth, googleSignIn, logout } from "../utils/firebaseAuth";
 import { User } from "firebase/auth";
+import { useDocumentMeta } from "../utils/useDocumentMeta";
 
 interface GoogleFile {
   id: string;
@@ -129,6 +130,12 @@ Samo opakowanie API to za mało. Wartość dodana powstaje poprzez:
 ];
 
 export function WorkspacePage() {
+  useDocumentMeta({
+    title: "Strefa Twórcy — Integracja Google Drive & Docs",
+    description: "Strefa Twórcy bloga AI w praktyce z integracją Google Drive, dokumentów i automatycznym eksportem szkiców.",
+    canonical: "https://kamillimak.github.io/Blog/#/workspace",
+  });
+
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -172,16 +179,16 @@ export function WorkspacePage() {
     setUploadProgress("Przygotowywanie plików multimedialnych...");
 
     const mediaList = [
-      { name: "codex-agent.jpeg", url: `${import.meta.env.BASE_URL}images/flow/codex-agent.jpeg`, mime: "image/jpeg" },
-      { name: "code-diff.jpeg", url: `${import.meta.env.BASE_URL}images/flow/code-diff.jpeg`, mime: "image/jpeg" },
-      { name: "code-transform.jpeg", url: `${import.meta.env.BASE_URL}images/flow/code-transform.jpeg`, mime: "image/jpeg" },
-      { name: "context-map.jpeg", url: `${import.meta.env.BASE_URL}images/flow/context-map.jpeg`, mime: "image/jpeg" },
-      { name: "gear-pipeline.jpeg", url: `${import.meta.env.BASE_URL}images/flow/gear-pipeline.jpeg`, mime: "image/jpeg" },
-      { name: "share-node.jpeg", url: `${import.meta.env.BASE_URL}images/flow/share-node.jpeg`, mime: "image/jpeg" },
-      { name: "social-cards.jpeg", url: `${import.meta.env.BASE_URL}images/flow/social-cards.jpeg`, mime: "image/jpeg" },
-      { name: "ten-pillars.jpeg", url: `${import.meta.env.BASE_URL}images/flow/ten-pillars.jpeg`, mime: "image/jpeg" },
-      { name: "timeline-roadmap.jpeg", url: `${import.meta.env.BASE_URL}images/flow/timeline-roadmap.jpeg`, mime: "image/jpeg" },
-      { name: "antigravity-core.jpeg", url: `${import.meta.env.BASE_URL}images/flow/antigravity-core.jpeg`, mime: "image/jpeg" },
+      { name: "codex-agent.webp", url: `${import.meta.env.BASE_URL}images/flow/codex-agent.webp`, mime: "image/webp" },
+      { name: "code-diff.webp", url: `${import.meta.env.BASE_URL}images/flow/code-diff.webp`, mime: "image/webp" },
+      { name: "code-transform.webp", url: `${import.meta.env.BASE_URL}images/flow/code-transform.webp`, mime: "image/webp" },
+      { name: "context-map.webp", url: `${import.meta.env.BASE_URL}images/flow/context-map.webp`, mime: "image/webp" },
+      { name: "gear-pipeline.webp", url: `${import.meta.env.BASE_URL}images/flow/gear-pipeline.webp`, mime: "image/webp" },
+      { name: "share-node.webp", url: `${import.meta.env.BASE_URL}images/flow/share-node.webp`, mime: "image/webp" },
+      { name: "social-cards.webp", url: `${import.meta.env.BASE_URL}images/flow/social-cards.webp`, mime: "image/webp" },
+      { name: "ten-pillars.webp", url: `${import.meta.env.BASE_URL}images/flow/ten-pillars.webp`, mime: "image/webp" },
+      { name: "timeline-roadmap.webp", url: `${import.meta.env.BASE_URL}images/flow/timeline-roadmap.webp`, mime: "image/webp" },
+      { name: "antigravity-core.webp", url: `${import.meta.env.BASE_URL}images/flow/antigravity-core.webp`, mime: "image/webp" },
       { name: "kamil-mikolajczyk.png", url: `${import.meta.env.BASE_URL}images/kamil-mikolajczyk.png`, mime: "image/png" },
       { name: "tech-news-01.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-01.mp4`, mime: "video/mp4" },
       { name: "tech-news-02.mp4", url: `${import.meta.env.BASE_URL}news/backgrounds/tech-news-02.mp4`, mime: "video/mp4" },

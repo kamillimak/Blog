@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calendar, ChevronLeft, ChevronRight, Code2 } from "lucide-react";
 import { ARTICLES } from "../../data/articles";
@@ -47,6 +47,66 @@ export function HeroSlider() {
       }));
   }, []);
 
+  const activeSlide = slides[activeIndex];
+
+  const [videoState, setVideoState] = useState(() => ({
+    activeSlot: "A" as "A" | "B",
+    srcA: activeSlide ? activeSlide.video : "",
+    srcB: "",
+  }));
+
+  const videoRefA = useRef<HTMLVideoElement>(null);
+  const videoRefB = useRef<HTMLVideoElement>(null);
+
+  // Transition video state when slide changes
+  useEffect(() => {
+    if (!activeSlide) return;
+    const nextVideo = activeSlide.video;
+    setVideoState((prev) => {
+      if (prev.activeSlot === "A") {
+        if (prev.srcA === nextVideo) return prev;
+        return {
+          activeSlot: "B",
+          srcA: prev.srcA,
+          srcB: nextVideo,
+        };
+      } else {
+        if (prev.srcB === nextVideo) return prev;
+        return {
+          activeSlot: "A",
+          srcA: nextVideo,
+          srcB: prev.srcB,
+        };
+      }
+    });
+  }, [activeIndex, activeSlide]);
+
+  // Handle playing/pausing of active and inactive slots
+  useEffect(() => {
+    if (reducedMotion) {
+      videoRefA.current?.pause();
+      videoRefB.current?.pause();
+      return;
+    }
+    if (videoState.activeSlot === "A") {
+      if (videoState.srcA) {
+        videoRefA.current?.play().catch(() => {});
+      }
+      const timer = setTimeout(() => {
+        videoRefB.current?.pause();
+      }, 700);
+      return () => clearTimeout(timer);
+    } else {
+      if (videoState.srcB) {
+        videoRefB.current?.play().catch(() => {});
+      }
+      const timer = setTimeout(() => {
+        videoRefA.current?.pause();
+      }, 700);
+      return () => clearTimeout(timer);
+    }
+  }, [videoState.activeSlot, videoState.srcA, videoState.srcB, reducedMotion]);
+
   useEffect(() => {
     if (reducedMotion || slides.length < 2) return;
     const slideTimer = window.setTimeout(() => {
@@ -56,18 +116,40 @@ export function HeroSlider() {
     return () => window.clearTimeout(slideTimer);
   }, [activeIndex, reducedMotion, slides.length]);
 
-  const activeSlide = slides[activeIndex];
   if (!activeSlide) return null;
 
   const move = (direction: number) => setActiveIndex((current) => (current + direction + slides.length) % slides.length);
 
   return (
     <div id="hero-slider" className="relative min-h-[460px] w-full max-w-full overflow-hidden border border-indigo-500/70 bg-black text-white sm:min-h-[520px]" aria-roledescription="carousel" aria-label="Najważniejsze artykuły">
-      <video key={activeSlide.video} className="absolute inset-0 h-full w-full object-cover transition-opacity duration-700" src={assetUrl(activeSlide.video)} autoPlay={!reducedMotion} muted loop playsInline preload="metadata" aria-hidden="true" />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/82 via-black/38 to-black/5" />
-      <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/78 via-black/25 to-transparent" />
+      <video
+        ref={videoRefA}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+          videoState.activeSlot === "A" ? "opacity-100 z-10" : "opacity-0 z-0"
+        }`}
+        src={videoState.srcA ? assetUrl(videoState.srcA) : undefined}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      />
+      <video
+        ref={videoRefB}
+        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+          videoState.activeSlot === "B" ? "opacity-100 z-10" : "opacity-0 z-0"
+        }`}
+        src={videoState.srcB ? assetUrl(videoState.srcB) : undefined}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden="true"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/82 via-black/38 to-black/5 z-20" />
+      <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/78 via-black/25 to-transparent z-20" />
 
-      <div className="relative z-10 flex min-h-[460px] flex-col justify-between p-4 sm:min-h-[520px] sm:p-8 lg:p-10">
+      <div className="relative z-30 flex min-h-[460px] flex-col justify-between p-4 sm:min-h-[520px] sm:p-8 lg:p-10">
         <div className="flex items-center justify-end border-b border-white/15 pb-4 md:justify-between md:pb-5">
           <div className="hidden flex-wrap items-center gap-2 md:flex" aria-label="Artykuły w sliderze">
             {slides.map((slide, index) => (
@@ -102,8 +184,8 @@ export function HeroSlider() {
             {slides.map((slide, index) => <button key={slide.id} type="button" onClick={() => setActiveIndex(index)} aria-label={`Slajd ${index + 1}: ${slide.title}`} aria-current={index === activeIndex} className={`h-2.5 w-6 border border-white/25 transition-colors sm:w-10 ${index === activeIndex ? "bg-indigo-500" : "bg-white/20"}`} />)}
           </div>
           <div className="flex shrink-0 gap-1">
-            <button type="button" onClick={() => move(-1)} aria-label="Poprzedni slajd" className="border border-white/20 p-2 text-white hover:border-white"><ChevronLeft size={16} /></button>
-            <button type="button" onClick={() => move(1)} aria-label="Następny slajd" className="border border-white/20 p-2 text-white hover:border-white"><ChevronRight size={16} /></button>
+            <button type="button" onClick={() => move(-1)} aria-label="Poprzedni slajd" className="border border-white/20 p-2 text-white hover:border-white cursor-pointer"><ChevronLeft size={16} /></button>
+            <button type="button" onClick={() => move(1)} aria-label="Następny slajd" className="border border-white/20 p-2 text-white hover:border-white cursor-pointer"><ChevronRight size={16} /></button>
           </div>
         </div>
       </div>

@@ -33,15 +33,15 @@ export function SignalCanvas() {
 
     const resize = () => {
       W = canvas.width = window.innerWidth * DPR;
-      H = canvas.height = document.documentElement.scrollHeight * DPR;
+      H = canvas.height = window.innerHeight * DPR;
       canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = document.documentElement.scrollHeight + "px";
+      canvas.style.height = window.innerHeight + "px";
     };
 
     resize();
     window.addEventListener("resize", resize);
 
-    const count = window.innerWidth < 820 ? 30 : 60;
+    const count = window.innerWidth < 820 ? 20 : 40;
     const nodes: {
       x: number;
       y: number;
@@ -69,7 +69,7 @@ export function SignalCanvas() {
 
     const handleMouseMove = (e: MouseEvent) => {
       mouse.x = e.clientX * DPR;
-      mouse.y = (e.clientY + window.scrollY) * DPR;
+      mouse.y = e.clientY * DPR;
     };
 
     window.addEventListener("mousemove", handleMouseMove);

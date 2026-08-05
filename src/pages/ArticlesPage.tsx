@@ -3,12 +3,15 @@ import { Search, RotateCcw, SlidersHorizontal, Grid } from "lucide-react";
 import { ARTICLES } from "../data/articles";
 import { ArticleCard } from "../components/article/ArticleCard";
 import { filterArticles } from "../utils/article";
+import { useDocumentMeta } from "../utils/useDocumentMeta";
 
 export function ArticlesPage() {
-  // Set page title for SEO
-  useEffect(() => {
-    document.title = "Artykuły i przewodniki — BLOG AI Coding";
-  }, []);
+  // Set page title and update meta tags for SEO
+  useDocumentMeta({
+    title: "Artykuły i przewodniki — BLOG AI Coding",
+    description: "Artykuły o praktycznym wykorzystaniu AI, Codex, Trae, Claude, AI Studio, automatyzacjach i workflow AI-native.",
+    canonical: "https://kamillimak.github.io/Blog/#/articles",
+  });
 
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState("");

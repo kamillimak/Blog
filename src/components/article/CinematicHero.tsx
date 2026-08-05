@@ -118,6 +118,17 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
 
   const activeReel = REELS[activeReelIndex];
 
+  // Sync HTMLVideoElement playback state on source changes
+  useEffect(() => {
+    if (activeReel.videoPath && videoRef.current) {
+      if (isPlaying && !reducedMotion) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [activeReelIndex, isPlaying, reducedMotion, activeReel.videoPath]);
+
   // Track video progress
   const handleTimeUpdate = () => {
     if (videoRef.current) {
@@ -210,7 +221,6 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
             )}
             <video
               ref={videoRef}
-              key={activeReel.id}
               src={assetUrl(activeReel.videoPath ?? "")}
               autoPlay={!reducedMotion}
               muted={isMuted}

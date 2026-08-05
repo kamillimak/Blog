@@ -8,14 +8,13 @@ import { DailyBriefing } from "../components/article/DailyBriefing";
 import { CinematicHero } from "../components/article/CinematicHero";
 import { WebVitalsDashboard } from "../components/analytics/WebVitalsDashboard";
 import { AIContentDashboard } from "../components/article/AIContentDashboard";
+import { useDocumentMeta } from "../utils/useDocumentMeta";
 
 export function HomePage() {
   const location = useLocation();
 
-  // Set page title for SEO
-  useEffect(() => {
-    document.title = "Blog technologiczny — Codex · Trae · Claude · AI Studio";
-  }, []);
+  // Set page title and reset meta tags for SEO
+  useDocumentMeta();
 
   // Programmatic scroll helper for cross-page hash navigations
   useEffect(() => {

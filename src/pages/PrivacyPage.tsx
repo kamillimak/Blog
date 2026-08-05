@@ -1,10 +1,12 @@
-﻿import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDocumentMeta } from "../utils/useDocumentMeta";
 
 export function PrivacyPage() {
-  useEffect(() => {
-    document.title = "Polityka prywatności — Blog technologiczny";
-  }, []);
+  useDocumentMeta({
+    title: "Polityka prywatności — Blog technologiczny",
+    description: "Polityka prywatności bloga technologicznego AI w praktyce. Informacje o cookies, analityce Consent Mode v2 i newsletterze.",
+    canonical: "https://kamillimak.github.io/Blog/#/privacy",
+  });
 
   return (
     <main className="bg-brand-bg text-brand-text">
