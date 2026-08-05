@@ -183,6 +183,9 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
       <div className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${fade ? "opacity-20" : "opacity-75"}`}>
         {activeReel.imagePath ? (
           <div className="absolute inset-0 w-full h-full bg-[#07080a] flex items-center justify-center overflow-hidden">
+            {/* Gentle gradient focused in the bottom left corner */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(249,115,22,0.12)_0%,transparent_60%)] pointer-events-none" />
+
             {/* Cut-out portrait image centered vertically next to the content */}
             <div className="absolute right-[5%] sm:right-[10%] top-1/2 -translate-y-1/2 h-[55%] sm:h-[65%] max-h-[420px] aspect-square flex items-center justify-center select-none pointer-events-none z-10">
               <img 
