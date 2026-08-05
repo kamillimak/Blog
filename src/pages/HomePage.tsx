@@ -29,10 +29,8 @@ export function HomePage() {
     }
   }, [location]);
 
-  // Dynamic design switcher
-  const [concept, setConcept] = useState<"editorial" | "dashboard">(
-    (import.meta.env.VITE_CONCEPT as "editorial" | "dashboard") || "editorial"
-  );
+  // Dynamic design switcher - locked to Editorial Slate
+  const [concept, setConcept] = useState<"editorial" | "dashboard">("editorial");
 
   // Stats
   const stats = useMemo(() => getGlobalStats(ARTICLES), []);
@@ -531,32 +529,7 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Dynamic Concept Preview Switcher - hidden in hardcoded static builds */}
-      {!import.meta.env.VITE_CONCEPT && (
-        <div className="fixed bottom-6 right-6 z-[100] bg-zinc-900 text-zinc-100 border border-zinc-800 p-2 shadow-2xl backdrop-blur-md flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-wider rounded-none">
-          <span className="text-zinc-500 font-bold px-2 select-none border-r border-zinc-800 pr-3">Podgląd:</span>
-          <button
-            onClick={() => setConcept("editorial")}
-            className={`px-3 py-1.5 transition-colors cursor-pointer rounded-none border ${
-              concept === "editorial"
-                ? "bg-white text-black border-white font-bold"
-                : "bg-transparent text-zinc-400 border-transparent hover:text-white"
-            }`}
-          >
-            Editorial Slate
-          </button>
-          <button
-            onClick={() => setConcept("dashboard")}
-            className={`px-3 py-1.5 transition-colors cursor-pointer rounded-none border ${
-              concept === "dashboard"
-                ? "bg-sky-500 text-black border-sky-500 font-bold"
-                : "bg-transparent text-zinc-400 border-transparent hover:text-white"
-            }`}
-          >
-            Cyber Dashboard
-          </button>
-        </div>
-      )}
+
 
     </div>
   );

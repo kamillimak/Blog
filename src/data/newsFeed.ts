@@ -225,6 +225,7 @@ const parseDailyBriefing = (path: string): DailyTechBriefing => {
 const parseDailyBriefings = (): DailyTechBriefing[] =>
   Object.keys(dailyModules)
     .sort((left, right) => right.localeCompare(left))
+    .slice(0, 5)
     .map((path) => parseDailyBriefing(path));
 
 const topThreeKind = (fileName: string): UnifiedNewsKind => {
