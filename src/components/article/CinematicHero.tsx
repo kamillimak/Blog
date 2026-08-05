@@ -67,6 +67,7 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
   const [progress, setProgress] = useState(0);
   const [fade, setFade] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   // Telemetry state simulation
   const [telemetry, setTelemetry] = useState({
@@ -109,6 +110,11 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
 
     return () => clearTimeout(timer);
   }, [activeReelIndex, isPlaying, reducedMotion]);
+
+  // Reset video loaded state when active slide changes
+  useEffect(() => {
+    setIsVideoLoaded(false);
+  }, [activeReelIndex]);
 
   const activeReel = REELS[activeReelIndex];
 
@@ -187,17 +193,34 @@ export function CinematicHero({ concept = "editorial" }: CinematicHeroProps) {
             </div>
           </div>
         ) : (
-          <video
-            ref={videoRef}
-            key={activeReel.id}
-            src={assetUrl(activeReel.videoPath ?? "")}
-            autoPlay={!reducedMotion}
-            muted={isMuted}
-            loop
-            playsInline
-            onTimeUpdate={handleTimeUpdate}
-            className="absolute inset-0 w-full h-full object-cover filter contrast-[1.1] brightness-[0.75]"
-          />
+          <div className="absolute inset-0 w-full h-full bg-[#07080a]">
+            {!isVideoLoaded && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 z-10 bg-[#07080a]">
+                <div className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
+                </div>
+                <span className="font-mono text-[9px] text-zinc-500 uppercase tracking-[0.2em] animate-pulse">
+                  ESTABLISHING VIDEO FEED...
+                </span>
+              </div>
+            )}
+            <video
+              ref={videoRef}
+              key={activeReel.id}
+              src={assetUrl(activeReel.videoPath ?? "")}
+              autoPlay={!reducedMotion}
+              muted={isMuted}
+              loop
+              playsInline
+              onTimeUpdate={handleTimeUpdate}
+              onCanPlayThrough={() => setIsVideoLoaded(true)}
+              onLoadedData={() => setIsVideoLoaded(true)}
+              className={`absolute inset-0 w-full h-full object-cover filter contrast-[1.1] brightness-[0.75] transition-opacity duration-500 ease-in-out ${
+                isVideoLoaded ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          </div>
         )}
       </div>
 
