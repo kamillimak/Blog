@@ -48,3 +48,10 @@ jobs:
             git commit -m "chore: daily AI/IT news briefing $(date -u +%Y-%m-%d)"
             git push
           fi
+
+          
+
+      - name: Trigger deploy workflow
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run deploy-pages.yml --ref main
