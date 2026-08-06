@@ -1,16 +1,17 @@
 /**
  * Generuje codzienny briefing AI/IT (content/daily-news/{data}/{data}.md)
- * przy użyciu Gemini + Google Search grounding, z walidacją działających URL-i źródeł.
+ * przy użyciu Perplexity (Sonar) - wbudowane wyszukiwanie + cytowania,
+ * plus dodatkowa walidacja działających URL-i źródeł.
  *
  * Uruchamiane przez .github/workflows/daily-news.yml (cron, bez udziału lokalnego komputera).
  * Można też odpalić ręcznie: npm run generate:daily-news
  */
 
-import { GoogleGenAI } from "@google/genai";
 import { mkdir, writeFile, access } from "node:fs/promises";
 import path from "node:path";
 
-const MODEL = "gemini-2.5-flash";
+const PPLX_MODEL = "sonar";
+const PPLX_URL = "https://api.perplexity.ai/chat/completions";
 const MAX_ITEM_RETRIES = 2;
 const URL_TIMEOUT_MS = 8000;
 
@@ -36,6 +37,29 @@ interface RawItem {
   sourceLabel: string;
   sourceUrl: string;
 }
+
+const ITEM_SCHEMA = {
+  type: "object",
+  properties: {
+    items: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          title: { type: "string" },
+          category: { type: "string", enum: ["Polska", "Świat"] },
+          summary: { type: "string" },
+          eventDate: { type: "string" },
+          eventNote: { type: "string" },
+          sourceLabel: { type: "string" },
+          sourceUrl: { type: "string" },
+        },
+        required: ["title", "category", "summary", "eventDate", "eventNote", "sourceLabel", "sourceUrl"],
+      },
+    },
+  },
+  required: ["items"],
+};
 
 function getWarsawDateParts(): { iso: string; humanPl: string } {
   const now = new Date();
@@ -66,7 +90,6 @@ async function isUrlAlive(url: string): Promise<boolean> {
       signal: controller.signal,
       headers: { "User-Agent": "Mozilla/5.0 (compatible; DziennikBudowyBot/1.0)" },
     });
-    // Część serwerów nie obsługuje HEAD poprawnie (405/403) - spróbuj GET.
     if (!res.ok && (res.status === 405 || res.status === 403 || res.status === 404)) {
       res = await fetch(url, {
         method: "GET",
@@ -86,80 +109,97 @@ async function isUrlAlive(url: string): Promise<boolean> {
 function stripToJson(text: string): string {
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
   if (fenced) return fenced[1].trim();
-  const first = text.indexOf("[");
-  const last = text.lastIndexOf("]");
+  const first = text.indexOf("{");
+  const last = text.lastIndexOf("}");
   if (first !== -1 && last !== -1) return text.slice(first, last + 1);
   return text.trim();
 }
 
-async function generateItems(client: GoogleGenAI, iso: string): Promise<RawItem[]> {
-  const prompt = `Jesteś researcherem newsroomu technologicznego. Wygeneruj DOKŁADNIE 3 aktualne, prawdziwe newsy z ostatnich 24-48 godzin (dzisiaj to ${iso}) o AI i IT: 1 z kategorii "Polska" i 2 z kategorii "Świat".
-
-WYMAGANIA KRYTYCZNE:
-- Używaj wyszukiwarki (Google Search), żeby znaleźć REALNE, świeże wydarzenia - nie wymyślaj faktów.
-- Każdy news musi mieć realny, działający adres URL źródła (preferuj stronę główną domeny lub jak najkrótszy, stabilny adres - unikaj głębokich, tymczasowych ścieżek które mogą 404-ować).
-- Pisz po polsku, rzeczowo, bez clickbaitu.
-
-Zwróć WYŁĄCZNIE tablicę JSON (bez markdown, bez komentarzy) o strukturze:
-[
-  {
-    "title": "Zwięzły tytuł newsa",
-    "category": "Polska" | "Świat",
-    "summary": "2-3 zdania streszczenia, konkretne fakty",
-    "eventDate": "YYYY-MM-DD",
-    "eventNote": "krótki opis co się wydarzyło (pół zdania)",
-    "sourceLabel": "Nazwa źródła (np. Reuters, NASK, TechCrunch)",
-    "sourceUrl": "https://..."
-  }
-]`;
-
-  const response = await client.models.generateContent({
-    model: MODEL,
-    contents: prompt,
-    config: {
-      tools: [{ googleSearch: {} }],
+async function callPerplexity(apiKey: string, systemPrompt: string, userPrompt: string, schema: object): Promise<string> {
+  const res = await fetch(PPLX_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify({
+      model: PPLX_MODEL,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: { schema },
+      },
+    }),
   });
 
-  const text = response.text ?? "";
-  const jsonText = stripToJson(text);
-  const parsed = JSON.parse(jsonText) as RawItem[];
-
-  if (!Array.isArray(parsed) || parsed.length === 0) {
-    throw new Error("Model nie zwrócił poprawnej tablicy newsów.");
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Perplexity API error ${res.status}: ${body}`);
   }
 
-  return parsed;
+  const data = (await res.json()) as { choices: { message: { content: string } }[] };
+  return data.choices?.[0]?.message?.content ?? "";
 }
 
+async function generateItems(apiKey: string, iso: string): Promise<RawItem[]> {
+  const systemPrompt =
+    "Jesteś researcherem newsroomu technologicznego. Zawsze podajesz wyłącznie realne, sprawdzone informacje z prawdziwymi, działającymi adresami URL źródeł. Odpowiadasz po polsku.";
+
+  const userPrompt = `Znajdź DOKŁADNIE 3 aktualne newsy z ostatnich 24-48 godzin (dzisiaj to ${iso}) o AI i IT: 1 z kategorii "Polska" i 2 z kategorii "Świat".
+
+WYMAGANIA KRYTYCZNE:
+- Tylko realne, świeże wydarzenia znalezione przez wyszukiwanie - nie wymyślaj faktów.
+- Każdy news musi mieć realny, działający URL źródła (preferuj krótki, stabilny adres bezpośrednio do artykułu).
+- Pisz po polsku, rzeczowo, bez clickbaitu.
+
+Pola dla każdego newsa: title, category ("Polska" albo "Świat"), summary (2-3 zdania konkretnych faktów), eventDate (YYYY-MM-DD), eventNote (krótki opis wydarzenia, pół zdania), sourceLabel (nazwa źródła), sourceUrl (pełny, działający adres URL).`;
+
+  const content = await callPerplexity(apiKey, systemPrompt, userPrompt, ITEM_SCHEMA);
+  const jsonText = stripToJson(content);
+  const parsed = JSON.parse(jsonText) as { items: RawItem[] };
+
+  if (!parsed.items || !Array.isArray(parsed.items) || parsed.items.length === 0) {
+    throw new Error("Model nie zwrócił poprawnej listy newsów.");
+  }
+
+  return parsed.items;
+}
+
+const ALT_SOURCE_SCHEMA = {
+  type: "object",
+  properties: {
+    sourceLabel: { type: "string" },
+    sourceUrl: { type: "string" },
+  },
+  required: ["sourceLabel", "sourceUrl"],
+};
+
 async function regenerateSourceForItem(
-  client: GoogleGenAI,
+  apiKey: string,
   item: RawItem,
 ): Promise<{ sourceLabel: string; sourceUrl: string } | null> {
-  const prompt = `Poprzedni adres URL źródła dla newsa "${item.title}" (${item.sourceUrl}) nie działa (błąd HTTP lub timeout).
-Znajdź INNY, realny i działający adres URL dotyczący tego samego wydarzenia lub tej samej organizacji (może to być strona główna wiarygodnego źródła, np. oficjalny blog firmy albo redakcji).
-Zwróć WYŁĄCZNIE JSON: {"sourceLabel": "...", "sourceUrl": "https://..."}`;
+  const systemPrompt = "Znajdujesz alternatywne, działające źródła internetowe. Odpowiadasz po polsku.";
+  const userPrompt = `Poprzedni adres URL źródła dla newsa "${item.title}" (${item.sourceUrl}) nie działa (błąd HTTP lub timeout).
+Znajdź INNY, realny i działający adres URL dotyczący tego samego wydarzenia lub tej samej organizacji (może to być strona główna wiarygodnego źródła, np. oficjalny blog firmy albo redakcji).`;
 
   try {
-    const response = await client.models.generateContent({
-      model: MODEL,
-      contents: prompt,
-      config: { tools: [{ googleSearch: {} }] },
-    });
-    const jsonText = stripToJson(response.text ?? "");
-    const parsed = JSON.parse(jsonText) as { sourceLabel: string; sourceUrl: string };
-    return parsed;
+    const content = await callPerplexity(apiKey, systemPrompt, userPrompt, ALT_SOURCE_SCHEMA);
+    const jsonText = stripToJson(content);
+    return JSON.parse(jsonText) as { sourceLabel: string; sourceUrl: string };
   } catch {
     return null;
   }
 }
 
-async function ensureWorkingSource(client: GoogleGenAI, item: RawItem): Promise<RawItem> {
+async function ensureWorkingSource(apiKey: string, item: RawItem): Promise<RawItem> {
   for (let attempt = 0; attempt < MAX_ITEM_RETRIES; attempt++) {
     if (item.sourceUrl && (await isUrlAlive(item.sourceUrl))) {
       return item;
     }
-    const alt = await regenerateSourceForItem(client, item);
+    const alt = await regenerateSourceForItem(apiKey, item);
     if (alt?.sourceUrl) {
       item = { ...item, sourceLabel: alt.sourceLabel || item.sourceLabel, sourceUrl: alt.sourceUrl };
     }
@@ -169,7 +209,6 @@ async function ensureWorkingSource(client: GoogleGenAI, item: RawItem): Promise<
     return item;
   }
 
-  // Ostateczny fallback - znany, działający adres domeny z danej kategorii.
   const pool = FALLBACK_SOURCES[item.category];
   const fallback = pool[Math.floor(Math.random() * pool.length)];
   console.warn(`⚠️  Nie udało się zweryfikować źródła dla "${item.title}" - użyto fallbacku: ${fallback.url}`);
@@ -214,9 +253,9 @@ async function fileExists(filePath: string): Promise<boolean> {
 }
 
 async function main() {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.PERPLEXITY_API_KEY;
   if (!apiKey) {
-    throw new Error("Brak GEMINI_API_KEY w zmiennych środowiskowych.");
+    throw new Error("Brak PERPLEXITY_API_KEY w zmiennych środowiskowych.");
   }
 
   const { iso, humanPl } = getWarsawDateParts();
@@ -228,15 +267,13 @@ async function main() {
     return;
   }
 
-  const client = new GoogleGenAI({ apiKey });
-
-  console.log(`🔎 Generuję briefing na ${iso}...`);
-  const rawItems = await generateItems(client, iso);
+  console.log(`🔎 Generuję briefing na ${iso} (Perplexity ${PPLX_MODEL})...`);
+  const rawItems = await generateItems(apiKey, iso);
 
   console.log(`🔗 Weryfikuję ${rawItems.length} adresów źródłowych...`);
   const verifiedItems: RawItem[] = [];
   for (const item of rawItems) {
-    verifiedItems.push(await ensureWorkingSource(client, item));
+    verifiedItems.push(await ensureWorkingSource(apiKey, item));
   }
 
   const markdown = renderMarkdown(iso, humanPl, verifiedItems);

@@ -33,7 +33,7 @@ jobs:
 
       - name: Generate briefing
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
           FORCE_REGENERATE: ${{ github.event.inputs.force }}
         run: npm run generate:daily-news
 
