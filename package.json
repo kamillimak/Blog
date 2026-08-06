@@ -12,6 +12,7 @@
     "start": "node dist/server.cjs",
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
+    "generate:daily-news": "tsx scripts/generate-daily-news.ts",
     "lint": "tsc --noEmit"
   },
   "dependencies": {
